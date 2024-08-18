@@ -1,7 +1,6 @@
 import express from "express";
 import {getReviews,saveReviews,deleteReview} from "../controllers/ReviewsController.js"
-// import Stripe from 'stripe';
-// const stripe = new Stripe("sk_test_51PgSjjCzHvMOKeKHsUmXhQyWcCZvSggF1bJ2hIDJm232DuqvBegEm7tbn7i9f7HhWT3VZc9Ct8ymnQxJIB6pAoE300xq0BzZbv");
+
 const router=express.Router();
 
 router.get("/getreviews",getReviews);
