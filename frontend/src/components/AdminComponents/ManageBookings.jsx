@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from '../../utils/apiConfig';
 
 function ManageBookings() {
   const [bookings, setBookings] = useState([]);
@@ -6,7 +7,7 @@ function ManageBookings() {
   // Function to fetch bookings from the backend
   const fetchBookings = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/bookings');
+      const response = await fetch(`${API_URL}/api/bookings`);
       const data = await response.json();
       setBookings(data);
     } catch (error) {
@@ -17,7 +18,7 @@ function ManageBookings() {
   // Function to update booking status
   const updateBookingStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/booking/${id}/status`, {
+      const response = await fetch(`${API_URL}/api/booking/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

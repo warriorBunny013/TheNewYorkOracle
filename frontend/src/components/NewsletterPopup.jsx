@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { API_URL } from '../utils/apiConfig';
 
 function NewsletterPopup() {
 
@@ -12,7 +13,7 @@ function NewsletterPopup() {
     // setMessage(''); // Reset message
 
     try {
-      const response = await fetch('http://localhost:8080/api/subscribe', {
+      const response = await fetch(`${API_URL}/api/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

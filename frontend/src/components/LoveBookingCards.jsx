@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
+import { API_URL } from "../utils/apiConfig";
 
 const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
@@ -40,7 +41,7 @@ function LoveBookingCards() {
         // Fetch prices from the backend API
         const fetchPrices = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/prices');
+                const response = await fetch(`${API_URL}/api/prices`);
                 const data = await response.json();
                 setPrices(data);
             } catch (error) {

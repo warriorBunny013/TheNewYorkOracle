@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../utils/apiConfig';
 
 function AboutLogin() {
     const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ function AboutLogin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/admin/login', { email, password }, { withCredentials: true });
+            const response = await axios.post(`${API_URL}/api/admin/login`, { email, password }, { withCredentials: true });
             if (response.status === 200) {
                 navigate('/adminpanel'); // Redirect to admin dashboard
             }

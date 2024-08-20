@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../utils/apiConfig';
 
 const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -9,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
     React.useEffect(() => {
         const checkAuth = async () => {
             try {
-                await axios.get('http://localhost:8080/api/adminpanel/dashboard', { withCredentials: true });
+                await axios.get(`${API_URL}/api/adminpanel/dashboard`, { withCredentials: true });
                 setIsAuthenticated(true);
             } catch (error) {
                 setIsAuthenticated(false);
