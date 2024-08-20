@@ -39,7 +39,7 @@ const connectToMongoDB = async () => {
 mongoose.connection.on("disconnected", () => {
     console.log("Disconnected from MongoDB");
 });
-
+   
 app.get("/home", (req, res) => {
     res.status(200).json({ message: "I requested for home", success: true });
 });
