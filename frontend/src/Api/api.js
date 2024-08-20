@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { API_URL } from '../utils/apiConfig.js';
 import 'react-toastify/dist/ReactToastify.css';
 axios.defaults.withCredentials = true;
-const url = 'http://localhost:8080/api';
+const url = `${API_URL}/api`;
 
 
 export const logout = async () => {
