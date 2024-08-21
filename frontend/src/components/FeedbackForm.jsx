@@ -61,7 +61,7 @@ function FeedbackForm() {
                         name="clientName"
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
-                        className="py-3 px-4 block w-[50vh] border-gray-200 rounded-lg text-black bg-white"
+                        className="py-3 px-4 block lg:w-[50vh] border-gray-200 rounded-lg text-black bg-white"
                         required
                       />
                     </div>

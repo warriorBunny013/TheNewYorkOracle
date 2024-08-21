@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: 'https://soulsticetarot.com', methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
+app.use(cors({ origin: 'http://localhost:3000', methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
 
 
 // MongoDB connection
@@ -108,8 +108,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://soulsticetarot.com/booking/${bookingId}/${appointmentid}`,
-            cancel_url: 'https://soulsticetarot.com/cancelpayment',
+            success_url: `http://localhost:3000/booking/${bookingId}/${appointmentid}`,
+            cancel_url: 'http://localhost:3000/cancelpayment',
         });
 
         await Booking.create({

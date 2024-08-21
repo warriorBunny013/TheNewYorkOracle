@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://api.soulsticetarot.com",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@appointlet/appointlet.js": "^3.0.7",
     "@react-three/drei": "^9.109.2",
