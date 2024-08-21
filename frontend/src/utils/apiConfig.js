@@ -1,1 +1,1 @@
-export const API_URL = 'https://the-new-york-oracle.vercel.app' //mih aws ip 
+export const API_URL = 'https://thenewyorkoracle.onrender.com' //mih aws ip 
