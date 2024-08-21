@@ -41,7 +41,7 @@ router.patch('/:id', async (req, res) => {
   try {
     const updatedPrice = await Price.findByIdAndUpdate(id, { price }, { new: true });
     if (!updatedPrice) return res.status(404).json({ message: 'Price not found' });
-    res.json(updatedPrice);
+    res.status(200).json(updatedPrice);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -21,9 +21,14 @@ const app = express();
 
 // Middleware setup
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ origin: 'https://the-new-york-oracle-frontend.vercel.app', methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
+app.use(cors({
+    origin:["https://the-new-york-oracle-frontend.vercel.app"],
+    methods:["POST","GET","PATCH","PUT","DELETE"],
+    credentials:true
+  }));
+
 
 
 // MongoDB connection
@@ -31,10 +36,12 @@ const connectToMongoDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URL); // Simplified connection without deprecated options
         console.log("Connected to MongoDB");
+
     } catch (err) {
         console.log("Can't connect to MongoDB", err);
     }
 };
+
 mongoose.connection.on("disconnected", () => {
     console.log("Disconnected from MongoDB");
 });
@@ -58,7 +65,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
     if (!userName || !userEmail || !userPhone) {
         return res.status(400).json({ error: "userName, userEmail, and userPhone are required" });
     }
-
+    
     const bookingId = crypto.randomBytes(16).toString('hex');
 
     // Extract appointmentid with improved error handling
@@ -103,7 +110,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         quantity: 1,
     }));
     const totalAmount = lineItems.reduce((sum, item) => sum + item.price_data.unit_amount, 0);
-       
+
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
@@ -125,7 +132,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
             status: 'pending'
         });
 
-        res.json({ id: session.id });
+        res.status(200).json({ id: session.id });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -144,7 +151,7 @@ app.get('/api/booking/:id', async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        res.json(booking);
+        res.status(200).json(booking);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -153,9 +160,10 @@ app.get('/api/booking/:id', async (req, res) => {
 
 // Route to get all bookings
 app.get('/api/bookings', async (req, res) => {
+
     try {
         const bookings = await Booking.find();
-        res.json(bookings);
+        res.status(200).json(bookings);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -178,7 +186,7 @@ app.patch('/api/booking/:id/status', async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
-        res.json(booking);
+        res.status(200).json(booking);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -237,3 +245,4 @@ app.listen(PORT, () => {
     connectToMongoDB();
     console.log(`Server is running at http://localhost:${PORT}`);
 });
+
