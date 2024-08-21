@@ -1,1 +1,1 @@
-export const API_URL = 'https://18.211.119.66:8080' //mih aws ip 
+export const API_URL = 'http://api.soulsticetarot.com' //mih aws ip 
