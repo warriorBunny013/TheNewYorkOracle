@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "https://the-new-york-oracle.vercel.app",
   "dependencies": {
     "@appointlet/appointlet.js": "^3.0.7",
     "@react-three/drei": "^9.109.2",
