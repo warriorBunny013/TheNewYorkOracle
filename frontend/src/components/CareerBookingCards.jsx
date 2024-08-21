@@ -104,7 +104,7 @@ function CareerBookingCards() {
             "Content-Type": "application/json"
         };
 
-        const response = await fetch('http://localhost:8080/api/create-checkout-session', {
+        const response = await fetch('https://thenewyorkoracle.onrender.com/api/create-checkout-session', {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)
