@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const prices = await Price.find();
-    res.json(prices);
+    res.status(201).json(prices);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -5,7 +5,7 @@ import ReviewsModel from "../models/Reviews.js"
 export const getReviews = async (req, res) => {
     try{
         const reviews = await ReviewsModel.find();
-        res.status(200).json(reviews);
+        res.status(201).json(reviews);
     }catch( err){
         res.status(404).json(err)
     }
