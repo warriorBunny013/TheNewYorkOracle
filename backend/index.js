@@ -11,7 +11,6 @@ import AdminPanel from './routes/AdminPanel.js';
 import authMiddleware from './middleware/auth.js';
 import routes from "./routes/ReviewsRoutes.js";
 import priceRoutes from './routes/PriceRoutes.js';
-import Mailjet from 'node-mailjet';
 import SibApiV3Sdk from 'sib-api-v3-sdk';
 
 dotenv.config();
@@ -29,13 +28,12 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 // MongoDB connection
 const connectToMongoDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(process.env.MONGO_URL); // Simplified connection without deprecated options
         console.log("Connected to MongoDB");
     } catch (err) {
         console.log("Can't connect to MongoDB", err);
     }
 };
-
 mongoose.connection.on("disconnected", () => {
     console.log("Disconnected from MongoDB");
 });
@@ -186,7 +184,6 @@ app.patch('/api/booking/:id/status', async (req, res) => {
     }
 });
 
-
 //price routes for getall and update prices
 app.use('/api/prices', priceRoutes);
 
@@ -232,7 +229,6 @@ app.post('/api/subscribe', (req, res) => {
     //     res.status(500).json({ message: 'Subscription failed.' });
     // });
 });
-
 
 // Start the server
 const PORT = process.env.PORT || 8080;
