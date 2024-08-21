@@ -23,7 +23,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: process.env.FRONTEND_URL, methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
+app.use(cors({ origin: 'https://the-new-york-oracle-frontend.vercel.app', methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
 
 
 // MongoDB connection
@@ -109,8 +109,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `${process.env.FRONTEND_URL}/booking/${bookingId}/${appointmentid}`,
-            cancel_url: `${process.env.FRONTEND_URL}/cancelpayment`,
+            success_url: `https://the-new-york-oracle-frontend.vercel.app/booking/${bookingId}/${appointmentid}`,
+            cancel_url: 'https://the-new-york-oracle-frontend.vercel.app/cancelpayment',
         });
 
         await Booking.create({
