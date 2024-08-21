@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({
-    origin:["https://the-new-york-oracle-frontend.vercel.app"],
+    origin:["https://newyorkfrontend.vercel.app"],
     methods:["POST","GET","PATCH","PUT","DELETE"],
     credentials:true
   }));
@@ -116,8 +116,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://the-new-york-oracle-frontend.vercel.app/booking/${bookingId}/${appointmentid}`,
-            cancel_url: 'https://the-new-york-oracle-frontend.vercel.app/cancelpayment',
+            success_url: `https://newyorkfrontend.vercel.app/booking/${bookingId}/${appointmentid}`,
+            cancel_url: 'https://newyorkfrontend.vercel.app/cancelpayment',
         });
 
         await Booking.create({

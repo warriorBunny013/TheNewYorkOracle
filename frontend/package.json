@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": "https://the-new-york-oracle-frontend.vercel.app",
   "private": true,
   "proxy": "https://the-new-york-oracle.vercel.app",
   "dependencies": {
