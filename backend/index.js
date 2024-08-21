@@ -103,7 +103,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
         quantity: 1,
     }));
     const totalAmount = lineItems.reduce((sum, item) => sum + item.price_data.unit_amount, 0);
-
+       
     try {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
