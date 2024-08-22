@@ -15,9 +15,11 @@ function AboutLogin() {
             const response = await axios.post(`${API_URL}/api/admin/login`, { email, password }, { withCredentials: true });
             if (response.status === 200) {
                 navigate('/adminpanel'); // Redirect to admin dashboard
+                console.log("actually no error in handlesubmit")
             }
         } catch (err) {
             setError('Invalid email or password');
+            console.log("actually error in handlesubmit")
         }
     };
 

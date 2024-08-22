@@ -8,7 +8,7 @@ const url = `${API_URL}/api`;
 
 export const logout = async () => {
     try {
-      const response = await axios.post('/api/admin/logout', {}, { withCredentials: true });
+      const response = await axios.post(`${url}/admin/logout`, {}, { withCredentials: true });
       return response; // Successfully logged out
     } catch (err) {
       toast.error('Logout failed. Please try again.');
