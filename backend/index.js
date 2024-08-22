@@ -45,6 +45,10 @@ const connectToMongoDB = async () => {
 mongoose.connection.on("disconnected", () => {
     console.log("Disconnected from MongoDB");
 });
+
+connectToMongoDB()
+
+
    
 app.get("/home", (req, res) => {
     res.status(200).json({ message: "I requested for home", success: true });
@@ -242,7 +246,7 @@ app.post('/api/subscribe', (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    connectToMongoDB();
+    
     console.log(`Server is running at http://localhost:${PORT}`);
 });
 

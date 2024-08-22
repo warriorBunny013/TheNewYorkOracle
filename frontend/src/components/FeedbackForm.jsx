@@ -29,10 +29,16 @@ function FeedbackForm() {
       setClientName('');
       setRating(0);
       setComments('');
-      toast('Feedback submitted successfully');
+      toast.success('Feedback submitted successfully', {
+        autoClose: 2000, // Duration in milliseconds
+        containerId:"containerA"
+      });
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-      toast('Failed to submit feedback');
+      console.error('Error submitting feedback:');
+      toast.error('Failed to submit feedback', {
+        autoClose: 2000, // Duration in milliseconds
+        containerId:"containerB"
+      });
     }
   };
 
@@ -99,7 +105,8 @@ function FeedbackForm() {
                   <button type="submit" className="btn text-white px-10 bg-[#5E3BEE] btn-primary">Submit</button>
                 </div>
               </form>
-              <ToastContainer />
+              <ToastContainer containerId="containerA" limit={1}/>
+              <ToastContainer containerId="containerB" limit={1}/>
             </div>
           </div>
         </div>

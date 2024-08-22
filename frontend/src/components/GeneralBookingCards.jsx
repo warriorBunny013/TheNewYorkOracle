@@ -100,7 +100,7 @@ function GeneralBookingCards() {
             "Content-Type": "application/json"
         };
 
-        const response = await fetch('https://thenewyorkoracle.onrender.com/api/create-checkout-session', {
+        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(body)
