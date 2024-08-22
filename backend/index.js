@@ -24,12 +24,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({
-    origin:["https://newyorkfrontend.vercel.app"],
+    origin:["https://www.soulsticetarot.com"],
     methods:["POST","GET","PATCH","PUT","DELETE"],
     credentials:true
   }));
 
-const frontendapi="https://newyorkfrontend.vercel.app"
+const frontendapi="https://www.soulsticetarot.com"
 
 // MongoDB connection
 const connectToMongoDB = async () => {
