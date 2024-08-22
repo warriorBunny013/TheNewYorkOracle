@@ -12,8 +12,10 @@ const ProtectedRoute = ({ children }) => {
             try {
                 await axios.get(`${API_URL}/api/adminpanel/dashboard`, { withCredentials: true });
                 setIsAuthenticated(true);
+                console.log("NOOO error while going to adminpanel")
             } catch (error) {
                 setIsAuthenticated(false);
+                console.log("error while going to adminpanel")
             }
             setLoading(false);
         };

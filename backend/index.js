@@ -29,7 +29,7 @@ app.use(cors({
     credentials:true
   }));
 
-
+const frontendapi="https://newyorkfrontend.vercel.app"
 
 // MongoDB connection
 const connectToMongoDB = async () => {
@@ -120,8 +120,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: lineItems,
             mode: 'payment',
-            success_url: `https://newyorkfrontend.vercel.app/booking/${bookingId}/${appointmentid}`,
-            cancel_url: 'https://newyorkfrontend.vercel.app/cancelpayment',
+            success_url: `${frontendapi}/booking/${bookingId}/${appointmentid}`,
+            cancel_url: `${frontendapi}/cancelpayment`,
         });
 
         await Booking.create({
