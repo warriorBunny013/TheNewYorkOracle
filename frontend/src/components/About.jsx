@@ -26,7 +26,7 @@ function About(){
               <br/>
               <br/>
     
-    Together, we'll align your energy and unlock your full potential. Just authentic guidance using Tarot, intuition, and divine connection. Allow me to help you on your journey and manifest your best life.
+    Together, we'll align your energy and unlock your full potential. Just authentic guidance using Tarot, Intuition, and Divine connection. Allow me to help you on your journey and manifest your best life.
     </p>
     <div className="flex gap-2">
     <button  onClick={() => handleInsta('https://www.instagram.com/soulstice_tarot')} className="w-10 h-10 flex items-center justify-center rounded-full relative overflow-hidden  group transition-all duration-500">

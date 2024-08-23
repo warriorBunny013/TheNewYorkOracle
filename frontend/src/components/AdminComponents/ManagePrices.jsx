@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-
+import { API_URL } from '../../utils/apiConfig';
 function ManagePrices() {
   const [prices, setPrices] = useState([]);
   const [editingPriceId, setEditingPriceId] = useState(null);
@@ -12,7 +12,7 @@ function ManagePrices() {
 
   const fetchPrices = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/prices');
+      const response = await fetch(`${API_URL}/api/prices`);
       const data = await response.json();
       setPrices(data);
     } catch (error) {
@@ -22,7 +22,7 @@ function ManagePrices() {
 
   const handlePriceChange = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/prices/${id}`, {
+      const response = await fetch(`${API_URL}/api/prices/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
