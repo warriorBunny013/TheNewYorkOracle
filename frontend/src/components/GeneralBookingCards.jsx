@@ -250,7 +250,7 @@ function GeneralBookingCards() {
                                     <div className="mt-6 pt-3">
                                         <div className="p-4 mt-2 border border-gray-300 rounded-lg dark:border-gray-600 bg-gray-900">
                                             <h4 className="text-lg font-bold mb-2 text-white">Cancellation Policy</h4>
-                                            <p className="text-sm ">{modalContent.cancellationPolicy}</p>
+                                            <p className="text-sm text-white">{modalContent.cancellationPolicy}</p>
                                         </div>
                                     </div>
                                 </div>
