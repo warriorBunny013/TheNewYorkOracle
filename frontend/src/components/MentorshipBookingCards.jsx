@@ -103,7 +103,7 @@ function MentorshipBookingCards() {
 
     return (
         <div className="flex-wrap">
-            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white  dark:text-white">Mentorship Programme</div>
+            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white  dark:text-white">Mentorship Program</div>
             <motion.div
             initial={{ opacity: 0, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
