@@ -22,6 +22,17 @@ const MainPage = () => {
     setReviews(response.data);
   };
 
+  // Smooth scroll function
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 70, // Adjust for fixed header
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <>
       <div>
@@ -50,9 +61,9 @@ const MainPage = () => {
                 </svg>
               </div>
               <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                <li><a href="https://www.soulsticetarot.com/#about" className="block py-2 px-4 text-black">About me</a></li>
-                <li><a href="https://www.soulsticetarot.com/#services" className="block py-2 px-4 text-black">Services</a></li>
-                <li><a href="https://www.soulsticetarot.com/#testimonials" className="block py-2 px-4 text-black">Testimonials</a></li>
+                <li><button onClick={() => scrollToSection('about')} className="block py-2 px-4 text-white">About me</button></li>
+                <li><button onClick={() => scrollToSection('services')} className="block py-2 px-4 text-white">Services</button></li>
+                <li><button onClick={() => scrollToSection('testimonials')} className="block py-2 px-4 text-white">Testimonials</button></li>
               </ul>
             </div>
             <button className="w-[15rem]">
@@ -61,15 +72,13 @@ const MainPage = () => {
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal text-white px-1">
-              <li><a href="https://www.soulsticetarot.com/#about" className="block py-2 px-4 text-white">About me</a></li>
-              <li><a href="https://www.soulsticetarot.com/#services" className="block py-2 px-4 text-white">Services</a></li>
-              <li><a href="https://www.soulsticetarot.com/#testimonials" className="block py-2 px-4 text-white">Testimonials</a></li>
+              <li><button onClick={() => scrollToSection('about')} className="block py-2 px-4 text-white">About me</button></li>
+              <li><button onClick={() => scrollToSection('services')} className="block py-2 px-4 text-white">Services</button></li>
+              <li><button onClick={() => scrollToSection('testimonials')} className="block py-2 px-4 text-white">Testimonials</button></li>
             </ul>
           </div>
           <div className="navbar-end">
-            <a href="https://www.soulsticetarot.com/#about">
-              <button className="btn border-2 border-white">Contact me</button>
-            </a>
+            <button onClick={() => scrollToSection('about')} className="btn border-2 border-white">Contact me</button>
           </div>
         </motion.div>
 
@@ -101,9 +110,7 @@ const MainPage = () => {
               animate={{ y: 0 }}
               transition={{ delay: 0.8, type: "spring", stiffness: 100 }}
             >
-              <a href="#newsletter">
-                <button className="btn btn-neutral mb-10 text-white">Subscribe for free</button>
-              </a>
+              <button onClick={() => scrollToSection('newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</button>
             </motion.div>
           </div>
           <div className='w-[77vh]'>
@@ -144,10 +151,10 @@ const MainPage = () => {
             <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
             <span>
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-                <li><a href="#about" className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="#about" className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
-                <li><a href="#services" className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
-                <li><a href="#testimonials" className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
+                <li><button onClick={() => scrollToSection('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</button></li>
+                <li><button onClick={() => scrollToSection('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</button></li>
+                <li><button onClick={() => scrollToSection('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</button></li>
+                <li><button onClick={() => scrollToSection('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</button></li>
               </ul>
             </span>
           </div>
