@@ -151,10 +151,10 @@ const MainPage = () => {
             <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
             <span>
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-                <li><button onClick={() => scrollToSection('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</button></li>
-                <li><button onClick={() => scrollToSection('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</button></li>
-                <li><button onClick={() => scrollToSection('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</button></li>
-                <li><button onClick={() => scrollToSection('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</button></li>
+                <li><button  className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</button></li>
+                <li><button  className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</button></li>
+                <li><button  className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</button></li>
+                <li><button  className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</button></li>
               </ul>
             </span>
           </div>
