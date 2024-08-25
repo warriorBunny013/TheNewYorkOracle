@@ -123,7 +123,7 @@ function CareerBookingCards() {
     const isFormValid = name && email && phone;
     return (
         <div className="flex-wrap">
-            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Career Readings</div>
+            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Career Readings</div>
             <div
              className="max-w-screen-xl  mx-auto p-5 sm:p-10 md:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">

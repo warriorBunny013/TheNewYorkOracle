@@ -115,7 +115,7 @@ function LoveBookingCards() {
     const isFormValid = name && email && phone;
     return (
         <div className="flex-wrap">
-            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Love Readings</div>
+            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Love Readings</div>
             <div
                 className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-8 "
             >

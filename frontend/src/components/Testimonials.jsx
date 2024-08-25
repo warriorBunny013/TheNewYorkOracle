@@ -42,7 +42,7 @@ function Testimonials({ reviews }) {
             <Slider {...settings}>
                 {reviews.map(review => (
                     <div key={review.id} className="p-2 max-w-sm">
-                        <div className="flex border rounded-lg h-full dark:bg-gray-800 bg-teal-400 p-4 flex-col">
+                        <div className="flex border rounded-lg h-full dark:bg-gray-800 p-4 flex-col">
                             <div className="flex items-center mb-3">
                                 <div className="flex justify justify-between">
                                     <div className="flex p-1 gap-1 text-orange-300">
