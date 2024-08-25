@@ -48,8 +48,8 @@ function FeedbackForm() {
     >
       <div className="flex my-10 mt-20 justify-center">
         <div className="flex flex-col justify-center">
-          <div className="mt-20 my-4 mx-2 text-center flex justify-center lg:ml-20 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Send your feedback</div>
-          <p className="mx-6 text-center max-w-[35rem]">Please feel free to share any specific feedback about your reading experience. Your comments will help us improve our services.</p>
+          <div className="mt-20 my-4 mx-2 text-center flex justify-center lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Send your feedback</div>
+          <p className="mx-6 text-center max-w-[35rem] text-gray-300">Please feel free to share any specific feedback about your reading experience. Your comments will help us improve our services.</p>
         </div>
       </div>
       <div className="max-w-[85rem] px-2 py-2 sm:px-4 lg:px-4 lg:py-2 mx-auto">

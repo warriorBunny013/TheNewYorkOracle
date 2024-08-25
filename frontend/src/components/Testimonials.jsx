@@ -37,7 +37,7 @@ function Testimonials({ reviews }) {
 
     return (
         <div className="flex-wrap">
-        <div className="mt-10 m-5 lg:m-20 py-5 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Customer testimonials</div>
+        <div className="mt-10 m-5 lg:m-20 py-5 text-4xl font-bold tracking-tight text-white dark:text-white">Customer testimonials</div>
         <div className="m-5 lg:m-20 lg:text-lg">
             <Slider {...settings}>
                 {reviews.map(review => (

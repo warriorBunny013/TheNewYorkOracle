@@ -20,8 +20,8 @@ function About(){
       className="flex flex-col gap-10 items-center md:flex-row   lg:max-w-6xl">
         <img className="object-cover w-full h-96 md:h-auto md:w-[20rem]" src="soulsticetarot.jpg" alt=""/>
         <div className="flex flex-col justify-around p-4 leading-normal">
-            <h5 className="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">About Marina</h5>
-            <p className='pb-5'>Tarot Reader  &nbsp;| &nbsp;Intuitive Healer &nbsp;| &nbsp;Manifestation Coach</p>
+            <h5 className="mb-2 text-4xl font-bold tracking-tight text-white dark:text-white">About Marina</h5>
+            <p className='pb-5 text-gray-300'>Tarot Reader  &nbsp;| &nbsp;Intuitive Healer &nbsp;| &nbsp;Manifestation Coach</p>
             <p className="mb-3 xl:w-[80vh] pb-10 font-sans flex lg:text-lg [word-spacing:2px] text-white ">I offer insightful Tarot Readings to illuminate your path and provide clarity. Beyond readings, my Mentorship program empowers you to tap into your inner wisdom, refine your intuition, and manifest your desires.
               <br/>
               <br/>
