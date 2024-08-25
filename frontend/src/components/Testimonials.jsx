@@ -59,7 +59,7 @@ function Testimonials({ reviews }) {
                                 <p className="leading-relaxed text-base text-white pb-10 dark:text-gray-300">
                                     {review.comments}
                                 </p>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 text-gray-400">
                                     <div className="w-7 h-7 text-center rounded-full bg-red-500">
                                         {review.clientName.charAt(0)}
                                     </div>

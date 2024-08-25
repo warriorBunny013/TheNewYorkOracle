@@ -154,7 +154,7 @@ function LoveBookingCards() {
                 <>
                     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto lg:overflow-y-hidden outline-none focus:outline-none">
                         <div className="relative w-full h-full max-w-lg md:max-w-5xl mx-auto my-6">
-                            <div className="relative flex flex-col w-full bg-white rounded-lg shadow-lg outline-none focus:outline-none dark:bg-gray-800">
+                            <div className="relative flex flex-col w-full bg-gray-800 rounded-lg shadow-lg outline-none focus:outline-none dark:bg-gray-800">
                                 <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-200 rounded-t dark:bg-gray-700">
                                     <div className="flex items-center flex-wrap lg:space-x-4">
                                         <div className="flex m-2 items-center">
@@ -181,11 +181,11 @@ function LoveBookingCards() {
                                     </button>
                                 </div>
                                 <div className="p-6 space-y-4">
-                                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">Order Summary</h3>
+                                    <h3 className="text-2xl font-semibold text-white dark:text-white">Order Summary</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                         <div className="space-y-4">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-400" htmlFor="fullname">Full Name</label>
+                                                <label className="block text-sm font-medium text-gray-400 dark:text-gray-400" htmlFor="fullname">Full Name</label>
                                                 <input 
                                                  className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                                  id="fullname" 
@@ -196,7 +196,7 @@ function LoveBookingCards() {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-400" htmlFor="email">Email Address</label>
+                                                <label className="block text-sm font-medium text-gray-400 dark:text-gray-400" htmlFor="email">Email Address</label>
                                                 <input 
                                                 className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                                 id="email" 
@@ -217,24 +217,24 @@ function LoveBookingCards() {
                                                required
                                                 />
                                             </div>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">Don't worry, your booking information is safe with us.</p>
+                                            <p className="text-xs text-gray-400 dark:text-gray-400">Don't worry, your booking information is safe with us.</p>
                                         </div>
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-400">Selected Reading:</span>
-                                                <span className="text-sm lg:text-xl font-bold text-gray-900 dark:text-gray-300">{modalContent.title}</span>
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Selected Reading:</span>
+                                                <span className="text-sm lg:text-xl font-bold text-gray-400 dark:text-gray-300">{modalContent.title}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-400">Type:</span>
-                                                <span className="text-sm font-semibold text-gray-900 dark:text-gray-300 capitalize">{modalContent.alt}</span>
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Type:</span>
+                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300 capitalize">{modalContent.alt}</span>
                                             </div>
                                             <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-400">Price:</span>
-                                                <span className="text-sm font-semibold text-gray-900 dark:text-gray-300">${modalContent.price}</span>
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Price:</span>
+                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300">${modalContent.price}</span>
                                             </div>
                                             <div className="mt-6">
-                                                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-400">Description:</h4>
-                                                <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{modalContent.description}</p>
+                                                <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-400">Description:</h4>
+                                                <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +245,7 @@ function LoveBookingCards() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-end p-4 bg-gray-100 border-t border-gray-200 rounded-b dark:bg-gray-700">
+                                <div className="flex items-center justify-end p-4 bg-gray-100 border-t border-gray-700 rounded-b dark:bg-gray-700">
                                     <button
                                         className="px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                                         onClick={closeModal}

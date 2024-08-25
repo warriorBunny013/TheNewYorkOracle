@@ -51,9 +51,9 @@ const MainPage = () => {
         
         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
         
-        <li><a href="#about">About me</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="https://www.soulsticetarot.com/#about">About me</a></li>
+        <li><a href="https://www.soulsticetarot.com/#services">Services</a></li>
+        <li><a href="https://www.soulsticetarot.com/#testimonials">Testimonials</a></li>
        
       </ul>
     </div>
@@ -65,13 +65,13 @@ const MainPage = () => {
     <ul className="menu menu-horizontal text-white px-1">
       
    
-        <li><a href="#about">About me</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="https://www.soulsticetarot.com/#about">About me</a></li>
+        <li><a href="https://www.soulsticetarot.com/#services">Services</a></li>
+        <li><a href="https://www.soulsticetarot.com/#testimonials">Testimonials</a></li>
     </ul>
   </div>
   <div className="navbar-end ">
-    <a href="#about"><button className="btn border-2 border-white">Contact me</button></a>
+    <a href="https://www.soulsticetarot.com/#about"><button className="btn border-2 border-white">Contact me</button></a>
   </div>
       </motion.div>
 
@@ -122,7 +122,7 @@ const MainPage = () => {
       <div id="newsletter" >  <NewsletterPopup/></div>
     
       {/* <Footer /> */}
-      <footer className="bg-white  dark:bg-gray-800">
+      <footer className="bg-gray-800 dark:bg-gray-800">
         <div className='w-full mx-auto max-w-screen-xl p-4 md:flex gap-3 md:items-center md:justify-between'>
           <div className='max-w-1/2 mb-10 text-sm text-gray-400'><span className='font-bold'>Disclaimer:</span> By purchasing, you are acknowledging and understanding that Marina is a professional tarot reader and not a doctor. This service is for entertainment purposes only, and if you need professional medical help, you will take the proper steps for yourself. You also understand and agree that you will take full responsibility for your actions and cannot hold Marina or Soulstice Tarot accountable for any decisions you make moving forward. Additionally, there are no refunds if a client is dissatisfied with their reading.</div>
         </div>
