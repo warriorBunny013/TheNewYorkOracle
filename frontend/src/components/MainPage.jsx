@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     getAllReviews();
@@ -22,21 +23,18 @@ const MainPage = () => {
     setReviews(response.data);
   };
 
-  // Smooth scroll function with event handling
-  const handleScroll = (event, id) => {
-    event.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      window.scrollTo({
-        top: element.offsetTop - 70, // Adjust for fixed header
-        behavior: 'smooth',
-      });
-    }
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const navigateTo = (id) => {
+    window.location.hash = `#${id}`;
+    setIsMenuOpen(false); // Close the menu after navigating
   };
 
   return (
     <>
-      <div>
+      <div className="relative">
         <motion.div 
           initial={{ y: -100 }}
           animate={{ y: 0 }}
@@ -44,47 +42,55 @@ const MainPage = () => {
           className="navbar lg:text-lg bg-black-variation bg-base-100"
         >
           <div className="navbar-start">
-            <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h8m-8 6h16"
-                  />
-                </svg>
-              </div>
-              <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                <li><a href="#about" onClick={(e) => handleScroll(e, 'about')} className="block py-2 px-4 text-gray-500">About me</a></li>
-                <li><a href="#services" onClick={(e) => handleScroll(e, 'services')} className="block py-2 px-4 text-gray-500">Services</a></li>
-                <li><a href="#testimonials" onClick={(e) => handleScroll(e, 'testimonials')} className="block py-2 px-4 text-gray-500">Testimonials</a></li>
-              </ul>
-            </div>
+            <button onClick={toggleMenu} className="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
             <button className="w-[15rem]">
               <img src='https://i.postimg.cc/NFy9qjgS/Group-1991.png' alt='logo'/>
             </button>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal text-white px-1">
-              <li><a href="#about" onClick={(e) => handleScroll(e, 'about')} className="block py-2 px-4 text-white">About me</a></li>
-              <li><a href="#services" onClick={(e) => handleScroll(e, 'services')} className="block py-2 px-4 text-white">Services</a></li>
-              <li><a href="#testimonials" onClick={(e) => handleScroll(e, 'testimonials')} className="block py-2 px-4 text-white">Testimonials</a></li>
+              <li><a href="#about" onClick={() => navigateTo('about')} className="block py-2 px-4 text-white">About me</a></li>
+              <li><a href="#services" onClick={() => navigateTo('services')} className="block py-2 px-4 text-white">Services</a></li>
+              <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="block py-2 px-4 text-white">Testimonials</a></li>
             </ul>
           </div>
           <div className="navbar-end">
-            <a href="#about" onClick={(e) => handleScroll(e, 'about')} className="btn border-2 border-white">Contact me</a>
+            <a href="#about" onClick={() => navigateTo('about')} className="btn border-2 border-white">Contact me</a>
           </div>
         </motion.div>
 
+        {/* Fullscreen Slider Menu */}
+        <div className={`fixed top-0 right-0 h-full w-full bg-black-variation transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
+          <div className="flex justify-end p-4">
+            <button onClick={toggleMenu} className="text-white text-3xl">
+              &times;
+            </button>
+          </div>
+          <ul className="flex flex-col items-center justify-center h-full text-white text-2xl">
+            <li className="my-4"><a href="#about" onClick={() => navigateTo('about')} className="block py-2">About me</a></li>
+            <li className="my-4"><a href="#services" onClick={() => navigateTo('services')} className="block py-2">Services</a></li>
+            <li className="my-4"><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="block py-2">Testimonials</a></li>
+            {/* <li className="my-4"><a href="#contact" onClick={() => navigateTo('contact')} className="block py-2">Contact</a></li> */}
+          </ul>
+        </div>
+
         {/* HERO SECTION STARTS FROM HERE!! */}
-        <div className="container mx-auto flex flex-wrap md:flex-nowrap pl-10 pr-10 md:pt-20 justify-center ">
+        <div className="container mx-auto flex flex-wrap md:flex-nowrap pl-10 pr-10 md:pt-20 justify-center">
           <div className='pt-10 lg:pt-20 lg:pr-[10rem] lg:flex-col justify-center'>
             <motion.div initial={{ y: 20 }}
               animate={{ y: 0 }}
@@ -103,16 +109,11 @@ const MainPage = () => {
             <motion.div initial={{ y: 40 }}
               animate={{ y: 0 }}
               transition={{ delay: 0.5, type: "spring", stiffness: 100 }} 
-              className=' text-white mb-8 lg:w-[65vh] lg:text-lg'
+              className='text-white mb-8 lg:w-[65vh] lg:text-lg'
             >
               Utilizing tarot, intuition, and channeling guides to give clarity, bring you back into alignment and help manifest your best life.
             </motion.div>
-            <motion.div initial={{ y: 60 }}
-              animate={{ y: 0 }}
-              transition={{ delay: 0.8, type: "spring", stiffness: 100 }}
-            >
-              <a href="#newsletter" onClick={(e) => handleScroll(e, 'newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</a>
-            </motion.div>
+            <a href="#newsletter" onClick={() => navigateTo('newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</a>
           </div>
           <div className='w-[77vh]'>
             <img src='https://i.postimg.cc/XN9Cnp3c/image-1-2.png' alt='hero'/>
@@ -152,10 +153,10 @@ const MainPage = () => {
             <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
             <span>
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
-                <li><a href="#about" onClick={(e) => handleScroll(e, 'about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="#about" onClick={(e) => handleScroll(e, 'about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
-                <li><a href="#services" onClick={(e) => handleScroll(e, 'services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
-                <li><a href="#testimonials" onClick={(e) => handleScroll(e, 'testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
+                <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
+                <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
+                <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
+                <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
               </ul>
             </span>
           </div>
