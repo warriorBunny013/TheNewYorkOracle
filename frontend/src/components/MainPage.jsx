@@ -60,7 +60,7 @@ const MainPage = () => {
 
       if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
         e.preventDefault();
-        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=soulsticetarot143@gmail.com`, '_blank');
       }
     }
   };
@@ -107,7 +107,7 @@ const MainPage = () => {
             </ul>
           </div>
           <div className="navbar-end">
-            <a href="mailto:Solsticetarot143@gmail.com" onClick={handleContactClick} className="btn border-2 border-white">Contact me</a>
+            <a href="mailto:soulsticetarot143@gmail.com" onClick={handleContactClick} className="btn border-2 border-white">Contact me</a>
           </div>
         </motion.div>
 
@@ -189,7 +189,7 @@ const MainPage = () => {
           <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
               <ul className="md:flex hidden text-sm md:ml-auto items-center text-white">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="mailto:Solsticetarot143@gmail.com" onClick={handleContactClick} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
+                <li><a href="mailto:soulsticetarot143@gmail.com" onClick={handleContactClick} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
                 <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
                 <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
               </ul>
@@ -205,7 +205,7 @@ const MainPage = () => {
             <button className="absolute top-2 right-2 text-white text-2xl font-bold" onClick={closePopup}>
               &times;
             </button>
-            <p className="text-md min-w-4 mr-3">Mail to <strong>Solsticetarot143@gmail.com</strong> for any inquiries.</p>
+            <p className="text-md min-w-4 mr-3">Mail to <strong>soulsticetarot143@gmail.com</strong> for any inquiries.</p>
           </div>
         </div>
       )}
