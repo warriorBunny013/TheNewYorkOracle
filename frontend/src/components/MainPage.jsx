@@ -162,7 +162,7 @@ const MainPage = () => {
             <span>
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="mailto:Solsticetarot143@gmail.com" onClick={(e) => {
+                <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com" onClick={(e) => {
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
       if (isDesktop) {
