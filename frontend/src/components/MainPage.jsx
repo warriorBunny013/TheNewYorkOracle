@@ -73,7 +73,7 @@ const MainPage = () => {
             <a href="mailto:Solsticetarot143@gmail.com" onClick={(e) => {
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
-      if (isDesktop && navigator.userAgent.includes("iPhone") && navigator.userAgent.includes("iPad")) {
+      if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
         e.preventDefault(); // Prevent default mailto behavior on desktop
         window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
       }
