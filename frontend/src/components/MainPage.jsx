@@ -13,9 +13,25 @@ import { motion } from "framer-motion";
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handleResize = () => {
+    const isMobile = window.innerWidth <= 767;
+    if (!isMobile) {
+      setIsPopupVisible(false);
+    }
+  };
 
   useEffect(() => {
     getAllReviews();
+
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const getAllReviews = async () => {
@@ -30,6 +46,27 @@ const MainPage = () => {
   const navigateTo = (id) => {
     window.location.hash = `#${id}`;
     setIsMenuOpen(false); // Close the menu after navigating
+  };
+
+  const handleContactClick = (e) => {
+    const isMobile = window.innerWidth <= 767;
+
+    if (isMobile) {
+      e.preventDefault(); // Prevent the default mailto behavior
+      setIsPopupVisible(true);
+    } else {
+      // For non-mobile screens, continue with the default behavior
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+
+      if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
+        e.preventDefault();
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
+      }
+    }
+  };
+
+  const closePopup = () => {
+    setIsPopupVisible(false);
   };
 
   return (
@@ -70,15 +107,7 @@ const MainPage = () => {
             </ul>
           </div>
           <div className="navbar-end">
-            <a href="mailto:Solsticetarot143@gmail.com" onClick={(e) => {
-      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-
-      if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
-        e.preventDefault(); // Prevent default mailto behavior on desktop
-        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
-      }
-      // For mobile and other cases, the href will naturally handle it
-    }}  className="btn border-2 border-white">Contact me</a>
+            <a href="mailto:Solsticetarot143@gmail.com" onClick={handleContactClick} className="btn border-2 border-white">Contact me</a>
           </div>
         </motion.div>
 
@@ -93,7 +122,6 @@ const MainPage = () => {
             <li className="my-4"><a href="#about" onClick={() => navigateTo('about')} className="block py-2">About me</a></li>
             <li className="my-4"><a href="#services" onClick={() => navigateTo('services')} className="block py-2">Services</a></li>
             <li className="my-4"><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="block py-2">Testimonials</a></li>
-            {/* <li className="my-4"><a href="#contact" onClick={() => navigateTo('contact')} className="block py-2">Contact</a></li> */}
           </ul>
         </div>
 
@@ -158,19 +186,10 @@ const MainPage = () => {
             </div>
           </div>
           <div className="w-full mx-auto max-w-screen-xl p-4 md:flex gap-3 md:items-center md:justify-between">
-            <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
-            <span>
-              <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+            <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className='text-[10px]'>All Rights Reserved.</span>
+              <ul className="md:flex hidden md:ml-auto items-center text-white">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com" onClick={(e) => {
-      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-
-      if (isDesktop) {
-        e.preventDefault(); // Prevent the default mailto behavior on desktop
-        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
-      }
-      // No need to handle mobile separately as the href will naturally handle it
-    }} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
+                <li><a href="mailto:Solsticetarot143@gmail.com" onClick={handleContactClick} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
                 <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
                 <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
               </ul>
@@ -178,6 +197,18 @@ const MainPage = () => {
           </div>
         </footer>
       </div>
+
+      {/* Mobile-only popup */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black border border-white bg-opacity-80">
+          <div className="relative bg-black border border-white  text-white p-6 rounded-lg shadow-lg max-w-sm w-full mx-auto">
+            <button className="absolute top-2 right-2 text-white text-2xl font-bold" onClick={closePopup}>
+              &times;
+            </button>
+            <p className="text-md min-w-4 mr-3">Mail to <strong>Solsticetarot143@gmail.com</strong> for any inquiries.</p>
+          </div>
+        </div>
+      )}
     </>
   );
 }
