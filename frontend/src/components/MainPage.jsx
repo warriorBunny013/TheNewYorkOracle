@@ -71,15 +71,13 @@ const MainPage = () => {
           </div>
           <div className="navbar-end">
             <a href="mailto:Solsticetarot143@gmail.com" onClick={(e) => {
-      e.preventDefault(); // Prevent default mailto behavior
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-      const mailtoLink = "mailto:Solsticetarot143@gmail.com";
 
-      if (isDesktop) {
+      if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
+        e.preventDefault(); // Prevent default mailto behavior on desktop
         window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
-      } else {
-        window.location.href = mailtoLink; // Fallback for mobile devices
       }
+      // For mobile and other cases, the href will naturally handle it
     }}  className="btn border-2 border-white">Contact me</a>
           </div>
         </motion.div>
