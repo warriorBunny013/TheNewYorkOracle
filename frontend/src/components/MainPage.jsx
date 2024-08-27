@@ -178,7 +178,7 @@ const MainPage = () => {
         <div id="newsletter">
           <NewsletterPopup/>
         </div>
-
+           
         <footer className="bg-gray-800 dark:bg-gray-800">
           <div className='w-full mx-auto max-w-screen-xl p-4 md:flex gap-3 md:items-center md:justify-between'>
             <div className='max-w-1/2 mb-10 text-sm text-gray-400'>
@@ -186,14 +186,14 @@ const MainPage = () => {
             </div>
           </div>
           <div className="w-full mx-auto max-w-screen-xl p-4 md:flex gap-3 md:items-center md:justify-between">
-            <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className='text-[10px]'>All Rights Reserved.</span>
-              <ul className="md:flex hidden md:ml-auto items-center text-white">
+          <span className="text-sm text-gray-500 dark:text-gray-400">© 2024, Marina Smargiannakis | <span className="hover:underline">The New York Oracle™</span>. All Rights Reserved.</span>
+              <ul className="md:flex hidden text-sm md:ml-auto items-center text-white">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
                 <li><a href="mailto:Solsticetarot143@gmail.com" onClick={handleContactClick} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
                 <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
                 <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
               </ul>
-            </span>
+            
           </div>
         </footer>
       </div>
