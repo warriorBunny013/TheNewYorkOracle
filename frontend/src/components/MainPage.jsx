@@ -70,7 +70,7 @@ const MainPage = () => {
             </ul>
           </div>
           <div className="navbar-end">
-            <a href="#about" onClick={() => navigateTo('about')} className="btn border-2 border-white">Contact me</a>
+            <a href="mailto:Solsticetarot143@gmail.com"  className="btn border-2 border-white">Contact me</a>
           </div>
         </motion.div>
 
@@ -154,7 +154,7 @@ const MainPage = () => {
             <span>
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
-                <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
+                <li><a href="mailto:Solsticetarot143@gmail.com" className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
                 <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
                 <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
               </ul>
