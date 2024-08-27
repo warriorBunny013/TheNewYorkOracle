@@ -165,15 +165,13 @@ const MainPage = () => {
               <ul className="flex flex-wrap gap-y-4 items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
                 <li><a href="#about" onClick={() => navigateTo('about')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">About</a></li>
                 <li><a href="mailto:Solsticetarot143@gmail.com" onClick={(e) => {
-      e.preventDefault(); // Prevent default mailto behavior
       const isDesktop = window.matchMedia("(min-width: 768px)").matches;
-      const mailtoLink = "mailto:Solsticetarot143@gmail.com";
 
       if (isDesktop) {
+        e.preventDefault(); // Prevent the default mailto behavior on desktop
         window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=Solsticetarot143@gmail.com`, '_blank');
-      } else {
-        window.location.href = mailtoLink; // Fallback for mobile devices
       }
+      // No need to handle mobile separately as the href will naturally handle it
     }} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Contact</a></li>
                 <li><a href="#services" onClick={() => navigateTo('services')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Services</a></li>
                 <li><a href="#testimonials" onClick={() => navigateTo('testimonials')} className="hover:underline me-4 cursor-pointer md:me-6 block py-2 px-4 text-white">Testimonials</a></li>
