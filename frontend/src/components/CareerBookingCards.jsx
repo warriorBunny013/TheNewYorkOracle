@@ -162,7 +162,7 @@ function CareerBookingCards() {
 
             {showModal && (
                 <>
-                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto lg:overflow-y-hidden outline-none focus:outline-none">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                         <div className="relative w-full h-full max-w-lg md:max-w-5xl mx-auto my-6">
                             <div className="relative flex flex-col w-full bg-white rounded-lg shadow-lg outline-none focus:outline-none dark:bg-gray-800">
                                 {/* Progress Bar */}
@@ -250,6 +250,11 @@ function CareerBookingCards() {
                                                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-400">Description:</h4>
                                                 <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{modalContent.description}</p>
                                             </div>
+                                            <ul className="list mt-4 space-y-2 list-inside text-white text-sm">
+                                             <li>👉 Please note that this is a LIVE reading session, there are no pre-recordings currently available.</li>
+                                             <li>👉 Please input your email properly as I do not refund readings for missed sessions.</li>
+                                       {/* <li>If you miss your session, you cannot get a refund.</li> */}
+                                     </ul>
                                         </div>
                                     </div>
                                     {/* Cancellation Policy */}

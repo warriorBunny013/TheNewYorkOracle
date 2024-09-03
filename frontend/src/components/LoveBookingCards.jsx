@@ -152,7 +152,7 @@ function LoveBookingCards() {
 
             {showModal && (
                 <>
-                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto lg:overflow-y-hidden outline-none focus:outline-none">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
                         <div className="relative w-full h-full max-w-lg md:max-w-5xl mx-auto my-6">
                             <div className="relative flex flex-col w-full bg-gray-800 rounded-lg shadow-lg outline-none focus:outline-none dark:bg-gray-800">
                                 <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-200 rounded-t dark:bg-gray-700">
@@ -236,6 +236,11 @@ function LoveBookingCards() {
                                                 <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-400">Description:</h4>
                                                 <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
                                             </div>
+                                            <ul className="list mt-4 space-y-2 list-inside text-white text-sm">
+                                             <li>👉 Please note that this is a LIVE reading session, there are no pre-recordings currently available.</li>
+                                             <li>👉 Please input your email properly as I do not refund readings for missed sessions.</li>
+                                       {/* <li>If you miss your session, you cannot get a refund.</li> */}
+                                     </ul>
                                         </div>
                                     </div>
                                     <div className="mt-6 pt-3">
