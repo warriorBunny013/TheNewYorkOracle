@@ -142,14 +142,19 @@ const MainPage = () => {
             >
               The New York <br/> Oracle<span className='text-[0.48rem] font-mono'>TM</span>
             </motion.div>
-            <motion.div initial={{ y: 40 }}
+            <motion.div initial={{ y: 20}}
               animate={{ y: 0 }}
-              transition={{ delay: 0.5, type: "spring", stiffness: 100 }} 
+              transition={{ delay: 0.6, type: "spring", stiffness: 100 }} 
               className='text-white mb-8 lg:w-[65vh] lg:text-lg'
             >
               Utilizing tarot, intuition, and channeling guides to give clarity, bring you back into alignment and help manifest your best life.
             </motion.div>
-            <a href="#newsletter" onClick={() => navigateTo('newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</a>
+            <motion.a 
+            initial={{ y: 50 }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.5,  stiffness: 100 }} 
+            href="#newsletter" 
+            onClick={() => navigateTo('newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</motion.a>
           </div>
           <div className='w-[77vh]'>
             <img src='https://i.postimg.cc/XN9Cnp3c/image-1-2.png' alt='hero'/>
