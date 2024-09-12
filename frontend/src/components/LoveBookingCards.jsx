@@ -218,8 +218,10 @@ function LoveBookingCards() {
                                                 />
                                             </div>
                                             <p className="text-xs text-gray-400 dark:text-gray-400">Don't worry, your booking information is safe with us.</p>
+                                            <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
+                                        
                                         </div>
-                                        <div className="space-y-4">
+                                       <div className="space-y-4">
                                             <div className="flex items-center justify-between">
                                                 <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Selected Reading:</span>
                                                 <span className="text-sm lg:text-xl font-bold text-gray-400 dark:text-gray-300">{modalContent.title}</span>

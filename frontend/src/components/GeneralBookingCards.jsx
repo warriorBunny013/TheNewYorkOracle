@@ -225,6 +225,8 @@ function GeneralBookingCards() {
                                                 />
                                             </div>
                                             <p className="text-xs text-gray-500 dark:text-gray-400">Don't worry, your booking information is safe with us.</p>
+                                            <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
+                                        
                                         </div>
                                         {/* Reading Information */}
                                         <div className="space-y-4">
