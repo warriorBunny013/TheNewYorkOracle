@@ -16,7 +16,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 3600000 });
+    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 3600000 , domain: '.soulsticetarot.com'});
     res.status(200).json({ message: 'Login successful' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

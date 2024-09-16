@@ -1,1 +1,1 @@
-export const API_URL = 'https://thenewyorkoracle.onrender.com' //mih aws ip 
+export const API_URL = 'https://api.soulsticetarot.com' //mih aws ip 
