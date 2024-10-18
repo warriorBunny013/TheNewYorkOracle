@@ -239,7 +239,7 @@ function LoveBookingCards() {
                                                 <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
                                             </div>
                                             <ul className="list mt-4 space-y-2 list-inside text-white text-sm">
-                                             <li>👉 Please note that this is a LIVE reading session, there are no pre-recordings currently available.</li>
+                                             <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available.</li>
                                              <li>👉 Please input your email properly as I do not refund readings for missed sessions.</li>
                                        {/* <li>If you miss your session, you cannot get a refund.</li> */}
                                      </ul>
