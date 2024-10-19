@@ -200,6 +200,13 @@ const MainPage = () => {
               </ul>
             
           </div>
+          <div className="text-sm text-gray-500 dark:text-gray-400 flex justify-center pb-4">
+  &#9734; Designed and Developed by{' '}
+  <a href="https://linktr.ee/UditiDas" target="_blank" rel="noopener noreferrer"  className="ml-1 underline">
+    Uditi Das
+  </a>
+</div>
+
         </footer>
       </div>
 
