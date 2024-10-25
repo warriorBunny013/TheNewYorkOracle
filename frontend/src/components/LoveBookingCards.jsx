@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
 
-const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
+// const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 function LoveBookingCards() {
     const [showModal, setShowModal] = useState(false);
@@ -14,9 +14,9 @@ function LoveBookingCards() {
         cancellationPolicy: "",
         alt: ""
     });
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+    // const [name, setName] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [phone, setPhone] = useState("");
     useEffect(() => {
         if (showModal) {
             document.body.classList.add("overflow-hidden");
@@ -51,7 +51,21 @@ function LoveBookingCards() {
 
         fetchPrices();
     }, []);
+    const bookingLinks = {
+        "10 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/web-conference",
+        "30 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/in-person-meeting",
+        "45 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/45-minutes-detailed-reading"
+    };
 
+    const handleBookingRedirect = (duration) => {
+        const bookingUrl = bookingLinks[duration];
+        if (bookingUrl) {
+            window.location.href = bookingUrl; // Opens in the same tab
+        } else {
+            alert("Booking link not available for this duration.");
+        }
+    };
+    
     // const cards = [
     //     {
     //         imgSrc: "image-6.png",
@@ -78,41 +92,41 @@ function LoveBookingCards() {
     //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
     //     }
     // ];
-    const makePayment = async () => {
-        const stripe = await stripePromise;
+    // const makePayment = async () => {
+    //     const stripe = await stripePromise;
 
-        const body = {
-            products: [{
-                alt: modalContent.alt,
-                title: modalContent.title,
-                price: modalContent.price,
-            }],
-            userName: name,
-            userEmail: email,
-            userPhone: phone
-        };
+    //     const body = {
+    //         products: [{
+    //             alt: modalContent.alt,
+    //             title: modalContent.title,
+    //             price: modalContent.price,
+    //         }],
+    //         userName: name,
+    //         userEmail: email,
+    //         userPhone: phone
+    //     };
 
-        const headers = {
-            "Content-Type": "application/json"
-        };
+    //     const headers = {
+    //         "Content-Type": "application/json"
+    //     };
 
-        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-        });
+    //     const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+    //         method: "POST",
+    //         headers: headers,
+    //         body: JSON.stringify(body)
+    //     });
 
-        const session = await response.json();
+    //     const session = await response.json();
 
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id
-        });
+    //     const result = await stripe.redirectToCheckout({
+    //         sessionId: session.id
+    //     });
 
-        if (result.error) {
-            console.log(result.error.message);
-        }
-    };
-    const isFormValid = name && email && phone;
+    //     if (result.error) {
+    //         console.log(result.error.message);
+    //     }
+    // };
+    // const isFormValid = name && email && phone;
     return (
         <div className="flex-wrap">
             <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Love Readings</div>
@@ -160,12 +174,12 @@ function LoveBookingCards() {
                                         <div className="flex m-2 items-center">
                                             <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-blue-500 rounded-full">1</span>
                                             <span className=" text-white">──</span>
-                                            <span className="px-2 py-1 text-sm font-semibold text-white">Payment</span>
+                                            <span className="px-2 py-1 text-sm font-semibold text-white">Select Date and Time</span>
                                         </div>
                                         <div className="flex m-2 items-center">
                                             <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-gray-500 rounded-full">2</span>
                                             <span className=" text-white">──</span>
-                                            <span className="px-2 py-1 text-sm font-semibold text-gray-500">Select Date and Time</span>
+                                            <span className="px-2 py-1 text-sm font-semibold text-gray-500">Payment</span>
                                         </div>
                                         <div className="flex m-2 items-center">
                                             <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-gray-500 rounded-full">3</span>
@@ -183,8 +197,27 @@ function LoveBookingCards() {
                                 <div className="p-6 space-y-4">
                                     <h3 className="text-2xl font-semibold text-white dark:text-white">Order Summary</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                    <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Selected Reading:</span>
+                                                <span className="text-sm lg:text-xl font-bold text-gray-400 dark:text-gray-300">{modalContent.title}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Type:</span>
+                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300 capitalize">{modalContent.alt}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Price:</span>
+                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300">${modalContent.price}</span>
+                                            </div>
+                                            <div className="mt-6">
+                                                <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-400">Description:</h4>
+                                                <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
+                                            </div>
+                                          
+                                        </div>
                                         <div className="space-y-4">
-                                            <div>
+                                            {/* <div>
                                                 <label className="block text-sm font-medium text-gray-400 dark:text-gray-400" htmlFor="fullname">Full Name</label>
                                                 <input 
                                                  className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
@@ -216,34 +249,18 @@ function LoveBookingCards() {
                                                onChange={(e) => setPhone(e.target.value)}
                                                required
                                                 />
-                                            </div>
-                                            <p className="text-xs text-gray-400 dark:text-gray-400">Don't worry, your booking information is safe with us.</p>
-                                            <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
-                                        
-                                        </div>
-                                       <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Selected Reading:</span>
-                                                <span className="text-sm lg:text-xl font-bold text-gray-400 dark:text-gray-300">{modalContent.title}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Type:</span>
-                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300 capitalize">{modalContent.alt}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Price:</span>
-                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300">${modalContent.price}</span>
-                                            </div>
-                                            <div className="mt-6">
-                                                <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-400">Description:</h4>
-                                                <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
-                                            </div>
+                                            </div> */}
+                                            {/* <p className="text-xs text-gray-400 dark:text-gray-400">Don't worry, your booking information is safe with us.</p> */}
                                             <ul className="list mt-4 space-y-2 list-inside text-white text-sm">
-                                             <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available.</li>
-                                             <li>👉 Please input your email properly as I do not refund readings for missed sessions.</li>
+                                             <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available at this moment.</li>
+                                             <li>👉 Please be present during the consultation, as I do not offer refunds for missed sessions.</li>
+                                             <li>👉 Please note that cancellations and rescheduling are allowed up to 1 day before the meeting.</li>
                                        {/* <li>If you miss your session, you cannot get a refund.</li> */}
                                      </ul>
+                                     <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
+                                            
                                         </div>
+                                       
                                     </div>
                                     <div className="mt-6 pt-3">
                                         <div className="p-4 mt-2 border border-gray-300 rounded-lg dark:border-gray-600 bg-gray-900">
@@ -260,14 +277,12 @@ function LoveBookingCards() {
                                         Close
                                     </button>
                                     <button
-                                     disabled={!isFormValid} 
+    onClick={() => handleBookingRedirect(modalContent.title)}
+    type="submit"
+    className="ml-3 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+    Book Now
+</button>
 
-                                     onClick={makePayment}
-                                     
-                                     type="submit" 
-                                     className={`ml-3 px-4 py-2 text-sm font-medium text-white border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${isFormValid ? 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500' : 'bg-gray-400 cursor-not-allowed'}`}>
-                                        Proceed to Pay ${modalContent.price}
-                                    </button>
                                 </div>
                             </div>
                         </div>
