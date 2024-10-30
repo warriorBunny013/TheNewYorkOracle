@@ -57,9 +57,9 @@ function CareerBookingCards() {
     }, []);
 
     const bookingLinks = {
-        "10 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/web-conference",
-        "30 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/in-person-meeting",
-        "45 minutes detailed reading": "https://appt.link/meet-with-marina-kLDXzYpH/45-minutes-detailed-reading"
+        "10 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
+        "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
+        "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
 
     const handleBookingRedirect = (duration) => {

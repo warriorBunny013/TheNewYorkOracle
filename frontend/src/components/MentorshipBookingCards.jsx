@@ -55,7 +55,7 @@ function MentorshipBookingCards() {
     }, []);
 
     const bookingLinks = {
-        "30-minute healing, alignment, and awakening abilities": "https://appt.link/meet-with-marina-kLDXzYpH/mentorship-programme"
+        "30-minute healing, alignment, and awakening abilities": "https://calendly.com/solsticetarot143/mentorship-program"
     };
 
     const handleBookingRedirect = (duration) => {
