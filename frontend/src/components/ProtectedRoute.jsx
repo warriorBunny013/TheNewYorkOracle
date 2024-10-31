@@ -5,7 +5,7 @@ import { API_URL } from '../utils/apiConfig';
 
 const ProtectedRoute = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+    // const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         const checkAuth = async () => {
@@ -17,14 +17,14 @@ const ProtectedRoute = ({ children }) => {
                 setIsAuthenticated(false);
                 console.log("error while going to adminpanel")
             }
-            setLoading(false);
+            // setLoading(false);
         };
         checkAuth();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // if (loading) {
+    //     return <div>Loading...</div>;
+    // }
 
     return isAuthenticated ? children : <Navigate to="/adminlogin" />;
 };
