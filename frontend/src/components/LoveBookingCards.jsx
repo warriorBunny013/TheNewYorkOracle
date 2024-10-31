@@ -68,7 +68,7 @@ function LoveBookingCards() {
     
     const cards = [
         {
-            img: "image-6.png",
+            img: "Image-6.png",
             type: "love",
             title: "10 minutes detailed reading",
             description: "10 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
