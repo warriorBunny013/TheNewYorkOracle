@@ -66,32 +66,32 @@ function LoveBookingCards() {
         }
     };
     
-    // const cards = [
-    //     {
-    //         imgSrc: "image-6.png",
-    //         alt: "love",
-    //         title: "10 minutes detailed reading",
-    //         description: "10 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-    //         price: "$40",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     },
-    //     {
-    //         imgSrc: "Image.png",
-    //         alt: "love",
-    //         title: "30 minutes detailed reading",
-    //         description: "30 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-    //         price: "$120",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     },
-    //     {
-    //         imgSrc: "Image-1.png",
-    //         alt: "love",
-    //         title: "45 minutes detailed reading",
-    //         description: "45 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-    //         price: "$175",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     }
-    // ];
+    const cards = [
+        {
+            img: "image-6.png",
+            type: "love",
+            title: "10 minutes detailed reading",
+            description: "10 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+            price: "40",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "Image.png",
+            type: "love",
+            title: "30 minutes detailed reading",
+            description: "30 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+            price: "120",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "Image-1.png",
+            type: "love",
+            title: "45 minutes detailed reading",
+            description: "45 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+            price: "175",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        }
+    ];
     // const makePayment = async () => {
     //     const stripe = await stripePromise;
 
@@ -134,7 +134,7 @@ function LoveBookingCards() {
                 className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-8 "
             >
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-                    {prices.filter(price => price.type === "love").map((card, index) => (
+                    {cards.filter(price => price.type === "love").map((card, index) => (
                         <motion.div
                             key={index}
                             className="rounded overflow-hidden shadow-lg bg-white flex flex-col"

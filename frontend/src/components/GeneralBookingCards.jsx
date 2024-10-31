@@ -72,32 +72,32 @@ function GeneralBookingCards() {
         }
     };
 
-    // const cards = [
-    //     {
-    //         imgSrc: "general-1.png",
-    //         alt: "general",
-    //         title: "10 minutes detailed reading",
-    //         description: "10 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
-    //         price: "$40",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     },
-    //     {
-    //         imgSrc: "general-2.png",
-    //         alt: "general",
-    //         title: "30 minutes detailed reading",
-    //         description: "30 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
-    //         price: "$120",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     },
-    //     {
-    //         imgSrc: "general-3.png",
-    //         alt: "general",
-    //         title: "45 minutes detailed reading",
-    //         description: "45 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
-    //         price: "$175",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     }
-    // ];
+    const cards = [
+        {
+            img: "general-1.png",
+            type: "general",
+            title: "10 minutes detailed reading",
+            description: "10 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            price: "40",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "general-2.png",
+            type: "general",
+            title: "30 minutes detailed reading",
+            description: "30 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            price: "120",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "general-3.png",
+            type: "general",
+            title: "45 minutes detailed reading",
+            description: "45 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            price: "175",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        }
+    ];
     // const makePayment = async () => {
     //     const stripe = await stripePromise;
 
@@ -142,7 +142,7 @@ function GeneralBookingCards() {
             
              className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-                    {prices.filter(price => price.type === "general").map((card, index) => (
+                    {cards.filter(price => price.type === "general").map((card, index) => (
                         <motion.div
                         initial={{ opacity: 0, x: -100 }}
                        whileInView={{ opacity: 1, x: 0 }}

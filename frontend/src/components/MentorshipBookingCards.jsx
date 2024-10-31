@@ -66,16 +66,16 @@ function MentorshipBookingCards() {
             alert("Booking link not available for this duration.");
         }
     };
-    // const cards = [
-    //     {
-    //         imgSrc: "Image-5.png",
-    //         alt: "mentorship",
-    //         title: "30-minute healing, alignment, and awakening abilities",
-    //         description: "30-minute program dedicated to uncover your hidden spiritual potential. Release blocks, align your energy, and amplify your manifestation powers. Discover the path to inner peace, abundance, and flow. Recommended multiple sessions for optimal results.",
-    //         price: "$120",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled session in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your session and will need to purchase another session at full price."
-    //     }
-    // ];
+    const cards = [
+        {
+            img: "Image-5.png",
+            type: "mentorship",
+            title: "30-minute healing, alignment, and awakening abilities",
+            description: "30-minute program dedicated to uncover your hidden spiritual potential. Release blocks, align your energy, and amplify your manifestation powers. Discover the path to inner peace, abundance, and flow. Recommended multiple sessions for optimal results.",
+            price: "120",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled session in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your session and will need to purchase another session at full price."
+        }
+    ];
 
     // const makePayment = async () => {
     //     const stripe = await stripePromise;
@@ -123,7 +123,7 @@ function MentorshipBookingCards() {
             transition={{ duration: 1, ease: "easeInOut" }} 
              className="max-w-screen-xl mx-auto p-5 sm:p-10 overflow-hidden md:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-10">
-                    {prices.filter(price => price.type === "mentorship").map((card, index) => (
+                    {cards.filter(price => price.type === "mentorship").map((card, index) => (
                         <div key={index} className="rounded overflow-hidden shadow-lg bg-white flex flex-col">
                             <div className="relative">
                                 <img className="w-full" src={card.img} alt={card.type} />

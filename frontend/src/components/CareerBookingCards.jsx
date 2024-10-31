@@ -70,34 +70,34 @@ function CareerBookingCards() {
             alert("Booking link not available for this duration.");
         }
     };
-    // const cards = [
-    //     {
-    //         imgSrc: "Image-2.png",
-    //         alt: "career",
-    //         title: "10 minutes detailed reading",
-    //         description: "10 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-    //         price: "$40",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
-    //     },
-    //     {
-    //         imgSrc: "Image-3.png",
-    //         alt: "career",
-    //         title: "30 minutes detailed reading",
-    //         description: "30 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-    //         price: "$120",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+    const cards = [
+        {
+            img: "Image-2.png",
+            type: "career",
+            title: "10 minutes detailed reading",
+            description: "10 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            price: "40",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "Image-3.png",
+            type: "career",
+            title: "30 minutes detailed reading",
+            description: "30 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            price: "120",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         
-    //     },
-    //     {
-    //         imgSrc: "Image-4.png",
-    //         alt: "career",
-    //         title: "45 minutes detailed reading",
-    //         description: "45 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-    //         price: "$175",
-    //         cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
+        },
+        {
+            img: "Image-4.png",
+            type: "career",
+            title: "45 minutes detailed reading",
+            description: "45 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            price: "175",
+            cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         
-    //     }
-    // ];
+        }
+    ];
 
     // const makePayment = async () => {
     //     const stripe = await stripePromise;
@@ -140,7 +140,7 @@ function CareerBookingCards() {
             <div
              className="max-w-screen-xl  mx-auto p-5 sm:p-10 md:p-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-                    {prices.filter(price => price.type === "career").map((card, index) => (
+                    {cards.filter(price => price.type === "career").map((card, index) => (
                         <motion.div
                         // initial={{ opacity: 0,}}
                         // whileInView={{ opacity: 1, x: 0}}
