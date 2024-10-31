@@ -169,7 +169,7 @@ const MainPage = () => {
           {reviews.length > 0 ? (
             <Testimonials reviews={reviews} />
           ) : (
-            <p>Loading...</p>
+            <p></p>
           )}
         </div>
         <div id="services">
