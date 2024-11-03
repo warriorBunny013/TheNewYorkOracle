@@ -72,7 +72,7 @@ function MentorshipBookingCards() {
             type: "mentorship",
             title: "30-minute healing, alignment, and awakening abilities",
             description: "30-minute program dedicated to uncover your hidden spiritual potential. Release blocks, align your energy, and amplify your manifestation powers. Discover the path to inner peace, abundance, and flow. Recommended multiple sessions for optimal results.",
-            price: "120",
+            price: "125",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled session in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your session and will need to purchase another session at full price."
         }
     ];
