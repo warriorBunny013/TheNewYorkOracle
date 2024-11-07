@@ -76,7 +76,7 @@ function CareerBookingCards() {
             type: "career",
             title: "10 minutes detailed reading",
             description: "10 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-            price: "40",
+            price: "45",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
