@@ -52,7 +52,7 @@ function LoveBookingCards() {
         fetchPrices();
     }, []);
     const bookingLinks = {
-        "10 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
+        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
         "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
         "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
@@ -70,9 +70,9 @@ function LoveBookingCards() {
         {
             img: "Image-6.png",
             type: "love",
-            title: "10 minutes detailed reading",
-            description: "10 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-            price: "45",
+            title: "15 minutes detailed reading",
+            description: "15 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+            price: "65",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {

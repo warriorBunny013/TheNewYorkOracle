@@ -9,15 +9,14 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  
-    "engines": {
-      "node": "20.x"
-    }
-  ,
+  "engines": {
+    "node": "20.x"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -25,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
     "node-mailjet": "^6.0.5",
+    "nodemailer": "^6.9.16",
     "nodemon": "^3.1.4",
     "sib-api-v3-sdk": "^8.5.0",
     "stripe": "^16.4.0"

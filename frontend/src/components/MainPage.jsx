@@ -5,6 +5,7 @@ import LoveBookingCards from './LoveBookingCards';
 import CareerBookingCards from './CareerBookingCards';
 import GeneralBookingCards from './GeneralBookingCards';
 import MentorshipBookingCards from './MentorshipBookingCards';
+import SameDayCards from './SameDayCards';
 import FeedbackForm from './FeedbackForm';
 import NewsletterPopup from './NewsletterPopup';
 import { getAllReview } from '../Api/api';
@@ -176,6 +177,7 @@ const MainPage = () => {
           <LoveBookingCards/>
           <CareerBookingCards />
           <GeneralBookingCards />
+          <SameDayCards/>
           <MentorshipBookingCards />
         </div>
 

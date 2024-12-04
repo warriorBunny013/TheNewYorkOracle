@@ -10,6 +10,7 @@ import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import CancelPayment from './components/CancelPayment';
+import SameDayForm from './components/SameDayForm';
 import ERROR404 from './components/ERROR404';
 function App() {
   
@@ -26,6 +27,8 @@ function App() {
                 <Route path="/adminlogin" element={<AdminLogin />} />
                 <Route path="/adminpanel" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/cancelpayment" element={<CancelPayment/>} />
+                <Route path="/book/:id" element={<SameDayForm/>} />
+                {/* <Route path="/book/:id/2" element={<SameDayForm/>} /> */}
                 <Route path="*" element={<ERROR404/>} />
             </Routes>
         </Router>

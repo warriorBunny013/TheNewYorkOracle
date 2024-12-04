@@ -58,7 +58,7 @@ function GeneralBookingCards() {
 
     
     const bookingLinks = {
-        "10 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
+        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
         "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
         "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
@@ -76,9 +76,9 @@ function GeneralBookingCards() {
         {
             img: "general-1.png",
             type: "general",
-            title: "10 minutes detailed reading",
-            description: "10 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
-            price: "45",
+            title: "15 minutes detailed reading",
+            description: "15 minutes in-depth analysis for those who aren’t focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            price: "65",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
