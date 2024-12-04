@@ -52,7 +52,7 @@ function LoveBookingCards() {
         fetchPrices();
     }, []);
     const bookingLinks = {
-        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/10-minutes-detailed-reading",
+        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
         "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
         "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
