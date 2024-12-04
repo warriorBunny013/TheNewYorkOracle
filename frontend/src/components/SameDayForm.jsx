@@ -101,8 +101,8 @@ function SameDayForm() {
         <h1 className="text-4xl mb-4 text-white font-bold">Thank you for booking with Marina 🌺!</h1>
         <div className="max-w-xl text-md">
         <ul className="list mt-10 flex flex-col gap-2">
-            <li>🌺 Your reading will be delivered within 12-24 hours.</li>
-            <li>🌺 The time slot for your reading will be shared with you via email, based on Marina's best available time.</li>
+            <li>🌺 Pre-recorded reading: Your reading will be delivered within 12-24 hours.</li>
+            <li>🌺 LIVE 45-minute reading: The time slot for your reading will be shared with you via email, based on Marina's best available time.</li>
             <li>🌺 Ensure that you enter your email address correctly, as all communication will happen through email.</li>
             {/* <li>🌺 Your reading will be provided as a pre-recorded digital file, which will be delivered to your email.</li> */}
             <li>🌺 Filling this form is essential; skipping it may delay your reading.</li>
@@ -177,7 +177,7 @@ function SameDayForm() {
                 // name="option" 
                 required />
 
-                <span className="text-sm"> Pre recorded session ($295)  </span>
+                <span className="text-sm"> Pre-recorded session ($295)  </span>
               </label>
             </div>
 
