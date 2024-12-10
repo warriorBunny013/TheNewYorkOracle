@@ -77,7 +77,7 @@ function SameDayCards() {
         },{
             img: "sameday-2.jpg",
             type: "same day reading",
-            title: "LIVE one-on-one emergency 45-minute reading",
+            title: "LIVE one-on-one Emergency 45-minute reading",
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face. This would be either a zoom or Instagram call within 12-24 hours after booking (if you are located in the United States the reading will be scheduled within 12 hours of booking) ",
             price: "475",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention."
