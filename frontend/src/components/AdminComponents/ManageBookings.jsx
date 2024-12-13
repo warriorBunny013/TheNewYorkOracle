@@ -74,27 +74,27 @@ function ManageBookings() {
           <thead>
             <tr className="bg-gray-800 text-white">
               <th className="p-2">#</th>
-              <th className="p-2">UserName</th>
-              <th className="p-2">UserEmail</th>
-              <th className="p-2">UserPhone</th>
-              <th className="p-2">Type</th>
-              <th className="p-2">Title</th>
+              <th className="p-2">Booking ID</th>
+              <th className="p-2">Product Name</th>
               <th className="p-2">Price</th>
+              {/* <th className="p-2">Type</th> */}
+              {/* <th className="p-2">Title</th> */}
+              {/* <th className="p-2">Price</th> */}
               <th className="p-2">Status</th>
             </tr>
           </thead>
           <tbody>
             {bookings.map((booking, index) => (
-              <tr key={booking.bookingId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <tr key={booking?.bookingId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <th className="p-2">{index + 1}</th>
-                <td className="p-2">{booking.userName}</td>
-                <td className="p-2">{booking.userEmail}</td>
-                <td className="p-2">{booking.userPhone}</td>
-                <td className="p-2">{booking.products[0]?.alt || 'N/A'}</td>
-                <td className="p-2">{booking.products[0]?.title || 'N/A'}</td>
-                <td className="p-2">{booking.products[0]?.price || 'N/A'}</td>
+                <td className="p-2">{booking?.bookingId}</td>
+                <td className="p-2">{booking?.productName}</td>
+                <td className="p-2">{booking?.userPrice}</td>
+                {/* <td className="p-2">{booking.products[0]?.alt || 'N/A'}</td> */}
+                {/* <td className="p-2">{booking.products[0]?.title || 'N/A'}</td> */}
+                {/* <td className="p-2">{booking.products[0]?.price || 'N/A'}</td> */}
                 <td className="p-2 flex items-center gap-2">
-                  {getStatusBadge(booking.status)}
+                  {getStatusBadge(booking?.status)}
                   <select
                     className="select select-bordered select-sm"
                     value={booking.status}
