@@ -247,7 +247,7 @@ function SameDayCards() {
                                              {/* <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available at this moment.</li> */}
                                              <li>👉 Please be present during the consultation, as I do not offer refunds for missed sessions.</li>
     {/* <li>👉 Please include any pertinent details and any questions you would like to ask.</li> */}
-    <li>👉 Please note: Readings will not be accepted if you are more than 10 minutes late.</li>
+    {/* <li>👉 Please note: Readings will not be accepted if you are more than 10 minutes late.</li> */}
     <li>👉  After completing the payment, a form will be displayed. Please fill in the required details to complete your booking.</li>
     <li>👉 If you do not receive a booking confirmation email after filling out the form, please email us at <a href="mailto:soulsticetarot143@gmail.com" style={{color: "#4CAF50", textDecoration: "none"}}>soulsticetarot143@gmail.com</a> with a screenshot of your order.</li>
 
