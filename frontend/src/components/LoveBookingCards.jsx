@@ -255,6 +255,7 @@ function LoveBookingCards() {
                                              <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available at this moment.</li>
                                              <li>👉 Please be present during the consultation, as I do not offer refunds for missed sessions.</li>
                                              <li>👉 Please note that cancellations and rescheduling are allowed up to 1 day before the meeting.</li>
+                                             <li>👉 Please note: Readings will not be accepted if you are more than 5 minutes late for a 15-minute session, or more than 10 minutes late for a 30-minute or 45-minute session.</li>
                                        {/* <li>If you miss your session, you cannot get a refund.</li> */}
                                      </ul>
                                      <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
