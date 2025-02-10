@@ -49,7 +49,7 @@ function NewsletterPopup() {
           >
             <img
               className="flex mx-auto max-w-[15rem] lg:max-w-md"
-              src="https://i.postimg.cc/NFy9qjgS/Group-1991.png"
+              src="logo.png"
               alt="logo"
             />
             <p className="mx-auto mb-2 mt-8 max-w-2xl text-white md:mb-12">

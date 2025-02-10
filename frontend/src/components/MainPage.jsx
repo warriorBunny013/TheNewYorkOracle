@@ -97,7 +97,7 @@ const MainPage = () => {
               </svg>
             </button>
             <button className="w-[15rem]">
-              <img src='https://i.postimg.cc/NFy9qjgS/Group-1991.png' alt='logo'/>
+              <img src='logo.png' alt='logo'/>
             </button>
           </div>
           <div className="navbar-center hidden lg:flex">
@@ -158,7 +158,7 @@ const MainPage = () => {
             onClick={() => navigateTo('newsletter')} className="btn btn-neutral mb-10 text-white">Subscribe for free</motion.a>
           </div>
           <div className='w-[77vh]'>
-            <img src='https://i.postimg.cc/XN9Cnp3c/image-1-2.png' alt='hero'/>
+            <img src='hero.png' alt='hero'/>
           </div>
         </div>
         {/* HERO SECTION ENDS FROM HERE!! */}
