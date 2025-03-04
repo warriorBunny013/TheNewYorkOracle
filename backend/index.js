@@ -37,12 +37,14 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-    origin:["https://www.soulsticetarot.com"],
+    origin:["https://www.soulsticetarot.com", "http://localhost:3000"],
     methods:["POST","GET","PATCH","PUT","DELETE"],
     credentials:true
   }));
 
-const frontendapi="https://www.soulsticetarot.com"
+  const frontendapi = process.env.NODE_ENV === "production"
+  ? "https://www.soulsticetarot.com"
+  : "http://localhost:3000";
 
 // MongoDB connection
 const connectToMongoDB = async () => {
