@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
-
-// const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
+import { 
+    Calendar, 
+    Clock, 
+    X, 
+    CreditCard 
+} from "lucide-react";
 
 function LoveBookingCards() {
     const [showModal, setShowModal] = useState(false);
@@ -14,17 +17,15 @@ function LoveBookingCards() {
         cancellationPolicy: "",
         alt: ""
     });
-    // const [name, setName] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [phone, setPhone] = useState("");
+
     useEffect(() => {
         if (showModal) {
-            document.body.classList.add("overflow-hidden");
+            document.body.style.overflow = 'hidden';
         } else {
-            document.body.classList.remove("overflow-hidden");
+            document.body.style.overflow = 'unset';
         }
         return () => {
-            document.body.classList.remove("overflow-hidden");
+            document.body.style.overflow = 'unset';
         };
     }, [showModal]);
 
@@ -36,21 +37,7 @@ function LoveBookingCards() {
     const closeModal = () => {
         setShowModal(false);
     };
-    const [prices, setPrices] = useState([]);
-    useEffect(() => {
-        // Fetch prices from the backend API
-        const fetchPrices = async () => {
-            try {
-                const response = await fetch(`${API_URL}/api/prices`);
-                const data = await response.json();
-                setPrices(data);
-            } catch (error) {
-                console.error('Error fetching prices:', error);
-            }
-        };
 
-        fetchPrices();
-    }, []);
     const bookingLinks = {
         "15 minutes detailed reading": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
         "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
@@ -60,7 +47,7 @@ function LoveBookingCards() {
     const handleBookingRedirect = (duration) => {
         const bookingUrl = bookingLinks[duration];
         if (bookingUrl) {
-            window.location.href = bookingUrl; // Opens in the same tab
+            window.location.href = bookingUrl;
         } else {
             alert("Booking link not available for this duration.");
         }
@@ -92,205 +79,135 @@ function LoveBookingCards() {
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         }
     ];
-    // const makePayment = async () => {
-    //     const stripe = await stripePromise;
 
-    //     const body = {
-    //         products: [{
-    //             alt: modalContent.alt,
-    //             title: modalContent.title,
-    //             price: modalContent.price,
-    //         }],
-    //         userName: name,
-    //         userEmail: email,
-    //         userPhone: phone
-    //     };
-
-    //     const headers = {
-    //         "Content-Type": "application/json"
-    //     };
-
-    //     const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-    //         method: "POST",
-    //         headers: headers,
-    //         body: JSON.stringify(body)
-    //     });
-
-    //     const session = await response.json();
-
-    //     const result = await stripe.redirectToCheckout({
-    //         sessionId: session.id
-    //     });
-
-    //     if (result.error) {
-    //         console.log(result.error.message);
-    //     }
-    // };
-    // const isFormValid = name && email && phone;
     return (
-        <div className="flex-wrap">
-            <div className="mt-20 m-5 lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Love Readings</div>
-            <div
-                className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-8 "
-            >
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <div className=" min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <motion.h1 
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-4xl md:text-5xl font-extrabold text-white mb-12"
+                >
+                    Love Readings
+                </motion.h1>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {cards.filter(price => price.type === "love").map((card, index) => (
                         <motion.div
                             key={index}
-                            className="rounded overflow-hidden shadow-lg bg-white flex flex-col"
-                            initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ 
+                                duration: 0.6, 
+                                ease: "easeInOut",
+                                delay: index * 0.2 
+                            }}
+                            className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden shadow-2xl transform transition-all hover:scale-105 "
                         >
-                            <div className="relative">
-                                <img className="w-full" src={card.img} alt={card.type} />
-                                <div className="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
+                            <div className="relative bg-white">
+                                <img 
+                                    className="w-full h-64 object-cover" 
+                                    src={card.img} 
+                                    alt={card.type} 
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                             </div>
-                            <div className="px-6 py-4 mb-auto">
-                                <div className="text-lg text-[1.3rem] font-bold text-gray-900 hover:text-indigo-600 cursor-pointer transition duration-500 ease-in-out inline-block mb-2">{card.title}</div>
-                                <p className="text-gray-700 [word-spacing:2px] text-md">{card.description}</p>
-                            </div>
-                            <div className="px-6 py-3 flex flex-row items-center justify-between">
-                                <button
-                                    className="btn ml-1 rounded-sm btn-active btn-primary text-white"
-                                    onClick={() => openModal(card.title, card.description, card.price, "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price.", card.type)}
+                            
+                            <div className="p-6 space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <h2 className="text-xl font-bold text-white">{card.title}</h2>
+                                    
+                                </div>
+                                
+                                <p className="text-gray-300 text-sm leading-relaxed">
+                                    {card.description}
+                                </p>
+                                <div className="flex flex-row items-center justify-between"><button
+                                    onClick={() => openModal(card.title, card.description, card.price, card.cancellationPolicy, card.type)}
+                                    className="w-40 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500"
                                 >
-                                    Book a slot
+                                    Book a Slot
                                 </button>
-                                <span className="ml-1 text-black font-bold text-xl">${card.price}</span>
+                                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-600">
+                                        ${card.price}
+                                    </span></div>
+                                
                             </div>
                         </motion.div>
                     ))}
                 </div>
-            </div>
 
-            {showModal && (
-                <>
-                    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
-                        <div className="relative w-full h-full max-w-lg md:max-w-5xl mx-auto my-6">
-                            <div className="relative flex flex-col w-full bg-gray-800 rounded-lg shadow-lg outline-none focus:outline-none dark:bg-gray-800">
-                                <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-200 rounded-t dark:bg-gray-700">
-                                    <div className="flex items-center flex-wrap lg:space-x-4">
-                                        <div className="flex m-2 items-center">
-                                            <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-blue-500 rounded-full">1</span>
-                                            <span className=" text-white">──</span>
-                                            <span className="px-2 py-1 text-sm font-semibold text-white">Select Date and Time</span>
-                                        </div>
-                                        <div className="flex m-2 items-center">
-                                            <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-gray-500 rounded-full">2</span>
-                                            <span className=" text-white">──</span>
-                                            <span className="px-2 py-1 text-sm font-semibold text-gray-500">Payment</span>
-                                        </div>
-                                        <div className="flex m-2 items-center">
-                                            <span className="flex items-center justify-center w-8 h-8 text-sm font-semibold text-white bg-gray-500 rounded-full">3</span>
-                                            <span className=" text-white">──</span>
-                                            <span className="px-2 py-1 text-sm font-semibold text-gray-500">Complete</span>
-                                        </div>
-                                    </div>
-                                    <button
-                                        className="ml-auto text-2xl font-semibold bg-transparent border-0 outline-none focus:outline-none"
-                                        onClick={closeModal}
+                {showModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="bg-[#16213e] rounded-2xl max-w-2xl w-full mx-4 overflow-hidden shadow-2xl border border-white/20"
+                        >
+                            <div className="p-6 bg-white/10 backdrop-blur-lg">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-2xl font-bold text-white">{modalContent.title}</h2>
+                                    <button 
+                                        onClick={closeModal} 
+                                        className="text-white hover:text-pink-400 transition-colors"
                                     >
-                                        <span className="block text-3xl text-white bg-transparent outline-none focus:outline-none">×</span>
+                                        <X className="w-8 h-8" />
                                     </button>
                                 </div>
-                                <div className="p-6 space-y-4">
-                                    <h3 className="text-2xl font-semibold text-white dark:text-white">Order Summary</h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+                                <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Selected Reading:</span>
-                                                <span className="text-sm lg:text-xl font-bold text-gray-400 dark:text-gray-300">{modalContent.title}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Type:</span>
-                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300 capitalize">{modalContent.alt}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-sm font-semibold text-gray-400 dark:text-gray-400">Price:</span>
-                                                <span className="text-sm font-semibold text-gray-300 dark:text-gray-300">${modalContent.price}</span>
-                                            </div>
-                                            <div className="mt-6">
-                                                <h4 className="text-sm font-semibold text-gray-400 dark:text-gray-400">Description:</h4>
-                                                <p className="mt-2 text-sm text-gray-300 dark:text-gray-300">{modalContent.description}</p>
-                                            </div>
-                                          
+                                        <div className="flex items-center space-x-3">
+                                            <Calendar className="w-6 h-6 text-pink-400" />
+                                            <span className="text-gray-300">Reading Type: {modalContent.alt}</span>
                                         </div>
-                                        <div className="space-y-4">
-                                            {/* <div>
-                                                <label className="block text-sm font-medium text-gray-400 dark:text-gray-400" htmlFor="fullname">Full Name</label>
-                                                <input 
-                                                 className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                 id="fullname" 
-                                                 type="text" 
-                                                 value={name}
-                                                 onChange={(e) => setName(e.target.value)}
-                                                 required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-400 dark:text-gray-400" htmlFor="email">Email Address</label>
-                                                <input 
-                                                className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                                id="email" 
-                                                type="email" 
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-400" htmlFor="phone">Phone Number</label>
-                                                <input 
-                                               className="w-full p-2 mt-1 text-sm border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                               id="phone" 
-                                               type="text" 
-                                               value={phone}
-                                               onChange={(e) => setPhone(e.target.value)}
-                                               required
-                                                />
-                                            </div> */}
-                                            {/* <p className="text-xs text-gray-400 dark:text-gray-400">Don't worry, your booking information is safe with us.</p> */}
-                                            <ul className="list mt-4 space-y-2 list-inside text-white text-sm">
-                                             <li>👉 Please note this is a private, one-on-one LIVE reading session, there are no pre-recordings available at this moment.</li>
-                                             <li>👉 Please be present during the consultation, as I do not offer refunds for missed sessions.</li>
-                                             <li>👉 Please note that cancellations and rescheduling are allowed up to 1 day before the meeting.</li>
-                                             <li>👉 Please note: Readings will not be accepted if you are more than 5 minutes late for a 15-minute session, or more than 10 minutes late for a 30-minute or 45-minute session.</li>
-                                       {/* <li>If you miss your session, you cannot get a refund.</li> */}
-                                     </ul>
-                                     <div className="space-y-2 list-inside text-gray-300 text-sm">✅ Kindly email us your booking details if you haven't received a confirmation email after completing your booking</div>
-                                            
+                                        <div className="flex items-center space-x-3">
+                                            <Clock className="w-6 h-6 text-purple-400" />
+                                            <span className="text-gray-300">Duration: {modalContent.title}</span>
                                         </div>
-                                       
+                                        <div className="flex items-center space-x-3">
+                                            <CreditCard className="w-6 h-6 text-blue-400" />
+                                            <span className="text-gray-300">Price: ${modalContent.price}</span>
+                                        </div>
                                     </div>
-                                    <div className="mt-6 pt-3">
-                                        <div className="p-4 mt-2 border border-gray-300 rounded-lg dark:border-gray-600 bg-gray-900">
-                                            <h4 className="text-lg font-bold mb-2 text-white">Cancellation Policy</h4>
-                                            <p className="text-sm text-white">{modalContent.cancellationPolicy}</p>
-                                        </div>
+
+                                    <div className="space-y-4">
+                                        <h3 className="text-lg font-semibold text-white">Important Notes</h3>
+                                        <ul className="text-sm text-gray-300 space-y-2 list-disc pl-4">
+                                            <li>Private, one-on-one LIVE reading session</li>
+                                            <li>No pre-recordings available</li>
+                                            <li>Cancellations allowed up to 1 day before</li>
+                                            <li>Late arrivals may result in session cancellation</li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-end p-4 bg-gray-100 border-t border-gray-700 rounded-b dark:bg-gray-700">
-                                    <button
-                                        className="px-4 py-2 text-sm font-medium text-white bg-gray-700 border border-transparent rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+
+                                <div className="mt-6 bg-white/10 p-4 rounded-lg">
+                                    <h4 className="text-lg font-bold text-white mb-2">Cancellation Policy</h4>
+                                    <p className="text-sm text-gray-300">{modalContent.cancellationPolicy}</p>
+                                </div>
+
+                                <div className="mt-6 flex justify-end space-x-4">
+                                    <button 
                                         onClick={closeModal}
+                                        className="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors"
                                     >
                                         Close
                                     </button>
                                     <button
-    onClick={() => handleBookingRedirect(modalContent.title)}
-    type="submit"
-    className="ml-3 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 border border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-    Book Now
-</button>
-
+                                        onClick={() => handleBookingRedirect(modalContent.title)}
+                                        className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg hover:from-pink-600 hover:to-purple-700 transition-all"
+                                    >
+                                        Book Now
+                                    </button>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
-                    <div className="fixed inset-0 z-40 bg-black opacity-50"></div>
-                </>
-            )}
+                )}
+            </div>
         </div>
     );
 }
