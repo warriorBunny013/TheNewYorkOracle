@@ -146,7 +146,7 @@ function GeneralBookingCards() {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="bg-[#16213e] rounded-2xl max-w-2xl w-full mx-4 overflow-hidden shadow-2xl border border-white/20"
                         >
-                            <div className="p-6 bg-white/10 backdrop-blur-lg">
+                            <div className="p-6 bg-white/10 backdrop-blur-lg max-h-screen overflow-y-auto">
                                 <div className="flex justify-between items-center mb-6">
                                     <h2 className="text-2xl font-bold text-white">{modalContent.title}</h2>
                                     <button 
@@ -189,7 +189,7 @@ function GeneralBookingCards() {
                                     <p className="text-sm text-gray-300">{modalContent.cancellationPolicy}</p>
                                 </div>
 
-                                <div className="mt-6 flex flex-col sm:flex-row justify-end space-y-4 sm:space-y-0 sm:space-x-4">
+                                <div className="mt-6 flex justify-end space-x-4">
                                     <button 
                                         onClick={closeModal}
                                         className="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors"

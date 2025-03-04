@@ -155,7 +155,7 @@ function SameDayCards() {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className="bg-[#16213e] rounded-2xl max-w-2xl w-full mx-4 overflow-hidden shadow-2xl border border-white/20"
                         >
-                            <div className="p-6 bg-white/10 backdrop-blur-lg">
+                            <div className="p-6 bg-white/10 backdrop-blur-lg max-h-screen overflow-y-auto">
                                 <div className="flex justify-between items-center mb-6">
                                     <h2 className="text-2xl font-bold text-white">{modalContent.title}</h2>
                                     <button 
