@@ -59,7 +59,7 @@ function LoveBookingCards() {
             type: "love",
             title: "15 minutes detailed reading",
             description: "15 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-            price: "70",
+            price: "65",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
@@ -67,7 +67,7 @@ function LoveBookingCards() {
             type: "love",
             title: "30 minutes detailed reading",
             description: "30 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
-            price: "130",
+            price: "125",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
