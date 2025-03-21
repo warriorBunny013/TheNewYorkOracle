@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,12 +8,12 @@ function Testimonials({ reviews }) {
     const [expandedComments, setExpandedComments] = useState({});
 
     // Function to toggle comment expansion
-    const toggleCommentExpansion = (id) => {
+    const toggleCommentExpansion = useCallback((id) => {
         setExpandedComments(prev => ({
             ...prev,
             [id]: !prev[id]
         }));
-    };
+    }, []);
 
     // Max comment length before "Read more" appears
     const MAX_COMMENT_LENGTH = 150;
@@ -27,6 +27,13 @@ function Testimonials({ reviews }) {
         arrows: false,
         autoplay: true,
         autoplaySpeed: 3000,
+        touchThreshold: 10,
+        swipeToSlide: true,
+        useCSS: true,
+        useTransform: true,
+        cssEase: "ease-out",
+        pauseOnHover: true,
+        pauseOnFocus: true,
         responsive: [
             {
                 breakpoint: 1024,
@@ -34,7 +41,9 @@ function Testimonials({ reviews }) {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
+                    dots: false,
+                    touchThreshold: 10,
+                    swipeToSlide: true
                 }
             },
             {
@@ -43,14 +52,16 @@ function Testimonials({ reviews }) {
                     slidesToShow: 1,
                     slidesToScroll: 1,
                     infinite: true,
-                    dots: false
+                    dots: false,
+                    touchThreshold: 10,
+                    swipeToSlide: true
                 }
             }
         ]
     };
 
     // Function to render comments with Read More functionality
-    const renderComments = (review) => {
+    const renderComments = useCallback((review) => {
         const isLongComment = review.comments.length > MAX_COMMENT_LENGTH;
         const isExpanded = expandedComments[review.id];
 
@@ -73,7 +84,7 @@ function Testimonials({ reviews }) {
                 {review.comments}
             </p>
         );
-    };
+    }, [expandedComments, toggleCommentExpansion]);
 
     return (
         <div className="bg-gradient-to-br pt-16 pb-5 px-4">
@@ -89,10 +100,10 @@ function Testimonials({ reviews }) {
                                     <div className="flex justify-between items-center mb-4">
                                         <div className="flex space-x-1 text-yellow-400">
                                             {Array.from({ length: review.rating }, (_, i) => (
-                                                <ion-icon key={i} name="star" class="text-xl"></ion-icon>
+                                                <ion-icon key={i} name="star" className="text-xl"></ion-icon>
                                             ))}
                                             {Array.from({ length: 5 - review.rating }, (_, i) => (
-                                                <ion-icon key={i} name="star-outline" class="text-xl text-gray-500"></ion-icon>
+                                                <ion-icon key={i} name="star-outline" className="text-xl text-gray-500"></ion-icon>
                                             ))}
                                         </div>
                                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-red-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-md">
