@@ -10,10 +10,11 @@
   overflow: hidden;
 }
 
+
 body{
   background-color: #08070C;
+  
 }
-
 .bg-black-variation{
   background-color: #08070C;
 }
@@ -32,6 +33,8 @@ body{
   line-height: 120%;
 }
 
+
+
 .network-popup {
   position: fixed;
   top: 0;
@@ -45,9 +48,12 @@ body{
   border-radius: 5px;
 }
 
+/* Add this CSS to your styles */
 .fixed {
   position: fixed;
 }
+
+
 
 .transition-transform {
   transition: transform 0.3s ease-in-out;
@@ -66,49 +72,11 @@ body{
 }
 
 .glass-effect{
-  background: rgba(255, 255, 255, 0.19);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6.6px);
-  -webkit-backdrop-filter: blur(6.6px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Custom Scrollbar Styles */
-.custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Slider Styles */
-.slick-slider {
-    margin-bottom: 40px !important;
-}
-
-.slick-track {
-    display: flex;
-    gap: 16px;
-    padding: 8px 0;
-}
-
-.slick-slide {
-    height: auto !important;
-    padding: 0 8px;
+ /* From https://css.glass */
+background: rgba(255, 255, 255, 0.19);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(6.6px);
+-webkit-backdrop-filter: blur(6.6px);
+border: 1px solid rgba(255, 255, 255, 0.3);
 }
