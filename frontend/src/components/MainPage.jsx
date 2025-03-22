@@ -225,7 +225,7 @@ const MainPage = () => {
                         transition={{ delay: 1.7, duration: 0.5 }}
                         className="flex items-center gap-2"
                       >
-                        <span className="text-white font-semibold">4.8</span>
+                        <span className="text-white font-semibold">4.9</span>
                         <span className="text-gray-400 text-nowrap text-sm font-medium">(1000+ reviews)</span>
                       </motion.div>
                       <motion.div
