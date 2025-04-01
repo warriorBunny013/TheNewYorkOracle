@@ -11,11 +11,14 @@ import NewsletterPopup from './NewsletterPopup';
 import Footer from './Footer';
 import { getAllReview } from '../Api/api';
 import { motion } from "framer-motion";
+import { Clock, Zap, ArrowRight, PlayCircle, Hourglass } from 'lucide-react';
+
 
 const MainPage = () => {
   const [reviews, setReviews] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const handleResize = () => {
     const isMobile = window.innerWidth <= 767;
@@ -34,7 +37,22 @@ const MainPage = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+
+ 
   }, []);
+
+  useEffect(()=>{
+   // Start animation after component mounts
+   setAnimate(true);
+    
+   // Set up interval for continuous pulse effect
+   const interval = setInterval(() => {
+     setAnimate(false);
+     setTimeout(() => setAnimate(true), 100);
+   }, 3000);
+   
+   return () => clearInterval(interval);
+  },[])
 
   const getAllReviews = async () => {
     let response = await getAllReview();
@@ -274,11 +292,104 @@ const MainPage = () => {
             <p></p>
           )}
         </div>
+        <div className='my-10 md:my-20 flex justify-center'>
+        <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white p-8 rounded-xl shadow-2xl overflow-hidden relative">
+      {/* Glass-like background effects */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-10">
+        <div className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full bg-purple-500 filter blur-3xl"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-blue-500 filter blur-3xl"></div>
+      </div>
+      
+      {/* Animated glass border */}
+      <div className="absolute inset-0 rounded-xl border border-white/10 backdrop-blur-sm bg-white/5"></div>
+      
+      <div className="max-w-4xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-6 flex-1">
+            <div className="flex items-center space-x-2">
+              <Zap className={`text-purple-400 h-5 w-5 ${animate ? 'animate-pulse' : ''}`} />
+              <span className="text-purple-400 font-medium uppercase tracking-wider text-sm">Elite Instant Access</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              Illuminate Your Path <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Instantly</span>
+            </h2>
+            
+            <p className="text-gray-300 text-lg">
+              Skip the queue and receive profound spiritual guidance within hours, not weeks. Urgent questions deserve immediate answers.
+            </p>
+            
+            <div className="space-y-4 py-2">
+              <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
+                <PlayCircle className="h-5 w-5 text-blue-400" />
+                <div>
+                  <span className="font-semibold">Pre-Recorded Readings</span>
+                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 12-24 hours</p>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
+                <Clock className="h-5 w-5 text-purple-400" />
+                <div>
+                  <span className="font-semibold">Live Readings</span>
+                  <p className="text-sm text-gray-300">Priority real-time consultations within 12-24 hours after purchase</p>
+                </div>
+              </div>
+            </div>
+            
+            <a 
+  href="#samedayexpress" 
+  onClick={(e) => {
+    e.preventDefault();
+    document.getElementById('samedayexpress')?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }}
+  className="group w-full md:w-[70%] lg:w-[50%] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 px-8 py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-purple-500/25 backdrop-blur-sm border border-white/10"
+>
+  Accelerate Your Journey
+  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
+</a>
+            
+          </div>
+          
+          <div className="relative mt-6 flex-shrink-0">
+            {/* Animated glow effect */}
+            <div className={`absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 rounded-full blur-3xl opacity-50 ${animate ? 'scale-110' : 'scale-100'} transition-all duration-1000`}></div>
+            
+            {/* Glass orb with animated rings */}
+            <div className="relative w-72 h-72 flex items-center justify-center rounded-full bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md border border-white/10">
+              {/* Animated pulse rings */}
+              <div className={`w-60 h-60 rounded-full border border-purple-500/30 absolute transition-all duration-700 ${animate ? 'scale-105 opacity-100' : 'scale-95 opacity-50'}`}></div>
+              <div className={`w-50 h-50 rounded-full border border-blue-500/30 absolute transition-all duration-700 delay-100 ${animate ? 'scale-110 opacity-100' : 'scale-90 opacity-50'}`}></div>
+              
+              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md flex items-center justify-center border border-white/10">
+                <div className="w-36 h-36 rounded-full bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center border border-white/10">
+                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/50 transition-transform duration-500 ${animate ? 'scale-110' : 'scale-100'}`}>
+                    <Zap className={`h-12 w-12 text-white transition-all duration-300 ${animate ? 'scale-125' : 'scale-100'}`} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Floating time indicators */}
+            <div className="absolute -top-4 right-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse">
+              <Hourglass className="h-3 w-3" />
+              <span>12-24h</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        </div>
         <div id="services">
           <LoveBookingCards/>
           <CareerBookingCards />
           <GeneralBookingCards />
-          <SameDayCards/>
+          <div id="samedayexpress">
+          <SameDayCards />
+          </div>
           <MentorshipBookingCards />
         </div>
 
