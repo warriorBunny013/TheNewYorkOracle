@@ -32,8 +32,8 @@ function SameDayCards() {
         };
     }, [showModal]);
 
-    const openModal = (title, description, price, cancellationPolicy, alt) => {
-        setModalContent({ title, description, price, cancellationPolicy, alt });
+    const openModal = (title, description, price, cancellationPolicy, alt, extrainfo) => {
+        setModalContent({ title, description, price, cancellationPolicy, alt, extrainfo });
         setShowModal(true);
     };
 
@@ -48,7 +48,8 @@ function SameDayCards() {
             title: "PRE-RECORDED Reading",
             description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 12-24 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
-            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention."
+            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
+            extrainfo:""
         },
         {
             img: "sameday-2.jpg",
@@ -56,7 +57,8 @@ function SameDayCards() {
             title: "LIVE one-on-one Emergency 45-minute reading",
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face. This would be either a zoom or Instagram call within 12-24 hours after booking (if you are located in the United States the reading will be scheduled within 12 hours of booking)",
             price: "475",
-            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention."
+            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
+            extrainfo:"Bookings made on Fridays will be delivered by the next two business days"
         }
     ];
 
@@ -133,7 +135,7 @@ function SameDayCards() {
                                 </p>
                                 <div className="flex flex-row items-center justify-between">
                                     <button
-                                        onClick={() => openModal(card.title, card.description, card.price, card.cancellationPolicy, card.type)}
+                                        onClick={() => openModal(card.title, card.description, card.price, card.cancellationPolicy, card.type,card.extrainfo)}
                                         className="w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         Book Now
@@ -189,7 +191,7 @@ function SameDayCards() {
                                             <li> After completing the payment, a form will be displayed. Please fill in the required details to complete your booking.</li>
                                             <li> If you do not receive a booking confirmation email after filling out the form, please email us at <span className="text-green-300">soulsticetarot143@gmail.com</span> with a screenshot of your order.</li>
                                             <li> Delivery within 12-24 hours</li>
-                                            <li> Bookings made on Fridays will be delivered by the next business day (Tuesday or Wednesday).</li>
+                                            {modalContent.extrainfo && <li>{modalContent.extrainfo}</li>}
                                         </ul>
                                     </div>
                                 </div>
