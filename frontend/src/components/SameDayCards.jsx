@@ -189,7 +189,7 @@ function SameDayCards() {
                                             <li> After completing the payment, a form will be displayed. Please fill in the required details to complete your booking.</li>
                                             <li> If you do not receive a booking confirmation email after filling out the form, please email us at <span className="text-green-300">soulsticetarot143@gmail.com</span> with a screenshot of your order.</li>
                                             <li> Delivery within 12-24 hours</li>
-                                            
+                                            <li> Bookings made on Fridays will be delivered by the next business day (Tuesday or Wednesday).</li>
                                         </ul>
                                     </div>
                                 </div>
