@@ -324,7 +324,7 @@ const MainPage = () => {
                 <PlayCircle className="h-5 w-5 text-blue-400" />
                 <div>
                   <span className="font-semibold">Pre-Recorded Readings</span>
-                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 12-24 hours</p>
+                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 24-48 hours</p>
                 </div>
               </div>
               
@@ -332,7 +332,7 @@ const MainPage = () => {
                 <Clock className="h-5 w-5 text-purple-400" />
                 <div>
                   <span className="font-semibold">Live Readings</span>
-                  <p className="text-sm text-gray-300">Priority real-time consultations within 12-24 hours after purchase</p>
+                  <p className="text-sm text-gray-300">Priority real-time consultations within 24-72 hours after purchase</p>
                 </div>
               </div>
             </div>
@@ -376,7 +376,7 @@ const MainPage = () => {
             {/* Floating time indicators */}
             <div className="absolute -top-4 right-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse">
               <Hourglass className="h-3 w-3" />
-              <span>12-24h</span>
+              <span>24-72h</span>
             </div>
           </div>
         </div>

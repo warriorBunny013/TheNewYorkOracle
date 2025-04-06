@@ -44,21 +44,21 @@ function SameDayCards() {
     const cards = [
         {
             img: "sameday-1.jpg",
-            type: "same day reading",
+            type: "Express reading",
             title: "PRE-RECORDED Reading",
-            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 12-24 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
+            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 24-48 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:""
+            extrainfo:"Delivery within 24-48 hours"
         },
         {
             img: "sameday-2.jpg",
-            type: "same day reading",
+            type: "Express reading",
             title: "LIVE one-on-one Emergency 45-minute reading",
-            description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face. This would be either a zoom or Instagram call within 12-24 hours after booking (if you are located in the United States the reading will be scheduled within 12 hours of booking)",
+            description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days (Delivery within 24-72 hours)",
             price: "475",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Bookings made on Fridays will be delivered by the next two business days"
+            extrainfo:"Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days"
         }
     ];
 
@@ -100,11 +100,11 @@ function SameDayCards() {
                     transition={{ duration: 0.8 }}
                     className="text-4xl md:text-5xl font-extrabold text-white mb-12"
                 >
-                    Same Day Express
+                    Express Reading
                 </motion.h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {cards.filter(price => price.type === "same day reading").map((card, index) => (
+                    {cards.filter(price => price.type === "Express reading").map((card, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -190,7 +190,7 @@ function SameDayCards() {
                                             <li> Please be present during the consultation, as I do not offer refunds for missed sessions.</li>
                                             <li> After completing the payment, a form will be displayed. Please fill in the required details to complete your booking.</li>
                                             <li> If you do not receive a booking confirmation email after filling out the form, please email us at <span className="text-green-300">soulsticetarot143@gmail.com</span> with a screenshot of your order.</li>
-                                            <li> Delivery within 12-24 hours</li>
+                                            {/* <li> Delivery within 24-48 hours</li> */}
                                             {modalContent.extrainfo && <li>{modalContent.extrainfo}</li>}
                                         </ul>
                                     </div>
