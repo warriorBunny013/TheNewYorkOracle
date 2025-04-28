@@ -76,7 +76,7 @@ app.use("/api/adminpanel", authMiddleware, AdminPanel);
 
 
 
-// Stripe Checkout Session Endpoint
+// Stripe Checkout Session Endpoint (Express reading payment)
 app.post('/api/create-checkout-session', async (req, res) => {
     const { productName,userPrice } = req.body;
 
@@ -168,6 +168,99 @@ app.post('/api/create-checkout-session', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.post('/api/create-checkout-session-tip', async (req, res) => {
+  const { productName,userPrice } = req.body;
+
+  // Validate the presence of required fields
+  // if (!userName || !userEmail) {
+  //     return res.status(400).json({ error: "userName and userEmail are required" });
+  // }
+  
+  const bookingId = crypto.randomBytes(16).toString('hex');
+
+  // Extract appointmentid with improved error handling
+  // let appointmentid;
+  // try {
+  //     if (products[0].alt === 'mentorship') {
+  //         appointmentid = 4;
+  //     } else {
+  //         const title = products[0].title;
+  //         const durationMatch = title.match(/\d+/);
+
+  //         if (!durationMatch) {
+  //             throw new Error(`No numeric value found in title: ${title}`);
+  //         }
+
+  //         const duration = parseInt(durationMatch[0], 10);
+  //         switch (duration) {
+  //             case 10:
+  //                 appointmentid = 1;
+  //                 break;
+  //             case 30:
+  //                 appointmentid = 2;
+  //                 break;
+  //             case 45:
+  //                 appointmentid = 3;
+  //                 break;
+  //             default:
+  //                 throw new Error(`Unexpected duration value: ${duration}`);
+  //         }
+  //     }
+  // } catch (error) {
+  //     console.error(`Error extracting appointmentid: ${error.message}`);
+  //     return res.status(400).json({ error: `Invalid product title format: ${products[0].title}` });
+  // }
+
+  // const lineItems = products.map(product => ({
+  //     price_data: {
+  //         currency: 'usd',
+  //         product_data: { name: product.title },
+  //         unit_amount: Math.round(parseFloat(product.price * 100)), // Stripe expects amounts in cents
+  //     },
+  //     quantity: 1,
+  // }));
+  // const totalAmount = lineItems.reduce((sum, item) => sum + item.price_data.unit_amount, 0);
+
+  try {
+      const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          // line_items: lineItems,
+          mode: 'payment',
+          success_url: `${frontendapi}`,
+          cancel_url: `${frontendapi}/cancelpayment`,
+          line_items: [
+              {
+                price_data: {
+                  currency: 'usd',
+                  product_data: {
+                    name: productName,
+                  },
+                  unit_amount: userPrice*100, // Price in cents
+                },
+                quantity: 1,
+              },
+            ],
+            metadata: { productName, userPrice },
+      });
+
+      await Booking.create({
+          bookingId,
+          sessionId: session.id,
+          productName,
+          userPrice,
+          currency: 'usd',
+          status: 'pending'
+      });
+
+      res.status(200).json({ id: session.id });
+      console.log("payment done!!!")
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
 // Route to validate payment
 // Route to get booking details by booking ID
 app.get('/api/booking/:id', async (req, res) => {

@@ -192,12 +192,12 @@ const MainPage = () => {
             initial={{ y: 50 }}
             animate={{ y: 0 }}
               transition={{ delay: 0.5, stiffness: 100 }} 
-            href="#newsletter" 
+            href="#services" 
               onClick={() => navigateTo('newsletter')} 
               className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all bg-gradient-to-r from-blue-600 to-purple-500 rounded-lg group hover:scale-105 active:scale-95 mb-8"
             >
               <span className="relative text-white flex items-center gap-2">
-                Subscribe for free
+                Join the waitlist
                 <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

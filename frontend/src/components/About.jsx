@@ -1,16 +1,189 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
+import { Coffee, Heart, Send, X, Plus, Minus, DollarSign, CreditCard, AlertCircle } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
+import { API_URL } from "../utils/apiConfig";
+
+// Replace with your actual Stripe publishable key
+const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 const MarinaAbout = () => {
+  const [showTipModal, setShowTipModal] = useState(false);
+  const [tipAmount, setTipAmount] = useState(5);
+  const [customAmount, setCustomAmount] = useState("");
+  const [isCustom, setIsCustom] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
   
+  const handleCopyVenmo = () => {
+    navigator.clipboard.writeText('@Marina-Tarot');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    setPaymentMethod('venmo');
+  };
+
+  const handleTip = () => {
+    setShowTipModal(true);
+    setError(null);
+    setPaymentMethod(null);
+  };
+
+  const handleCustomAmountChange = (e) => {
+    // Remove non-numeric characters except decimal point
+    const value = e.target.value.replace(/[^0-9.]/g, '');
+    // Ensure only one decimal point
+    const parts = value.split('.');
+    if (parts.length > 2) {
+      return;
+    }
+    setCustomAmount(value);
+    setError(null);
+  };
+
+  const increaseAmount = () => {
+    if (isCustom) {
+      const newAmount = parseFloat(customAmount || "0") + 1;
+      setCustomAmount(newAmount.toString());
+    } else {
+      setTipAmount(prev => Math.min(prev + 1, 100));
+    }
+    setError(null);
+  };
+
+  const decreaseAmount = () => {
+    if (isCustom) {
+      const newAmount = Math.max(parseFloat(customAmount || "0") - 1, 0);
+      setCustomAmount(newAmount.toString());
+    } else {
+      setTipAmount(prev => Math.max(prev - 1, 0));
+    }
+  };
+
+  const selectPresetAmount = (amount) => {
+    setTipAmount(amount);
+    setIsCustom(false);
+    setError(null);
+  };
+
+  const switchToCustomAmount = () => {
+    setIsCustom(true);
+    setCustomAmount(tipAmount.toString());
+    setError(null);
+  };
+
+  const getFinalAmount = () => {
+    return isCustom ? parseFloat(customAmount || "0") : tipAmount;
+  };
+
+  const isValidAmount = () => {
+    const amount = getFinalAmount();
+    return amount > 0;
+  };
+
+  const handleStripePayment = async () => {
+    const amount = getFinalAmount();
+    
+    if (!isValidAmount()) {
+      setError("Please select an amount greater than 0");
+      return;
+    }
+    
+    setIsProcessing(true);
+    
+    try {
+      const stripe = await stripePromise;
+  
+          const body = {
+              productName: 'Thanks for supporting!',
+              userPrice: amount
+          };
+  
+          const headers = {
+              "Content-Type": "application/json"
+          };
+  
+          const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+              method: "POST",
+              headers: headers,
+              body: JSON.stringify(body)
+          });
+  
+          const session = await response.json();
+  
+          const result = await stripe.redirectToCheckout({
+              sessionId: session.id
+          });
+  
+          if (result.error) {
+              console.log(result.error.message);
+          }
+      
+      const { clientSecret, error: backendError } = await response.json();
+      
+      if (backendError) {
+        setError(backendError);
+        setIsProcessing(false);
+        return;
+      }
+    
+      
+      // Redirect to Stripe Checkout
+      const { error } = await stripe.redirectToCheckout({
+        clientSecret,
+      });
+      
+      if (error) {
+        setError(error.message);
+      }
+    } catch (err) {
+      setError("Payment processing failed. Please try again.");
+      console.error("Payment error:", err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+
+  const handleVenmoPayment = () => {
+    if (!isValidAmount()) {
+      setError("Please select an amount greater than 0");
+      return;
+    }
+    
+    // For a real implementation, you'd redirect to Venmo's payment page
+    // or use their SDK to initiate a payment
+    window.open(`https://venmo.com/?txn=pay&audience=private&recipients=Marina-Tarot&amount=${getFinalAmount()}&note=Tarot%20Support`, "_blank");
+    
+    // Close modal after opening Venmo
+    setShowTipModal(false);
+  };
+  
+  const handlePayment = () => {
+    if (!paymentMethod) {
+      setError("Please select a payment method");
+      return;
+    }
+    
+    if (!isValidAmount()) {
+      setError("Please select an amount greater than 0");
+      return;
+    }
+    
+    if (paymentMethod === 'stripe') {
+      handleStripePayment();
+    } else if (paymentMethod === 'venmo') {
+      handleVenmoPayment();
+    }
+  };
   const handleInsta = (url) => {
     window.open(url, "_blank");
   };
 
   const handleTiktok = (url) => {
     window.open(url, "_blank");
-  };
-
+  }
   return (
     <div className="flex items-center justify-center px-4 py-16 pt-40">
       <motion.div 
@@ -53,7 +226,7 @@ const MarinaAbout = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="space-y-4 text-md "
+            className="space-y-4 text-md"
           >
             <p className="text-white/80 leading-loose">
               I offer insightful Tarot Readings to illuminate your path and provide clarity. Beyond readings, my Mentorship program empowers you to tap into your inner wisdom, refine your intuition, and manifest your desires.
@@ -63,13 +236,13 @@ const MarinaAbout = () => {
               Together, we'll align your energy and unlock your full potential. Just authentic guidance using Tarot, Intuition, and Divine connection. Allow me to help you on your journey and manifest your best life.
             </p>
           </motion.div>
-
-          {/* Social Links */}
+          <div className='pt-6 flex flex-wrap items-center justify-between'>
+            {/* Social Links */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="flex space-x-4 mt-6 pt-6"
+            className="flex -mb-8 space-x-4"
           >
             <button  onClick={() => handleInsta('https://www.instagram.com/soulstice_tarot')} className="w-10 h-10 flex items-center justify-center rounded-full relative overflow-hidden  group transition-all duration-500">
       <svg className="fill-white relative z-10 transition-all duration-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 51 51" fill="none">
@@ -112,8 +285,177 @@ const MarinaAbout = () => {
       
       </button>
           </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+           className="flex mt-14 [340px]:mt-0 [422px]:-mt-2 flex-wrap justify-end gap-2">
+            <button 
+              className="flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20 backdrop-blur-sm"
+              onClick={handleTip}
+            >
+              <Coffee size={18} className="text-emerald-100" /> Support My Work
+            </button>
+          </motion.div>
+
+          </div>
+        
         </div>
       </motion.div>
+
+      {/* Donation Modal with Modern UI */}
+      {showTipModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-br from-gray-900 to-gray-950 border border-emerald-500/20 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 to-teal-400">Leave a Tip ✨</h3>
+              <button 
+                onClick={() => setShowTipModal(false)}
+                className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-800 transition-colors duration-200"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="space-y-6">
+              <p className="text-gray-300">Your donation helps me keep spreading good vibes and creating magical content!</p>
+              
+              {/* Amount Selection */}
+              <div className="space-y-4">
+                <p className="text-white text-sm font-medium">Select amount:</p>
+                <div className="grid grid-cols-4 gap-2">
+                  {[5, 10, 20, 50].map(amount => (
+                    <button 
+                      key={amount}
+                      onClick={() => selectPresetAmount(amount)}
+                      className={`py-3 rounded-xl transition-all duration-200 ${
+                        tipAmount === amount && !isCustom
+                          ? 'bg-gradient-to-br from-emerald-600 to-teal-700 text-white shadow-lg shadow-emerald-900/20' 
+                          : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700/50'
+                      }`}
+                    >
+                      ${amount}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Custom Amount Input */}
+                <div 
+                  onClick={switchToCustomAmount}
+                  className={`flex items-center rounded-xl p-2 border transition-all ${
+                    isCustom 
+                      ? 'border-emerald-500/50 bg-gradient-to-br from-emerald-900/30 to-teal-900/30' 
+                      : 'border-gray-700/50 bg-gray-800/30 hover:bg-gray-700/30'
+                  }`}
+                >
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      decreaseAmount();
+                    }}
+                    className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  >
+                    <Minus size={16} />
+                  </button>
+                  
+                  <div className="flex-1 flex items-center px-3">
+                    <DollarSign size={16} className="text-gray-400 mr-1" />
+                    {isCustom ? (
+                      <input
+                        type="text"
+                        value={customAmount}
+                        onChange={handleCustomAmountChange}
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full bg-transparent text-center text-white focus:outline-none"
+                        placeholder="Enter amount"
+                      />
+                    ) : (
+                      <div className="w-full text-center text-white">{tipAmount}</div>
+                    )}
+                  </div>
+                  
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      increaseAmount();
+                    }}
+                    className="p-2 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <p className="text-white text-sm font-medium">Select payment method:</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <button 
+                    onClick={() => setPaymentMethod('stripe')}
+                    className={`text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 ${
+                      paymentMethod === 'stripe'
+                        ? 'bg-gradient-to-br from-emerald-600 to-teal-700 shadow-lg shadow-emerald-900/20'
+                        : 'bg-gray-800 hover:bg-gray-700'
+                    }`}
+                  >
+                    <CreditCard size={18} className={paymentMethod === 'stripe' ? 'text-emerald-200' : 'text-gray-300'} /> 
+                    Stripe
+                  </button>
+                  {/* <button 
+                    onClick={() => setPaymentMethod('venmo')}
+                    className={`text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 ${
+                      paymentMethod === 'venmo'
+                        ? 'bg-gradient-to-br from-emerald-600 to-teal-700 shadow-lg shadow-emerald-900/20'
+                        : 'bg-gray-800 hover:bg-gray-700'
+                    }`}
+                  >
+                    {copied ? 'Copied!' : 'Venmo'}
+                  </button> */}
+                </div>
+              </div>
+              
+              {error && (
+                <div className="bg-red-900/30 border border-red-500/30 rounded-lg p-3 flex items-start gap-2">
+                  <AlertCircle size={18} className="text-red-400 mt-0.5" />
+                  <p className="text-red-300 text-sm">{error}</p>
+                </div>
+              )}
+              
+              <button 
+                onClick={handlePayment}
+                disabled={isProcessing || !isValidAmount() || !paymentMethod}
+                className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-lg font-medium ${
+                  isProcessing || !isValidAmount() || !paymentMethod
+                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-white shadow-green-900/30'
+                }`}
+              >
+                {isProcessing ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </span>
+                ) : (
+                  <>
+                    <Heart size={18} className="text-green-200" /> 
+                    Send ${getFinalAmount()} via {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : '...'}
+                  </>
+                )}
+              </button>
+
+              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : 'our payment partners'}</p>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };
