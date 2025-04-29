@@ -206,14 +206,14 @@ function Footer() {
             <div className="flex items-center space-x-2 text-gray-400 text-sm">
               <span>Designed & Developed by</span>
               <motion.a
-                href="https://linktr.ee/UditiDas"
+                href="https://konceept.dev"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:text-purple-300 transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Uditi Das
+                Konceept
               </motion.a>
             </div>
           </div>
