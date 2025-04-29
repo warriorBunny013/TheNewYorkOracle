@@ -572,7 +572,7 @@ const handleTip = () => {
             <motion.div
               variants={contentVariants}
               custom={0}
-              className="flex items-center mb-6 gap-2"
+              className="flex items-center mb-2 gap-2"
             >
               <span className="text-gray-400 text-sm font-medium">Featured in</span>
               <motion.div
@@ -718,7 +718,7 @@ const handleTip = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1, duration: 0.5 }}
-                  className="absolute -left-6  sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
+                  className="absolute -left-6 top-2 sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
                   style={{ backdropFilter: 'blur(8px)' }}
                 >
                   <div className="flex items-center gap-3">
