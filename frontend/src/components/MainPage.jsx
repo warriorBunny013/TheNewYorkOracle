@@ -317,6 +317,7 @@ const handleTip = () => {
 
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   
+  console.log(windowWidth);
   // const navigateTo = (sectionId) => {
   //   const element = document.getElementById(sectionId);
   //   if (element) {
@@ -561,7 +562,7 @@ const handleTip = () => {
       </div>
       
       <div className="container mx-auto relative z-10 px-4 sm:px-6 lg:px-8 xl:px-0 pt-28 md:pt-36 xl:pt-20">
-        <div className="flex flex-col xl:flex-row items-center justify-between gap-8 xl:gap-0">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 xl:gap-0">
           {/* Content Section */}
           <motion.div 
             className="flex flex-col w-full xl:w-1/2 xl:pr-8"
@@ -718,7 +719,7 @@ const handleTip = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1, duration: 0.5 }}
-                  className="absolute -left-6 top-2 sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
+                  className="absolute -left-6 top-6 sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
                   style={{ backdropFilter: 'blur(8px)' }}
                 >
                   <div className="flex items-center gap-3">

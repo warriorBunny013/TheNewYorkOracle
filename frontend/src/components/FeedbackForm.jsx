@@ -67,7 +67,7 @@ function FeedbackForm() {
                         name="clientName"
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
-                        className="py-3 px-4 block lg:w-[50vh] border-gray-200 rounded-lg text-black bg-white"
+                        className="w-full block lg:w-[50vh] py-3 px-4 bg-white/5 border border-gray-700 rounded-lg focus:outline-none text-white placeholder-gray-400 transition-all duration-300"
                         required
                       />
                     </div>
@@ -96,13 +96,13 @@ function FeedbackForm() {
                       rows="4"
                       value={comments}
                       onChange={(e) => setComments(e.target.value)}
-                      className="py-3 px-4 block w-full lg:h-[15rem] border-gray-200 rounded-lg text-black bg-white"
+                      className="w-full py-3 px-4 bg-white/5 border border-gray-700 rounded-lg focus:outline-none text-white placeholder-gray-400 transition-all duration-300"
                       required
                     ></textarea>
                   </div>
                 </div>
                 <div className="mt-6 flex justify-center">
-                  <button type="submit" className="btn text-white px-10 bg-[#5E3BEE] btn-primary">Submit</button>
+                  <button type="submit" className="btn px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center space-x-2">Submit</button>
                 </div>
               </form>
               <ToastContainer containerId="containerA" limit={1}/>
