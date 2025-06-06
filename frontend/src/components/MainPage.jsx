@@ -804,7 +804,7 @@ const handleTip = () => {
                 <PlayCircle className="h-5 w-5 text-blue-400" />
                 <div>
                   <span className="font-semibold">Pre-Recorded Readings</span>
-                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 24-48 hours</p>
+                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 24-72 hours</p>
                 </div>
               </div>
               
