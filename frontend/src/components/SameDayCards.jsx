@@ -46,10 +46,10 @@ function SameDayCards() {
             img: "sameday-1.jpg",
             type: "Express reading",
             title: "PRE-RECORDED Reading",
-            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 24-48 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
+            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 24-72 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Delivery within 24-48 hours"
+            extrainfo:"Delivery within 24-72 hours"
         },
         {
             img: "sameday-2.jpg",
