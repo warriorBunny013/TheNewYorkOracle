@@ -5,13 +5,16 @@ import { API_URL } from "../utils/apiConfig";
 import { 
     Calendar, 
     X, 
-    CreditCard 
+    CreditCard,
+    CreditCard as StripeIcon,
+    CreditCard as PaypalIcon
 } from "lucide-react";
 
 const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 function SameDayCards() {
     const [showModal, setShowModal] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState('stripe'); // 'stripe' or 'paypal'
     const [modalContent, setModalContent] = useState({
         title: "",
         description: "",
@@ -34,6 +37,7 @@ function SameDayCards() {
 
     const openModal = (title, description, price,type, cancellationPolicy, alt, extrainfo) => {
         setModalContent({ title, description, price,type, cancellationPolicy, alt, extrainfo });
+        setPaymentMethod('stripe'); // Reset to default payment method
         setShowModal(true);
     };
 
@@ -49,7 +53,8 @@ function SameDayCards() {
             description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 24-72 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Delivery within 24-72 hours"
+            extrainfo:"Delivery within 24-72 hours",
+            paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"
         },
         {
             img: "sameday-2.jpg",
@@ -58,36 +63,45 @@ function SameDayCards() {
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days (Delivery within 24-72 hours)",
             price: "475",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days"
+            extrainfo:"Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days",
+            paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
         }
     ];
 
     const makePayment = async () => {
-        const stripe = await stripePromise;
+        if (paymentMethod === 'stripe') {
+            const stripe = await stripePromise;
 
-        const body = {
-            productName: modalContent.title,
-            userPrice: modalContent.price
-        };
+            const body = {
+                productName: modalContent.title,
+                userPrice: modalContent.price
+            };
 
-        const headers = {
-            "Content-Type": "application/json"
-        };
+            const headers = {
+                "Content-Type": "application/json"
+            };
 
-        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-        });
+            const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(body)
+            });
 
-        const session = await response.json();
+            const session = await response.json();
 
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id
-        });
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id
+            });
 
-        if (result.error) {
-            console.log(result.error.message);
+            if (result.error) {
+                console.log(result.error.message);
+            }
+        } else if (paymentMethod === 'paypal') {
+            // Find the selected card to get the PayPal link
+            const selectedCard = cards.find(card => card.title === modalContent.title);
+            if (selectedCard && selectedCard.paypalLink) {
+                window.open(selectedCard.paypalLink, '_blank');
+            }
         }
     };
 
@@ -150,51 +164,51 @@ function SameDayCards() {
                 </div>
 
                 {showModal && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                                   <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
                                   <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-2xl max-w-2xl w-full mx-4 overflow-hidden shadow-2xl border border-gray-800"
+                                    className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-2xl w-full max-w-2xl max-h-[100vh] overflow-y-auto scrollbar-hide shadow-2xl border border-gray-800"
                                   >
-                                    <div className="p-8 max-h-[90vh] overflow-y-auto">
-                                      <div className="flex justify-between items-center mb-8">
-                                        <h2 className="text-2xl font-medium text-gray-200">
+                                    <div className="p-6 sm:p-8">
+                                      <div className="flex justify-between items-center mb-6 sm:mb-8">
+                                        <h2 className="text-xl sm:text-2xl font-medium text-gray-200">
                                           {modalContent.title}
                                         </h2>
                                         <button
                                           onClick={closeModal}
                                           className="text-gray-400 hover:text-gray-200 transition-colors"
                                         >
-                                          <X className="w-6 h-6" />
+                                          <X className="w-5 h-5 sm:w-6 sm:h-6" />
                                         </button>
                                       </div>
                       
-                                      <div className="grid md:grid-cols-2 gap-8">
-                                        <div className="space-y-5">
-                                          <div className="flex items-center space-x-4">
-                                            <div className="w-10 h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
-                                              <Calendar className="w-5 h-5 text-rose-300" />
+                                      <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+                                        <div className="space-y-4 sm:space-y-5">
+                                          <div className="flex items-center space-x-3 sm:space-x-4">
+                                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
+                                              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
                                             </div>
-                                            <span className="text-gray-300">Reading Type: {modalContent.type}</span>
+                                            <span className="text-sm sm:text-base text-gray-300">Reading Type: {modalContent.type}</span>
                                           </div>
                                           
-                                          <div className="flex items-center space-x-4">
-                                            <div className="w-10 h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
-                                              <CreditCard className="w-5 h-5 text-blue-300" />
+                                          <div className="flex items-center space-x-3 sm:space-x-4">
+                                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
+                                              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
                                             </div>
-                                            <span className="text-gray-300">
+                                            <span className="text-sm sm:text-base text-gray-300">
                                               Price: ${modalContent.price}
                                             </span>
                                           </div>
                                         </div>
                       
-                                        <div className="space-y-4">
-                                          <h3 className="text-lg font-medium text-gray-200">
+                                        <div className="space-y-3 sm:space-y-4">
+                                          <h3 className="text-base sm:text-lg font-medium text-gray-200">
                                             Important Notes
                                           </h3>
-                                          <ul className="text-sm text-gray-400 space-y-3">
+                                          <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
                                             {[
                                               "Private, one-on-one LIVE reading session",
                                               "No pre-recordings available",
@@ -210,27 +224,59 @@ function SameDayCards() {
                                         </div>
                                       </div>
                       
-                                      <div className="mt-8 bg-gray-800/40 backdrop-blur-md p-5 rounded-xl border border-gray-700/30">
-                                        <h4 className="text-lg font-medium text-gray-200 mb-3">
+                                      <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
+                                        <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
                                           Cancellation Policy
                                         </h4>
-                                        <p className="text-sm text-gray-400 leading-relaxed">
+                                        <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
                                           {modalContent.cancellationPolicy}
                                         </p>
                                       </div>
+
+                                      {/* Payment Method Selection */}
+                                      <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
+                                        <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-4">
+                                          Choose Payment Method
+                                        </h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                          <button
+                                            onClick={() => setPaymentMethod('stripe')}
+                                            className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
+                                              paymentMethod === 'stripe'
+                                                ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                                                : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
+                                            }`}
+                                          >
+                                            <StripeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                            <span className="font-medium text-sm sm:text-base">Stripe Checkout</span>
+                                          </button>
+                                          
+                                          <button
+                                            onClick={() => setPaymentMethod('paypal')}
+                                            className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
+                                              paymentMethod === 'paypal'
+                                                ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                                                : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
+                                            }`}
+                                          >
+                                            <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                            <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
+                                          </button>
+                                        </div>
+                                      </div>
                       
-                                      <div className="mt-8 flex justify-end space-x-4">
+                                      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                                         <button
                                           onClick={closeModal}
-                                          className="px-6 py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
+                                          className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
                                         >
                                           Close
                                         </button>
                                         <button
                                           onClick={makePayment}
-                                          className="w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                          className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                                         >
-                                          Book Now
+                                          {paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'}
                                         </button>
                                       </div>
                                     </div>
