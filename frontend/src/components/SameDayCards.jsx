@@ -24,6 +24,29 @@ function SameDayCards() {
         alt: ""
     });
 
+    // Date detection logic
+    const isOnBreak = () => {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentDay = currentDate.getDate();
+        
+        return currentMonth === 7 && currentDay >= 20 && currentDay <= 31; // July 20-31
+    };
+
+    const getDeliveryMessage = () => {
+        if (isOnBreak()) {
+            return "Your order will be delivered post Aug 1";
+        }
+        return "Your order will be delivered within 24-72 hours of purchase";
+    };
+
+    const getLiveDeliveryMessage = () => {
+        if (isOnBreak()) {
+            return "Delivery post Aug 1. Reading is a first come, first serve within the next few business days";
+        }
+        return "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days";
+    };
+
     useEffect(() => {
         if (showModal) {
             document.body.style.overflow = 'hidden';
@@ -50,20 +73,20 @@ function SameDayCards() {
             img: "sameday-1.jpg",
             type: "Express reading",
             title: "PRE-RECORDED Reading",
-            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. Your order will be delivered within 24-72 hours of purchase. Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
+            description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. " + getDeliveryMessage() + ". Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Delivery within 24-72 hours",
+            extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 24-72 hours",
             paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"
         },
         {
             img: "sameday-2.jpg",
             type: "Express reading",
             title: "LIVE one-on-one Emergency 45-minute reading",
-            description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days (Delivery within 24-72 hours)",
+            description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days " + getLiveDeliveryMessage(),
             price: "475",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo:"Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days",
+            extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days",
             paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
         }
     ];
@@ -232,6 +255,27 @@ function SameDayCards() {
                                           {modalContent.cancellationPolicy}
                                         </p>
                                       </div>
+
+                                      {/* Break Message */}
+                                      {isOnBreak() && (
+                                        <div className="mt-6 sm:mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-5 backdrop-blur-sm">
+                                          <div className="flex items-start gap-3">
+                                            <div className="flex-shrink-0 mt-1">
+                                              <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                              </svg>
+                                            </div>
+                                            <div>
+                                              <h4 className="text-base sm:text-lg font-medium text-amber-300 mb-2">
+                                                Important Notice
+                                              </h4>
+                                              <p className="text-xs sm:text-sm text-amber-200 leading-relaxed">
+                                                Taking a short break from July 20-31. All bookings during these period will be delivered post Aug 1.
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
 
                                       {/* Payment Method Selection */}
                                       <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
