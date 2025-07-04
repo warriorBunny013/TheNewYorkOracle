@@ -25,6 +25,29 @@ const MainPage = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
 
+  // Date detection logic
+  const isOnBreak = () => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth()+1;
+    const currentDay = currentDate.getDate();
+    
+    return currentMonth === 7 && currentDay >= 20 && currentDay <= 31; // July 20-31
+  };
+
+  const getDeliveryTime = () => {
+    if (isOnBreak()) {
+      return "Aug 1";
+    }
+    return "24-72h";
+  };
+
+  const getBreakMessage = () => {
+    if (isOnBreak()) {
+      return "Taking a short break from July 20-31. All bookings during these period will be delivered post Aug 1.";
+    }
+    return null;
+  };
+
   const handleResize = () => {
     const isMobile = window.innerWidth <= 767;
     if (!isMobile) {
@@ -799,12 +822,34 @@ const handleTip = () => {
               Skip the queue and receive profound spiritual guidance within hours, not weeks. Urgent questions deserve immediate answers.
             </p>
             
+            {getBreakMessage() && (
+              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-lg p-4 backdrop-blur-sm">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 mt-1">
+                    <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-amber-300 font-medium text-sm">
+                      {getBreakMessage()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="space-y-4 py-2">
               <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
                 <PlayCircle className="h-5 w-5 text-blue-400" />
                 <div>
                   <span className="font-semibold">Pre-Recorded Readings</span>
-                  <p className="text-sm text-gray-300">Detailed analysis delivered to your inbox within 24-72 hours</p>
+                  <p className="text-sm text-gray-300">
+                    {isOnBreak() 
+                      ? "Detailed analysis delivered to your inbox post Aug 1" 
+                      : "Detailed analysis delivered to your inbox within 24-72 hours"
+                    }
+                  </p>
                 </div>
               </div>
               
@@ -812,7 +857,12 @@ const handleTip = () => {
                 <Clock className="h-5 w-5 text-purple-400" />
                 <div>
                   <span className="font-semibold">Live Readings</span>
-                  <p className="text-sm text-gray-300">Priority real-time consultations within 24-72 hours after purchase</p>
+                  <p className="text-sm text-gray-300">
+                    {isOnBreak() 
+                      ? "Priority real-time consultations post Aug 1" 
+                      : "Priority real-time consultations within 24-72 hours after purchase"
+                    }
+                  </p>
                 </div>
               </div>
             </div>
@@ -856,7 +906,7 @@ const handleTip = () => {
             {/* Floating time indicators */}
             <div className="absolute -top-4 right-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse">
               <Hourglass className="h-3 w-3" />
-              <span>24-72h</span>
+              <span>{getDeliveryTime()}</span>
             </div>
           </div>
         </div>
