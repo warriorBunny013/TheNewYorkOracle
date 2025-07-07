@@ -39,17 +39,17 @@ function Testimonials({ reviews }) {
     const settings = {
         dots: false,
         infinite: true,
-        speed: 800,
+        speed: 300,
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows: false,
         autoplay: true,
-        autoplaySpeed: 4000,
-        touchThreshold: 5,
+        autoplaySpeed: 2500,
+        touchThreshold: 3,
         swipeToSlide: true,
         useCSS: true,
-        useTransform: false,
-        cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
+        useTransform: true,
+        cssEase: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         pauseOnHover: true,
         pauseOnFocus: true,
         touchMove: true,
@@ -64,11 +64,13 @@ function Testimonials({ reviews }) {
                     infinite: true,
                     dots: false,
                     arrows: false,
-                    touchThreshold: 5,
+                    touchThreshold: 3,
                     swipeToSlide: true,
                     touchMove: true,
                     draggable: true,
-                    swipe: true
+                    swipe: true,
+                    speed: 300,
+                    autoplaySpeed: 2500
                 }
             },
             {
@@ -79,11 +81,13 @@ function Testimonials({ reviews }) {
                     infinite: true,
                     dots: false,
                     arrows: false,
-                    touchThreshold: 5,
+                    touchThreshold: 3,
                     swipeToSlide: true,
                     touchMove: true,
                     draggable: true,
-                    swipe: true
+                    swipe: true,
+                    speed: 300,
+                    autoplaySpeed: 2500
                 }
             }
         ]
@@ -187,15 +191,15 @@ function Testimonials({ reviews }) {
                             <motion.div 
                                 key={review._id || index} 
                                 className="p-2 sm:p-3"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
                                 viewport={{ once: true }}
                             >
                                 <motion.div 
                                     className="relative group cursor-grab active:cursor-grabbing"
-                                    whileHover={{ scale: 1.02, y: -5 }}
-                                    transition={{ duration: 0.3 }}
+                                    whileHover={{ scale: 1.03, y: -8 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
                                     onClick={() => handleReadMore(review)}
                                 >
                                     {/* Card Background with Gradient Border */}
@@ -211,9 +215,9 @@ function Testimonials({ reviews }) {
                                                 {Array.from({ length: review.rating }, (_, i) => (
                                                     <motion.div
                                                         key={i}
-                                                        initial={{ scale: 0 }}
-                                                        animate={{ scale: 1 }}
-                                                        transition={{ delay: i * 0.1 }}
+                                                        initial={{ scale: 0, rotate: -180 }}
+                                                        animate={{ scale: 1, rotate: 0 }}
+                                                        transition={{ delay: i * 0.05, duration: 0.3, ease: "easeOut" }}
                                                     >
                                                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                                                     </motion.div>
@@ -256,14 +260,14 @@ function Testimonials({ reviews }) {
                                                 <motion.div
                                                     className="opacity-0 group-hover:opacity-100 transition-opacity"
                                                     animate={{ rotate: [0, 360] }}
-                                                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                                                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                                                 >
                                                     <Sparkles className="w-5 h-5 text-pink-400" />
                                                 </motion.div>
                                             </div>
 
                                             {/* Hover Glow Effect */}
-                                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500/0 via-purple-500/0 to-blue-500/0 group-hover:from-pink-500/10 group-hover:via-purple-500/10 group-hover:to-blue-500/10 transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+                                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500/0 via-purple-500/0 to-blue-500/0 group-hover:from-pink-500/10 group-hover:via-purple-500/10 group-hover:to-blue-500/10 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
                                         </div>
                                     </div>
                                 </motion.div>

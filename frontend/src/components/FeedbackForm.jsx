@@ -48,14 +48,14 @@ function FeedbackForm() {
       <div className="absolute inset-0 "></div>
       
 
-      <div className="flex my-6 sm:my-8 md:my-10 mt-16 sm:mt-18 md:mt-20 justify-center relative z-10">
+      <div className="flex justify-center relative z-10">
         <div className="flex flex-col justify-center px-4 sm:px-6">
-          <div className="mt-16 sm:mt-18 md:mt-20 my-4 mx-2 text-center flex justify-center">
+          <div className="my-4 mx-2 text-center flex justify-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
               Share Your Experience
             </h2>
           </div>
-          <p className="mx-2 sm:mx-4 md:mx-6 text-center max-w-[20rem] sm:max-w-[25rem] md:max-w-[35rem] text-gray-300 leading-relaxed text-sm sm:text-base">
+          <p className="mx-2 sm:mx-4 mb-5 md:mx-6 text-center max-w-[20rem] sm:max-w-[25rem] md:max-w-[35rem] text-gray-300 leading-relaxed text-sm sm:text-base">
             Your feedback helps us create even more magical experiences. We'd love to hear about your journey with us.
           </p>
         </div>

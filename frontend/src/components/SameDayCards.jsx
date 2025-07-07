@@ -251,197 +251,194 @@ function SameDayCards() {
                 </div>
 
                 {showModal && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4">
-                                  <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-                                  <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-none sm:rounded-2xl w-full h-full sm:max-w-2xl sm:h-auto shadow-2xl border border-gray-800 max-h-screen sm:max-h-[100vh] flex flex-col"
-                                  >
-                                    <div className="p-6 sm:p-8 overflow-y-auto flex-1">
-                                      <div className="flex justify-between items-center mb-6 sm:mb-8">
-                                        <h2 className="text-xl sm:text-2xl font-medium text-gray-200">
-                                          {modalContent.title}
-                                        </h2>
-                                        <button
-                                          onClick={closeModal}
-                                          className="text-gray-400 hover:text-gray-200 transition-colors"
-                                        >
-                                          <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                                        </button>
-                                      </div>
-                      
-                                      <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
-                                        <div className="space-y-4 sm:space-y-5">
-                                          <div className="flex items-center space-x-3 sm:space-x-4">
-                                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
-                                              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
-                                            </div>
-                                            <span className="text-sm sm:text-base text-gray-300">Reading Type: {modalContent.type}</span>
-                                          </div>
-                                          
-                                          <div className="flex items-center space-x-3 sm:space-x-4">
-                                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
-                                              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
-                                            </div>
-                                            <span className="text-sm sm:text-base text-gray-300">
-                                              Price: ${modalContent.price}
-                                            </span>
-                                          </div>
-                                        </div>
-                      
-                                        <div className="space-y-3 sm:space-y-4">
-                                          <h3 className="text-base sm:text-lg font-medium text-gray-200">
-                                            Important Notes
-                                          </h3>
-                                          <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
-                                            {[
-                                              "Private, one-on-one LIVE reading session",
-                                              "No pre-recordings available",
-                                              "Cancellations allowed up to 1 day before",
-                                              "Late arrivals may result in session cancellation"
-                                            ].map((item, i) => (
-                                              <li key={i} className="flex items-start space-x-2">
-                                                <div className="w-1 h-1 rounded-full bg-gray-500 mt-2"></div>
-                                                <span>{item}</span>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                        </div>
-                                      </div>
-                      
-                                      <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
-                                        <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
-                                          Cancellation Policy
-                                        </h4>
-                                        <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                                          {modalContent.cancellationPolicy}
-                                        </p>
-                                      </div>
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border border-gray-800 max-h-[90vh] flex flex-col"
+                    >
+                      <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
+                        <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
+                          <h2 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-200">
+                            {modalContent.title}
+                          </h2>
+                          <button
+                            onClick={closeModal}
+                            className="text-gray-400 hover:text-gray-200 transition-colors"
+                          >
+                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                          </button>
+                        </div>
+        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                          <div className="space-y-3 sm:space-y-4 md:space-y-5">
+                            <div className="flex items-center space-x-3 sm:space-x-4">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
+                                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
+                              </div>
+                              <span className="text-sm sm:text-base text-gray-300">Reading Type: {modalContent.type}</span>
+                            </div>
+                            
+                            <div className="flex items-center space-x-3 sm:space-x-4">
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
+                                <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
+                              </div>
+                              <span className="text-sm sm:text-base text-gray-300">
+                                Price: ${modalContent.price}
+                              </span>
+                            </div>
+                          </div>
+        
+                          <div className="space-y-3 sm:space-y-4">
+                            <h3 className="text-base sm:text-lg font-medium text-gray-200">
+                              Important Notes
+                            </h3>
+                            <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
+                              {[
+                                "Private, one-on-one LIVE reading session",
+                                "No pre-recordings available",
+                                "Cancellations allowed up to 1 day before",
+                                "Late arrivals may result in session cancellation"
+                              ].map((item, i) => (
+                                <li key={i} className="flex items-start space-x-2">
+                                  <div className="w-1 h-1 rounded-full bg-gray-500 mt-2"></div>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+        
+                        <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
+                          <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
+                            Cancellation Policy
+                          </h4>
+                          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                            {modalContent.cancellationPolicy}
+                          </p>
+                        </div>
 
-                                      {/* Break Message */}
-                                      {isOnBreak() && (
-                                        <div className="mt-6 sm:mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-5 backdrop-blur-sm">
-                                          <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 mt-1">
-                                              <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                              </svg>
-                                            </div>
-                                            <div>
-                                              <h4 className="text-base sm:text-lg font-medium text-amber-300 mb-2">
-                                                Important Notice
-                                              </h4>
-                                              <p className="text-xs sm:text-sm text-amber-200 leading-relaxed">
-                                                Taking a short break from July 20-31. All bookings during these period will be delivered post Aug 1.
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
+                        {/* Break Message */}
+                        {isOnBreak() && (
+                          <div className="mt-6 sm:mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-5 backdrop-blur-sm">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-1">
+                                <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                              <div>
+                                <h4 className="text-base sm:text-lg font-medium text-amber-300 mb-2">
+                                  Important Notice
+                                </h4>
+                                <p className="text-xs sm:text-sm text-amber-200 leading-relaxed">
+                                  Taking a short break from July 20-31. All bookings during these period will be delivered post Aug 1.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
 
-                                      {/* Payment Method Selection */}
-                                      <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
-                                        <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-4">
-                                          Choose Payment Method
-                                        </h4>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                          <button
-                                            onClick={() => setPaymentMethod('stripe')}
-                                            className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
-                                              paymentMethod === 'stripe'
-                                                ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                                                : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
-                                            }`}
-                                          >
-                                            <StripeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                            <span className="font-medium text-sm sm:text-base">Stripe Checkout</span>
-                                          </button>
-                                          
-                                          {paypalAvailable ? (
-                                            <button
-                                              onClick={() => setPaymentMethod('paypal')}
-                                              className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
-                                                paymentMethod === 'paypal'
-                                                  ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                                                  : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
-                                              }`}
-                                            >
-                                              <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                              <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
-                                            </button>
-                                          ) : (
-                                            <div className="relative">
-                                              <button
-                                                disabled
-                                                className="p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 border-gray-600 bg-gray-700/50 text-gray-300 cursor-not-allowed"
-                                              >
-                                                <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                                <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
-                                              </button>
-                                              {/* <div className="absolute -bottom-8 left-0 right-0 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 text-xs text-amber-300">
-                                                PayPal temporarily unavailable
-                                              </div> */}
-                                            </div>
-                                          )}
-                                        </div>
-                                        {!paypalAvailable && (
-                                          <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                                            <p className="text-xs text-amber-300">
-                                              PayPal is currently being configured. Please use Stripe for payments.
-                                            </p>
-                                          </div>
-                                        )}
-                                      </div>
-                      
-                                      {error && (
-                                        <div className="mt-6 sm:mt-8 bg-red-900/30 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm">
-                                          <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 mt-1">
-                                              <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                              </svg>
-                                            </div>
-                                            <div>
-                                              <p className="text-red-300 font-medium text-sm">
-                                                {error}
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
+                        {/* Payment Method Selection */}
+                        <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
+                          <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-4">
+                            Choose Payment Method
+                          </h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <button
+                              onClick={() => setPaymentMethod('stripe')}
+                              className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
+                                paymentMethod === 'stripe'
+                                  ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                                  : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
+                              }`}
+                            >
+                              <StripeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                              <span className="font-medium text-sm sm:text-base">Stripe Checkout</span>
+                            </button>
+                            
+                            {paypalAvailable ? (
+                              <button
+                                onClick={() => setPaymentMethod('paypal')}
+                                className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
+                                  paymentMethod === 'paypal'
+                                    ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                                    : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
+                                }`}
+                              >
+                                <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
+                              </button>
+                            ) : (
+                              <div className="relative">
+                                <button
+                                  disabled
+                                  className="p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 border-gray-600 bg-gray-700/50 text-gray-300 cursor-not-allowed"
+                                >
+                                  <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                  <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          {!paypalAvailable && (
+                            <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                              <p className="text-xs text-amber-300">
+                                PayPal is currently being configured. Please use Stripe for payments.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+        
+                        {error && (
+                          <div className="mt-6 sm:mt-8 bg-red-900/30 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-1">
+                                <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                              <div>
+                                <p className="text-red-300 font-medium text-sm">
+                                  {error}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
 
-                                      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                                        <button
-                                          onClick={closeModal}
-                                          disabled={isProcessing}
-                                          className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                        >
-                                          Close
-                                        </button>
-                                        <button
-                                          onClick={makePayment}
-                                          disabled={isProcessing}
-                                          className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                                        >
-                                          {isProcessing ? (
-                                            <span className="flex items-center gap-2">
-                                              <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                              </svg>
-                                              Processing...
-                                            </span>
-                                          ) : (
-                                            paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'
-                                          )}
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </motion.div>
-                                </div>
-                              )}
+                        <div className="mt-6 sm:mt-8 flex flex-row justify-end space-x-4">
+                          <button
+                            onClick={makePayment}
+                            disabled={isProcessing}
+                            className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {isProcessing ? (
+                              <span className="flex items-center gap-2">
+                                <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Processing...
+                              </span>
+                            ) : (
+                              paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'
+                            )}
+                          </button>
+                          <button
+                            onClick={closeModal}
+                            disabled={isProcessing}
+                            className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
+                )}
             </div>
         </div>
     );
