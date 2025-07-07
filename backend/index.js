@@ -662,7 +662,7 @@ app.post('/api/create-paypal-order', async (req, res) => {
         console.log('Creating PayPal order for:', productName, userPrice);
         
         // Check if PayPal credentials are set
-        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+        if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
             console.error('PayPal credentials not configured');
             return res.status(500).json({ error: 'PayPal not configured' });
         }
@@ -761,7 +761,7 @@ app.post('/api/create-paypal-order-tip', async (req, res) => {
         console.log('Creating PayPal tip order for:', productName, userPrice);
         
         // Check if PayPal credentials are set
-        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+        if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
             console.error('PayPal credentials not configured');
             return res.status(500).json({ error: 'PayPal not configured' });
         }
@@ -964,7 +964,7 @@ app.get('/api/paypal-tip-capture', async (req, res) => {
 app.get('/api/test-paypal', async (req, res) => {
     try {
         // Check if PayPal credentials are set
-        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+        if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
             console.error('PayPal credentials not configured');
             return res.status(500).json({ success: false, error: 'PayPal credentials not configured' });
         }

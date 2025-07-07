@@ -380,9 +380,9 @@ function SameDayCards() {
                                                 <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                                 <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
                                               </button>
-                                              <div className="absolute -bottom-8 left-0 right-0 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 text-xs text-amber-300">
+                                              {/* <div className="absolute -bottom-8 left-0 right-0 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 text-xs text-amber-300">
                                                 PayPal temporarily unavailable
-                                              </div>
+                                              </div> */}
                                             </div>
                                           )}
                                         </div>

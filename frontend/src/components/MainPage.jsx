@@ -402,20 +402,6 @@ const handleTip = () => {
     }
   };
 
-  const handleVenmoPayment = () => {
-    if (!isValidAmount()) {
-      setError("Please select an amount greater than 0");
-      return;
-    }
-    
-    // For a real implementation, you'd redirect to Venmo's payment page
-    // or use their SDK to initiate a payment
-    window.open(`https://venmo.com/?txn=pay&audience=private&recipients=Marina-Tarot&amount=${getFinalAmount()}&note=Tarot%20Support`, "_blank");
-    
-    // Close modal after opening Venmo
-    setShowTipModal(false);
-  };
-  
   const handlePayment = () => {
     if (!paymentMethod) {
       setError("Please select a payment method");
@@ -431,8 +417,6 @@ const handleTip = () => {
       handleStripePayment();
     } else if (paymentMethod === 'paypal') {
       handlePayPalPayment();
-    } else if (paymentMethod === 'venmo') {
-      handleVenmoPayment();
     }
   };
 
@@ -1200,7 +1184,7 @@ const handleTip = () => {
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : 'Venmo'}</p>
+              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : 'our payment partners'}</p>
             </div>
           </motion.div>
         </div>
