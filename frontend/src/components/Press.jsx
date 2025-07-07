@@ -17,14 +17,14 @@ const Press = () => {
     },
     {
       id: 2,
-      title: "Calmcation Travel Trend Review",
+      title: "A Psychic Predicted My 'Calmcation'",
       publication: "PopSugar",
       author: "PopSugar Team",
       date: "June 17, 2025",
       url: "https://www.popsugar.com/travel/calmcation-travel-trend-review-49445886?fbclid=PAQ0xDSwLVHNJleHRuA2FlbQIxMAABp-oHGJLnUa-qfMxNQK-XWKDUQQH09YWy8dXPneWgeS6jPaOv2PMmMPGimC4y_aem_lO3S1y8rduwowFesV5u3fA",
       logo: "https://www.popsugar.com.au/wp-content/themes/popsugar/dist/images/logo/primary-logo/ps-2024-orange.svg",
       category: "Lifestyle & Travel",
-      excerpt: "Discovering the latest wellness travel trends and the intersection of spiritual practices with modern lifestyle choices."
+      excerpt: "A recent tarot reading with Marina Smargiannakis(Soulstice Tarot) had predicted the trip would lead to profound insights and personal healing."
     }
   ];
 
