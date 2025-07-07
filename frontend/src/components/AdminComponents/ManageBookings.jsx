@@ -264,15 +264,15 @@ function ManageBookings() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
+          <thead>
                 <tr className="bg-gray-700/50 border-b border-gray-700/50">
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Booking ID</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Price</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
+            </tr>
+          </thead>
               <tbody className="divide-y divide-gray-700/50">
                 <AnimatePresence>
                   {filteredBookings.map((booking, index) => (
@@ -295,18 +295,18 @@ function ManageBookings() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-3">
-                          {getStatusBadge(booking?.status)}
-                          <select
+                  {getStatusBadge(booking?.status)}
+                  <select
                             className="text-xs bg-gray-700/50 border border-gray-600/50 rounded px-2 py-1 text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            value={booking.status}
-                            onChange={(e) => handleStatusChange(booking.bookingId, e.target.value)}
+                    value={booking.status}
+                    onChange={(e) => handleStatusChange(booking.bookingId, e.target.value)}
                             disabled={updatingStatus === booking.bookingId}
-                          >
-                            <option value="pending">Pending</option>
-                            <option value="booked">Booked</option>
-                            <option value="completed">Completed</option>
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="booked">Booked</option>
+                    <option value="completed">Completed</option>
                             <option value="cancelled">Cancelled</option>
-                          </select>
+                  </select>
                           {updatingStatus === booking.bookingId && (
                             <RefreshCw className="w-3 h-3 text-blue-400 animate-spin" />
                           )}
@@ -321,12 +321,12 @@ function ManageBookings() {
                             <Edit className="w-4 h-4" />
                           </button>
                         </div>
-                      </td>
+                </td>
                     </motion.tr>
-                  ))}
+            ))}
                 </AnimatePresence>
-              </tbody>
-            </table>
+          </tbody>
+        </table>
           </div>
         )}
       </div>

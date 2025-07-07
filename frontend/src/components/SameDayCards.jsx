@@ -237,7 +237,7 @@ function SameDayCards() {
                                 <div className="flex flex-row items-center justify-between">
                                     <button
                                         onClick={() => openModal(card.title, card.description, card.price,card.type, card.cancellationPolicy,card.type,card.extrainfo)}
-                                        className="w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-[7.5rem] sm:w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         Book Now
                                     </button>
@@ -251,13 +251,13 @@ function SameDayCards() {
                 </div>
 
                 {showModal && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-4">
                     <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border border-gray-800 max-h-[90vh] flex flex-col"
+                      className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full h-full md:h-auto md:max-w-2xl md:mx-4 shadow-2xl border border-gray-800 md:max-h-[90vh] flex flex-col"
                     >
                       <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
                         <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
