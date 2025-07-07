@@ -321,7 +321,7 @@ const MarinaAbout = () => {
               Together, we'll align your energy and unlock your full potential. Just authentic guidance using Tarot, Intuition, and Divine connection. Allow me to help you on your journey and manifest your best life.
             </p>
           </motion.div>
-          <div className='pt-10 flex flex-wrap items-center gap-5 justify-between'>
+          <div className='pt-10 flex flex-wrap xs:flex-nowrap items-center gap-5 justify-between'>
             {/* Social Links */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }}

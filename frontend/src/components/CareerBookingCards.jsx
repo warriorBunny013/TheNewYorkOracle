@@ -188,10 +188,10 @@ function CareerBookingCards() {
                             </h2>
                           </div>
         
-                          <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                          <p className="text-gray-400 text-sm leading-relaxed">
                             {card.description}
                           </p>
-                          <div className="flex flex-row items-center justify-between pt-2 gap-3 sm:gap-0">
+                          <div className="flex flex-row pt-5 items-center justify-between gap-3 sm:gap-0">
                             <motion.button
                               onClick={() =>
                                 openModal(
@@ -205,7 +205,7 @@ function CareerBookingCards() {
                               }
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="w-full w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                              className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                             >
                               Book a Slot
                             </motion.button>
@@ -270,7 +270,7 @@ function CareerBookingCards() {
                             <h3 className="text-base sm:text-lg font-medium text-gray-200">
                               Important Notes
                             </h3>
-                            <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
+                            <ul className="text-sm text-gray-400 space-y-2 sm:space-y-3">
                               {[
                                 "Private, one-on-one LIVE reading session",
                                 "No pre-recordings available",
@@ -290,7 +290,7 @@ function CareerBookingCards() {
                           <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
                             Cancellation Policy
                           </h4>
-                          <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                          <p className="text-sm text-gray-400 leading-relaxed">
                             {modalContent.cancellationPolicy}
                           </p>
                         </div>
@@ -298,7 +298,7 @@ function CareerBookingCards() {
                         <div className="mt-6 sm:mt-8 flex flex-row justify-end space-x-4">
                           <button
                             onClick={() => handleBookingRedirect(modalContent.title)}
-                            className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                            className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                           >
                             Book Now
                           </button>

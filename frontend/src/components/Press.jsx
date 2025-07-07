@@ -225,7 +225,7 @@ const Press = () => {
                       whileHover="hover"
                       whileTap="tap"
                       onClick={() => handleArticleClick(article.url)}
-                      className="cursor-pointer mt-1 md:mt-0 flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 hover:from-red-500 hover:via-pink-500 hover:to-purple-500 text-white font-semibold transition-all duration-300 group-hover/card:shadow-2xl group-hover/card:shadow-red-500/30 text-xs sm:text-sm max-w-[140px] sm:max-w-none hover:scale-105 active:scale-95 relative z-20 backdrop-blur-sm border border-white/10"
+                      className="cursor-pointer mt-4 md:mt-0 flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 hover:from-red-500 hover:via-pink-500 hover:to-purple-500 text-white font-semibold transition-all duration-300 group-hover/card:shadow-2xl group-hover/card:shadow-red-500/30 text-xs sm:text-sm max-w-[140px] sm:max-w-none hover:scale-105 active:scale-95 relative z-20 backdrop-blur-sm border border-white/10"
                       style={{ cursor: 'pointer' }}
                       onMouseEnter={(e) => e.target.style.cursor = 'pointer'}
                       onMouseLeave={(e) => e.target.style.cursor = 'pointer'}

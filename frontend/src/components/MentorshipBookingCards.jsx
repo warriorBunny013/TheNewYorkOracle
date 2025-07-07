@@ -150,7 +150,7 @@ function MentorshipBookingCards() {
                                 <motion.img 
                                     className="w-full h-48 sm:h-56 md:h-64 object-cover" 
                                     src={card.img} 
-                                    alt={card.type}
+                                    alt={card.type} 
                                     whileHover={{ 
                                         scale: 1.05,
                                         transition: { duration: 0.4, ease: "easeOut" }
@@ -164,15 +164,15 @@ function MentorshipBookingCards() {
                                     <h2 className="text-lg sm:text-xl font-bold text-white leading-tight">{card.title}</h2>
                                 </div>
                                 
-                                <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                                <p className="text-gray-300 text-sm leading-relaxed">
                                     {card.description}
                                 </p>
-                                <div className="flex flex-row items-center justify-between gap-3 sm:gap-0">
+                                <div className="flex flex-row items-center pt-5 justify-between gap-3 sm:gap-0">
                                     <motion.button
                                         onClick={() => openModal(card.title, card.description, card.price,card.time,card.cancellationPolicy, card.type)}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="w-full w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                                        className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                                     >
                                         Book a Slot
                                     </motion.button>
@@ -238,7 +238,7 @@ function MentorshipBookingCards() {
                                    <h3 className="text-base sm:text-lg font-medium text-gray-200">
                                      Important Notes
                                    </h3>
-                                   <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
+                                   <ul className="text-sm text-gray-400 space-y-2 sm:space-y-3">
                                      {[
                                        "Private, one-on-one LIVE reading session",
                                        "No pre-recordings available",
@@ -258,7 +258,7 @@ function MentorshipBookingCards() {
                                  <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
                                    Cancellation Policy
                                  </h4>
-                                 <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                                 <p className="text-sm text-gray-400 leading-relaxed">
                                    {modalContent.cancellationPolicy}
                                  </p>
                                </div>

@@ -170,7 +170,7 @@ function Testimonials({ reviews }) {
                         </div> */}
                         <h2 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-white via-pink-100 to-purple-100 bg-clip-text text-transparent">
                             What Our Clients Say
-                        </h2>
+                </h2>
                         {/* <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 flex items-center justify-center">
                             <Sparkles className="w-6 h-6 text-white" />
                         </div> */}
@@ -212,7 +212,7 @@ function Testimonials({ reviews }) {
 
                                             {/* Rating Stars */}
                                             <div className="flex items-center gap-1 mb-4">
-                                                {Array.from({ length: review.rating }, (_, i) => (
+                                            {Array.from({ length: review.rating }, (_, i) => (
                                                     <motion.div
                                                         key={i}
                                                         initial={{ scale: 0, rotate: -180 }}
@@ -221,11 +221,11 @@ function Testimonials({ reviews }) {
                                                     >
                                                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                                                     </motion.div>
-                                                ))}
-                                                {Array.from({ length: 5 - review.rating }, (_, i) => (
+                                            ))}
+                                            {Array.from({ length: 5 - review.rating }, (_, i) => (
                                                     <Star key={i} className="w-5 h-5 text-gray-600" />
-                                                ))}
-                                            </div>
+                                            ))}
+                                        </div>
                                             
                                             {/* Comment */}
                                             <div className="mb-6">
@@ -248,14 +248,14 @@ function Testimonials({ reviews }) {
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                                        {review.clientName.charAt(0)}
-                                                    </div>
+                                            {review.clientName.charAt(0)}
+                                        </div>
                                                     <div>
                                                         <p className="text-white font-medium text-sm">{review.clientName}</p>
                                                         <p className="text-gray-400 text-xs">Verified Client</p>
                                                     </div>
-                                                </div>
-                                                
+                                    </div>
+                                    
                                                 {/* Sparkle Effect */}
                                                 <motion.div
                                                     className="opacity-0 group-hover:opacity-100 transition-opacity"
@@ -264,8 +264,8 @@ function Testimonials({ reviews }) {
                                                 >
                                                     <Sparkles className="w-5 h-5 text-pink-400" />
                                                 </motion.div>
-                                            </div>
-
+                                    </div>
+                                    
                                             {/* Hover Glow Effect */}
                                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-pink-500/0 via-purple-500/0 to-blue-500/0 group-hover:from-pink-500/10 group-hover:via-purple-500/10 group-hover:to-blue-500/10 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
                                         </div>
@@ -353,15 +353,15 @@ function Testimonials({ reviews }) {
                             <div className="relative p-1 sm:p-2 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-pink-500/30 via-purple-500/30 to-blue-500/30 backdrop-blur-sm">
                                 <div className="relative bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-white/20 shadow-2xl flex flex-col max-h-[calc(80vh-2rem)] sm:max-h-[calc(85vh-2rem)] md:max-h-[calc(90vh-2rem)]">
                                     {/* Close Button */}
-                                    <motion.button
+                            <motion.button
                                         whileHover={{ scale: 1.1, rotate: 90 }}
                                         whileTap={{ scale: 0.9 }}
                                         className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg z-10"
-                                        onClick={closePopup}
-                                    >
+                                onClick={closePopup}
+                            >
                                         ×
-                                    </motion.button>
-                                    
+                            </motion.button>
+                            
                                     {/* Header */}
                                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 sm:justify-between mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt-10">
                                         <div className="flex items-center gap-3 sm:gap-4">
@@ -375,27 +375,27 @@ function Testimonials({ reviews }) {
                                         </div>
                                         
                                         <div className="flex items-center gap-1 sm:gap-2">
-                                            {Array.from({ length: selectedReview.rating }, (_, i) => (
+                                    {Array.from({ length: selectedReview.rating }, (_, i) => (
                                                 <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-yellow-400 fill-current" />
-                                            ))}
-                                            {Array.from({ length: 5 - selectedReview.rating }, (_, i) => (
+                                    ))}
+                                    {Array.from({ length: 5 - selectedReview.rating }, (_, i) => (
                                                 <Star key={i} className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-gray-600" />
-                                            ))}
-                                        </div>
-                                    </div>
+                                    ))}
+                                </div>
+                                </div>
 
                                     {/* Content */}
                                     <div className="flex-1 text-white text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-6 md:mb-8 overflow-y-auto custom-scrollbar pr-2 sm:pr-4 max-h-48 sm:max-h-64 md:max-h-80">
                                         <p className="text-gray-200 leading-6 sm:leading-7 md:leading-8">{selectedReview.comments}</p>
-                                    </div>
+                            </div>
 
                                     {/* Footer */}
                                     <div className="flex flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-white/10">
                                         <div className="flex items-center gap-2">
                                             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" />
                                             <span className="text-xs sm:text-sm text-gray-400">Verified Review</span>
-                                        </div>
-                                        
+                            </div>
+
                                         {/* Quote Icon */}
                                         <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-600/20 flex items-center justify-center">
                                             <Quote className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-pink-400" />
