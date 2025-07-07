@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Appointlet from '@appointlet/appointlet.js';
+// import Appointlet from '@appointlet/appointlet.js';
 import '@appointlet/appointlet.js/dist/appointlet.min.css';
 
 const BookingSlotfourtyfiveminutes = () => {
@@ -16,7 +16,7 @@ const BookingSlotfourtyfiveminutes = () => {
         if (response.ok) {
           
           setIsAuthorized(true);
-          console.log("user is authorized")
+          // User is authorized
           // You can also set state with booking details here
         } else {
           navigate('/'); // Redirect if booking is not found or unauthorized
@@ -32,10 +32,10 @@ const BookingSlotfourtyfiveminutes = () => {
 
   useEffect(() => {
     if (isAuthorized) {
-      const appointlet = new Appointlet('https://appt.link/meet-with-marina-kLDXzYpH/45-minutes-detailed-reading');
+      // const appointlet = new Appointlet('https://appt.link/meet-with-marina-kLDXzYpH/45-minutes-detailed-reading');
       const inlineEmbed = async () => {
-        const meetingData = await appointlet.inlineEmbed(document.getElementById('appointlet-embed'));
-        console.log(meetingData);
+        // const meetingData = await appointlet.inlineEmbed(document.getElementById('appointlet-embed'));
+        // Meeting data loaded
       };
       inlineEmbed();
     }

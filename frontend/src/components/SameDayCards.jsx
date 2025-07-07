@@ -15,6 +15,9 @@ const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 function SameDayCards() {
     const [showModal, setShowModal] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('stripe'); // 'stripe' or 'paypal'
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [error, setError] = useState(null);
+    const [paypalAvailable, setPaypalAvailable] = useState(true);
     const [modalContent, setModalContent] = useState({
         title: "",
         description: "",
@@ -46,6 +49,22 @@ function SameDayCards() {
         }
         return "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days";
     };
+
+    // Check PayPal availability on component mount
+    useEffect(() => {
+        const checkPayPalAvailability = async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/test-paypal`);
+                const result = await response.json();
+                setPaypalAvailable(result.success);
+            } catch (error) {
+                // PayPal not available
+                setPaypalAvailable(false);
+            }
+        };
+        
+        checkPayPalAvailability();
+    }, []);
 
     useEffect(() => {
         if (showModal) {
@@ -93,37 +112,82 @@ function SameDayCards() {
 
     const makePayment = async () => {
         if (paymentMethod === 'stripe') {
-            const stripe = await stripePromise;
+            setIsProcessing(true);
+            setError(null);
+            
+            try {
+        const stripe = await stripePromise;
 
-            const body = {
-                productName: modalContent.title,
-                userPrice: modalContent.price
-            };
+        const body = {
+            productName: modalContent.title,
+            userPrice: modalContent.price
+        };
 
-            const headers = {
-                "Content-Type": "application/json"
-            };
+        const headers = {
+            "Content-Type": "application/json"
+        };
 
-            const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-                method: "POST",
-                headers: headers,
-                body: JSON.stringify(body)
-            });
+        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body)
+        });
 
-            const session = await response.json();
+        const session = await response.json();
 
-            const result = await stripe.redirectToCheckout({
-                sessionId: session.id
-            });
+        const result = await stripe.redirectToCheckout({
+            sessionId: session.id
+        });
 
-            if (result.error) {
-                console.log(result.error.message);
+        if (result.error) {
+                    // Payment error
+                    setError(result.error.message);
+                }
+            } catch (err) {
+                setError("Payment processing failed. Please try again.");
+                console.error("Payment error:", err);
+            } finally {
+                setIsProcessing(false);
             }
         } else if (paymentMethod === 'paypal') {
-            // Find the selected card to get the PayPal link
-            const selectedCard = cards.find(card => card.title === modalContent.title);
-            if (selectedCard && selectedCard.paypalLink) {
-                window.open(selectedCard.paypalLink, '_blank');
+            if (!paypalAvailable) {
+                setError("PayPal is currently unavailable. Please use Stripe for payments.");
+                return;
+            }
+            
+            setIsProcessing(true);
+            setError(null);
+            
+            try {
+                const body = {
+                    productName: modalContent.title,
+                    userPrice: modalContent.price
+                };
+
+                const headers = {
+                    "Content-Type": "application/json"
+                };
+
+                const response = await fetch(`${API_URL}/api/create-paypal-order`, {
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify(body)
+                });
+
+                const result = await response.json();
+
+                if (result.approvalUrl) {
+                    window.location.href = result.approvalUrl;
+                } else if (result.error) {
+                    setError(result.error);
+                } else {
+                    setError("Failed to create PayPal order. Please try again.");
+                }
+            } catch (err) {
+                setError("PayPal payment processing failed. Please try again.");
+                console.error("PayPal payment error:", err);
+            } finally {
+                setIsProcessing(false);
             }
         }
     };
@@ -135,7 +199,7 @@ function SameDayCards() {
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-4xl md:text-5xl font-extrabold text-white mb-12"
+                    className="text-3xl md:text-5xl font-extrabold text-white mb-6 md:mb-12"
                 >
                     Express Reading
                 </motion.h1>
@@ -164,10 +228,10 @@ function SameDayCards() {
                             
                             <div className="p-6 space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <h2 className="text-xl font-bold text-white">{card.title}</h2>
+                                    <h2 className="text-lg sm:text-xl font-bold text-white">{card.title}</h2>
                                 </div>
                                 
-                                <p className="text-gray-300 text-sm leading-relaxed">
+                                <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
                                     {card.description}
                                 </p>
                                 <div className="flex flex-row items-center justify-between">
@@ -187,15 +251,15 @@ function SameDayCards() {
                 </div>
 
                 {showModal && (
-                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4">
                                   <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
                                   <motion.div
                                     initial={{ opacity: 0, scale: 0.9 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                                    className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-2xl w-full max-w-2xl max-h-[100vh] overflow-y-auto scrollbar-hide shadow-2xl border border-gray-800"
+                                    className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-none sm:rounded-2xl w-full h-full sm:max-w-2xl sm:h-auto shadow-2xl border border-gray-800 max-h-screen sm:max-h-[100vh] flex flex-col"
                                   >
-                                    <div className="p-6 sm:p-8">
+                                    <div className="p-6 sm:p-8 overflow-y-auto flex-1">
                                       <div className="flex justify-between items-center mb-6 sm:mb-8">
                                         <h2 className="text-xl sm:text-2xl font-medium text-gray-200">
                                           {modalContent.title}
@@ -295,32 +359,83 @@ function SameDayCards() {
                                             <span className="font-medium text-sm sm:text-base">Stripe Checkout</span>
                                           </button>
                                           
-                                          <button
-                                            onClick={() => setPaymentMethod('paypal')}
-                                            className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
-                                              paymentMethod === 'paypal'
-                                                ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                                                : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
-                                            }`}
-                                          >
-                                            <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                                            <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
-                                          </button>
+                                          {paypalAvailable ? (
+                                            <button
+                                              onClick={() => setPaymentMethod('paypal')}
+                                              className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
+                                                paymentMethod === 'paypal'
+                                                  ? 'border-blue-500 bg-blue-500/20 text-blue-300'
+                                                  : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
+                                              }`}
+                                            >
+                                              <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                              <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
+                                            </button>
+                                          ) : (
+                                            <div className="relative">
+                                              <button
+                                                disabled
+                                                className="p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 border-gray-600 bg-gray-700/50 text-gray-300 cursor-not-allowed"
+                                              >
+                                                <PaypalIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                                                <span className="font-medium text-sm sm:text-base">PayPal Checkout</span>
+                                              </button>
+                                              <div className="absolute -bottom-8 left-0 right-0 bg-amber-500/10 border border-amber-500/20 rounded-lg p-2 text-xs text-amber-300">
+                                                PayPal temporarily unavailable
+                                              </div>
+                                            </div>
+                                          )}
                                         </div>
+                                        {!paypalAvailable && (
+                                          <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                                            <p className="text-xs text-amber-300">
+                                              PayPal is currently being configured. Please use Stripe for payments.
+                                            </p>
+                                          </div>
+                                        )}
                                       </div>
                       
+                                      {error && (
+                                        <div className="mt-6 sm:mt-8 bg-red-900/30 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm">
+                                          <div className="flex items-start gap-3">
+                                            <div className="flex-shrink-0 mt-1">
+                                              <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                              </svg>
+                                            </div>
+                                            <div>
+                                              <p className="text-red-300 font-medium text-sm">
+                                                {error}
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )}
+
                                       <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                                         <button
                                           onClick={closeModal}
-                                          className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
+                                          disabled={isProcessing}
+                                          className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
                                           Close
                                         </button>
                                         <button
                                           onClick={makePayment}
-                                          className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                                          disabled={isProcessing}
+                                          className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                          {paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'}
+                                          {isProcessing ? (
+                                            <span className="flex items-center gap-2">
+                                              <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                              </svg>
+                                              Processing...
+                                            </span>
+                                          ) : (
+                                            paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'
+                                          )}
                                         </button>
                                       </div>
                                     </div>

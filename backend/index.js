@@ -9,6 +9,7 @@ import crypto from 'crypto';
 import Booking from './models/Booking.js';
 import Admin from './routes/Admin.js';
 import AdminPanel from './routes/AdminPanel.js';
+import AdminModel from './models/Admin.js';
 import authMiddleware from './middleware/auth.js';
 import routes from "./routes/ReviewsRoutes.js";
 import priceRoutes from './routes/PriceRoutes.js';
@@ -18,6 +19,19 @@ import nodemailer from 'nodemailer';
 
 
 dotenv.config();
+
+// Debug environment variables
+console.log('Environment check:');
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'NOT SET');
+console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET');
+console.log('STRIPE_SECRET:', process.env.STRIPE_SECRET ? 'Set' : 'NOT SET');
+
+// Set fallback JWT_SECRET if not provided
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'fallback-jwt-secret-for-development-only';
+  console.log('WARNING: Using fallback JWT_SECRET. Set JWT_SECRET in production!');
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET);
 const app = express();
@@ -37,14 +51,24 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-    origin:["https://www.soulsticetarot.com", "http://localhost:3000"],
-    methods:["POST","GET","PATCH","PUT","DELETE"],
-    credentials:true
+    origin: process.env.NODE_ENV === "production" 
+      ? ["https://www.soulsticetarot.com", "https://soulsticetarot.com"]
+      : ["http://localhost:3000", "http://localhost:8080"],
+    methods: ["POST", "GET", "PATCH", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"]
   }));
 
   const frontendapi = process.env.NODE_ENV === "production"
   ? "https://www.soulsticetarot.com"
   : "http://localhost:3000";
+
+  const backendapi = process.env.NODE_ENV === "production"
+  ? "https://www.soulsticetarot.com"
+  : "http://localhost:8080";
+
+  const PAYPAL_API_BASE = process.env.PAYPAL_API_BASE || "https://api-m.sandbox.paypal.com";
 
 // MongoDB connection
 const connectToMongoDB = async () => {
@@ -67,6 +91,49 @@ connectToMongoDB()
    
 app.get("/home", (req, res) => {
     res.status(200).json({ message: "I requested for home", success: true });
+});
+
+// Test endpoint for debugging
+app.get("/api/test-auth", (req, res) => {
+    console.log('Test auth endpoint - Request cookies:', req.cookies);
+    console.log('Test auth endpoint - Request headers:', req.headers);
+    res.status(200).json({ 
+        message: "Auth test endpoint", 
+        cookies: req.cookies,
+        hasToken: !!req.cookies.token,
+        env: process.env.NODE_ENV,
+        jwtSecret: process.env.JWT_SECRET ? 'Set' : 'Not set'
+    });
+});
+
+// Create admin user endpoint (for development only)
+app.post("/api/create-admin", async (req, res) => {
+    if (process.env.NODE_ENV === 'production') {
+        return res.status(403).json({ message: 'Not allowed in production' });
+    }
+    
+    try {
+        const { email, password } = req.body;
+        
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password required' });
+        }
+        
+        // Check if admin already exists
+        const existingAdmin = await AdminModel.findOne({ email });
+        if (existingAdmin) {
+            return res.status(400).json({ message: 'Admin already exists' });
+        }
+        
+        // Create new admin
+        const admin = new AdminModel({ email, password });
+        await admin.save();
+        
+        res.status(201).json({ message: 'Admin created successfully', email });
+    } catch (error) {
+        console.error('Create admin error:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 // Routes
@@ -371,7 +438,7 @@ if (!name || !email || !message || !readingtype) {
        <!-- Booking Confirmation -->
       <h1 style="color: #4CAF50; font-size: 32px; margin: 20px 0;">Booking Confirmed!</h1>
       <p>Hi <strong>${name}</strong>,</p>
-      <p>Thank you for choosing Marina's service! Your booking has been successfully received, and I’ll get back to you soon with more details. All further communication will happen through this email address.</p>
+      <p>Thank you for choosing Marina's service! Your booking has been successfully received, and I'll get back to you soon with more details. All further communication will happen through this email address.</p>
 
       <!-- Booking Details -->
       <div style="background-color: #1c1c1c; padding: 15px; border-radius: 8px; margin: 20px 0; text-align: left;">
@@ -487,11 +554,10 @@ app.patch('/api/booking/:id/status', async (req, res) => {
     try {
         const booking = await Booking.findOneAndUpdate(
             { bookingId: id },
-            { status },
-            { new: true }
+            { status },        { new: true }
         );
 
-        if (!booking) {
+   if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
 
@@ -546,6 +612,377 @@ app.post('/api/subscribe', (req, res) => {
     //     console.log(err.statusCode);
     //     res.status(500).json({ message: 'Subscription failed.' });
     // });
+});
+
+// PayPal OAuth token management
+let paypalAccessToken = null;
+let tokenExpiry = null;
+
+async function getPayPalAccessToken() {
+    // Check if we have a valid token
+    if (paypalAccessToken && tokenExpiry && Date.now() < tokenExpiry) {
+        return paypalAccessToken;
+    }
+
+    try {
+        console.log('Getting new PayPal access token...');
+        
+        const response = await fetch(`${PAYPAL_API_BASE}/v1/oauth2/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID_LIVE}:${process.env.PAYPAL_CLIENT_SECRET_LIVE}`).toString('base64')}`
+            },
+            body: 'grant_type=client_credentials'
+        });
+
+        if (!response.ok) {
+            throw new Error(`PayPal OAuth failed: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        paypalAccessToken = data.access_token;
+        tokenExpiry = Date.now() + (data.expires_in * 1000) - 60000; // Expire 1 minute early
+        
+        console.log('PayPal access token obtained successfully');
+        return paypalAccessToken;
+    } catch (error) {
+        console.error('PayPal OAuth error:', error);
+        throw error;
+    }
+}
+
+// PayPal Checkout Session Endpoint (Express reading payment)
+app.post('/api/create-paypal-order', async (req, res) => {
+    const { productName, userPrice } = req.body;
+    
+    const bookingId = crypto.randomBytes(16).toString('hex');
+
+    try {
+        console.log('Creating PayPal order for:', productName, userPrice);
+        
+        // Check if PayPal credentials are set
+        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+            console.error('PayPal credentials not configured');
+            return res.status(500).json({ error: 'PayPal not configured' });
+        }
+
+        const accessToken = await getPayPalAccessToken();
+        console.log('PayPal access token obtained');
+
+        const requestBody = {
+            intent: 'CAPTURE',
+            purchase_units: [{
+                reference_id: bookingId,
+                description: productName,
+                amount: {
+                    currency_code: 'USD',
+                    value: userPrice.toString()
+                }
+            }],
+            application_context: {
+                return_url: `${backendapi}/api/paypal-capture`,
+                cancel_url: `${frontendapi}/cancelpayment`,
+                brand_name: 'The New York Oracle',
+                landing_page: 'BILLING',
+                user_action: 'PAY_NOW',
+                shipping_preference: 'NO_SHIPPING'
+            }
+        };
+
+        console.log('PayPal request body:', JSON.stringify(requestBody, null, 2));
+
+        const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        console.log('PayPal API response status:', response.status);
+        
+        const order = await response.json();
+        console.log('PayPal API response:', JSON.stringify(order, null, 2));
+
+        if (order.id) {
+            await Booking.create({
+                bookingId,
+                sessionId: order.id,
+                productName,
+                userPrice,
+                currency: 'usd',
+                status: 'pending',
+                paymentMethod: 'paypal'
+            });
+
+            const approvalUrl = order.links.find(link => link.rel === 'approve')?.href;
+            
+            if (!approvalUrl) {
+                console.error('No approval URL found in PayPal response:', order);
+                throw new Error('PayPal order created but no approval URL received');
+            }
+            
+            res.status(200).json({ 
+                id: order.id,
+                approvalUrl: approvalUrl
+            });
+            console.log("PayPal order created successfully!");
+        } else {
+            console.error('PayPal order creation failed:', order);
+            
+            // Handle specific PayPal errors
+            if (order.error) {
+                if (order.error.name === 'CURRENCY_NOT_SUPPORTED') {
+                    throw new Error('Currency not supported. Please contact support.');
+                } else if (order.error.name === 'INVALID_REQUEST') {
+                    throw new Error('Invalid payment request. Please try again.');
+                } else {
+                    throw new Error(`PayPal error: ${order.error.message || order.error.name}`);
+                }
+            }
+            
+            throw new Error(`Failed to create PayPal order: ${JSON.stringify(order)}`);
+        }
+    } catch (error) {
+        console.error('PayPal order creation error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// PayPal Checkout Session Endpoint (Tip payment)
+app.post('/api/create-paypal-order-tip', async (req, res) => {
+    const { productName, userPrice } = req.body;
+    
+    const bookingId = crypto.randomBytes(16).toString('hex');
+
+    try {
+        console.log('Creating PayPal tip order for:', productName, userPrice);
+        
+        // Check if PayPal credentials are set
+        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+            console.error('PayPal credentials not configured');
+            return res.status(500).json({ error: 'PayPal not configured' });
+        }
+
+        const accessToken = await getPayPalAccessToken();
+        console.log('PayPal access token obtained for tip');
+
+        const requestBody = {
+            intent: 'CAPTURE',
+            purchase_units: [{
+                reference_id: bookingId,
+                description: productName,
+                amount: {
+                    currency_code: 'USD',
+                    value: userPrice.toString()
+                }
+            }],
+            application_context: {
+                return_url: `${backendapi}/api/paypal-tip-capture`,
+                cancel_url: `${frontendapi}/cancelpayment`,
+                brand_name: 'The New York Oracle',
+                landing_page: 'BILLING',
+                user_action: 'PAY_NOW',
+                shipping_preference: 'NO_SHIPPING'
+            }
+        };
+
+        console.log('PayPal tip request body:', JSON.stringify(requestBody, null, 2));
+
+        const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        console.log('PayPal tip API response status:', response.status);
+        
+        const order = await response.json();
+        console.log('PayPal tip API response:', JSON.stringify(order, null, 2));
+
+        if (order.id) {
+            await Booking.create({
+                bookingId,
+                sessionId: order.id,
+                productName,
+                userPrice,
+                currency: 'usd',
+                status: 'pending',
+                paymentMethod: 'paypal'
+            });
+
+            const approvalUrl = order.links.find(link => link.rel === 'approve')?.href;
+            
+            if (!approvalUrl) {
+                console.error('No approval URL found in PayPal tip response:', order);
+                throw new Error('PayPal tip order created but no approval URL received');
+            }
+            
+            res.status(200).json({ 
+                id: order.id,
+                approvalUrl: approvalUrl
+            });
+            console.log("PayPal tip order created successfully!");
+        } else {
+            console.error('PayPal tip order creation failed:', order);
+            
+            // Handle specific PayPal errors
+            if (order.error) {
+                if (order.error.name === 'CURRENCY_NOT_SUPPORTED') {
+                    throw new Error('Currency not supported. Please contact support.');
+                } else if (order.error.name === 'INVALID_REQUEST') {
+                    throw new Error('Invalid payment request. Please try again.');
+                } else {
+                    throw new Error(`PayPal error: ${order.error.message || order.error.name}`);
+                }
+            }
+            
+            throw new Error(`Failed to create PayPal tip order: ${JSON.stringify(order)}`);
+        }
+    } catch (error) {
+        console.error('PayPal tip order creation error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// PayPal payment capture endpoint
+app.get('/api/paypal-capture', async (req, res) => {
+    const { token, PayerID } = req.query;
+    
+    try {
+        console.log('PayPal capture request:', { token, PayerID });
+        
+        if (!token) {
+            console.error('No token provided for PayPal capture');
+            return res.redirect(`${frontendapi}/cancelpayment?error=no_token`);
+        }
+
+        const accessToken = await getPayPalAccessToken();
+        
+        const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${token}/capture`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        console.log('PayPal capture response status:', response.status);
+        
+        const result = await response.json();
+        console.log('PayPal capture result:', JSON.stringify(result, null, 2));
+
+        if (result.status === 'COMPLETED') {
+            // Find the booking by PayPal order ID
+            const booking = await Booking.findOne({ sessionId: token });
+            
+            if (booking) {
+                // Update booking status
+                booking.status = 'completed';
+                booking.paymentMethod = 'paypal';
+                await booking.save();
+                
+                console.log('PayPal payment completed successfully for booking:', booking.bookingId);
+                
+                // Redirect to booking form for express readings
+                res.redirect(`${frontendapi}/book/${booking.bookingId}`);
+            } else {
+                console.error('Booking not found for PayPal order:', token);
+                res.redirect(`${frontendapi}/cancelpayment?error=booking_not_found`);
+            }
+        } else {
+            console.error('PayPal capture failed:', result);
+            res.redirect(`${frontendapi}/cancelpayment?error=capture_failed`);
+        }
+    } catch (error) {
+        console.error('PayPal capture error:', error);
+        res.redirect(`${frontendapi}/cancelpayment?error=capture_error`);
+    }
+});
+
+// PayPal tip payment capture endpoint
+app.get('/api/paypal-tip-capture', async (req, res) => {
+    const { token, PayerID } = req.query;
+    
+    try {
+        console.log('PayPal tip capture request:', { token, PayerID });
+        
+        if (!token) {
+            console.error('No token provided for PayPal tip capture');
+            return res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=no_token`);
+        }
+
+        const accessToken = await getPayPalAccessToken();
+        
+        const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${token}/capture`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+
+        console.log('PayPal tip capture response status:', response.status);
+        
+        const result = await response.json();
+        console.log('PayPal tip capture result:', JSON.stringify(result, null, 2));
+
+        if (result.status === 'COMPLETED') {
+            // Find the booking by PayPal order ID
+            const booking = await Booking.findOne({ sessionId: token });
+            
+            if (booking) {
+                // Update booking status
+                booking.status = 'completed';
+                booking.paymentMethod = 'paypal';
+                await booking.save();
+                
+                console.log('PayPal tip payment completed successfully for booking:', booking.bookingId);
+                
+                // Redirect to frontend with success parameters
+                res.redirect(`${frontendapi}/?payment=success&method=paypal&type=tip&amount=${booking.userPrice}`);
+            } else {
+                console.error('Booking not found for PayPal tip order:', token);
+                res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=booking_not_found`);
+            }
+        } else {
+            console.error('PayPal tip capture failed:', result);
+            res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=capture_failed`);
+        }
+    } catch (error) {
+        console.error('PayPal tip capture error:', error);
+        res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=capture_error`);
+    }
+});
+
+// PayPal test endpoint
+app.get('/api/test-paypal', async (req, res) => {
+    try {
+        // Check if PayPal credentials are set
+        if (!process.env.PAYPAL_CLIENT_ID || !process.env.PAYPAL_CLIENT_SECRET) {
+            console.error('PayPal credentials not configured');
+            return res.status(500).json({ success: false, error: 'PayPal credentials not configured' });
+        }
+
+        // Try to get an access token
+        const accessToken = await getPayPalAccessToken();
+        
+        if (accessToken) {
+            console.log('PayPal configuration is working');
+            res.json({ success: true, message: 'PayPal is configured and working' });
+        } else {
+            console.error('Failed to get PayPal access token');
+            res.status(500).json({ success: false, error: 'Failed to get PayPal access token' });
+        }
+    } catch (error) {
+        console.error('PayPal test error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 // Start the server

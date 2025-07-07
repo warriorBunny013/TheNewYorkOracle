@@ -19,7 +19,7 @@ function SameDayForm() {
         if (response.ok) {
           
           setIsAuthorized(true);
-          console.log("user is authorized")
+          // User is authorized
           // You can also set state with booking details here
         } else {
           navigate('/'); // Redirect if booking is not found or unauthorized

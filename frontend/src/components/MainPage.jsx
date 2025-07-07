@@ -1,3 +1,4 @@
+import SEO from "./SEO";
 import React, { useEffect, useState } from 'react';
 import About from './About';
 import Testimonials from './Testimonials';
@@ -9,6 +10,7 @@ import SameDayCards from './SameDayCards';
 import FeedbackForm from './FeedbackForm';
 import NewsletterPopup from './NewsletterPopup';
 import Footer from './Footer';
+import Press from './Press';
 import { getAllReview } from '../Api/api';
 import { Clock, Zap, ArrowRight, PlayCircle, Hourglass,Menu, X, ChevronRight,Coffee,Heart,CreditCard,AlertCircle,Plus,DollarSign,Minus} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -24,6 +26,13 @@ const MainPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
+  const [paypalAvailable, setPaypalAvailable] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [paymentMessage, setPaymentMessage] = useState('');
 
   // Date detection logic
   const isOnBreak = () => {
@@ -82,9 +91,71 @@ const MainPage = () => {
    return () => clearInterval(interval);
   },[])
 
+  // Check for payment success/failure in URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const payment = urlParams.get('payment');
+    const method = urlParams.get('method');
+    const type = urlParams.get('type');
+    const amount = urlParams.get('amount');
+    const error = urlParams.get('error');
+    
+    if (payment === 'success' && method === 'paypal' && type === 'tip') {
+      setPaymentMessage(`Thank you for your $${amount} tip!`);
+      setShowSuccessMessage(true);
+      // Clear the URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 5000);
+    } else if (payment === 'failed' && method === 'paypal' && type === 'tip') {
+      let errorMessage = 'Payment failed. Please try again.';
+      if (error === 'capture_failed') {
+        errorMessage = 'Payment was not completed. Please try again.';
+      } else if (error === 'booking_not_found') {
+        errorMessage = 'Payment processing error. Please contact support.';
+      } else if (error === 'capture_error') {
+        errorMessage = 'Payment processing failed. Please try again.';
+      }
+      setPaymentMessage(errorMessage);
+      setShowErrorMessage(true);
+      // Clear the URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 5000);
+    }
+  }, []);
+
+  // Check PayPal availability on component mount
+  useEffect(() => {
+    const checkPayPalAvailability = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/test-paypal`);
+        const result = await response.json();
+        setPaypalAvailable(result.success);
+      } catch (error) {
+        // PayPal not available
+        setPaypalAvailable(false);
+      }
+    };
+    
+    checkPayPalAvailability();
+  }, []);
+
   const getAllReviews = async () => {
-    let response = await getAllReview();
-    setReviews(response.data);
+    try {
+      let response = await getAllReview();
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      // Set empty array as fallback
+      setReviews([]);
+    }
   };
 
   // const toggleMenu = () => {
@@ -125,7 +196,7 @@ const MainPage = () => {
       setScrolled(window.scrollY > 20);
       
       // Determine active section based on scroll position
-      const sections = ['about', 'services', 'testimonials'];
+      const sections = ['about', 'services', 'press', 'testimonials'];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -166,6 +237,7 @@ const MainPage = () => {
   const navItems = [
     { id: 'about', label: 'About me' },
     { id: 'services', label: 'Services' },
+    { id: 'press', label: 'Press & Media' },
     { id: 'testimonials', label: 'Testimonials' }
   ];
   
@@ -177,9 +249,6 @@ const MainPage = () => {
   const [tipAmount, setTipAmount] = useState(5);
   const [customAmount, setCustomAmount] = useState("");
   const [isCustom, setIsCustom] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState(null);
 
 const handleTip = () => {
     setShowTipModal(true);
@@ -261,7 +330,7 @@ const handleTip = () => {
               "Content-Type": "application/json"
           };
   
-          const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+          const response = await fetch(`${API_URL}/api/create-checkout-session-tip`, {
               method: "POST",
               headers: headers,
               body: JSON.stringify(body)
@@ -274,26 +343,9 @@ const handleTip = () => {
           });
   
           if (result.error) {
-              console.log(result.error.message);
+              // Payment error
+              setError(result.error.message);
           }
-      
-      const { clientSecret, error: backendError } = await response.json();
-      
-      if (backendError) {
-        setError(backendError);
-        setIsProcessing(false);
-        return;
-      }
-    
-      
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({
-        clientSecret,
-      });
-      
-      if (error) {
-        setError(error.message);
-      }
     } catch (err) {
       setError("Payment processing failed. Please try again.");
       console.error("Payment error:", err);
@@ -302,6 +354,53 @@ const handleTip = () => {
     }
   };
 
+  const handlePayPalPayment = async () => {
+    const amount = getFinalAmount();
+    
+    if (!isValidAmount()) {
+      setError("Please select an amount greater than 0");
+      return;
+    }
+    
+    if (!paypalAvailable) {
+      setError("PayPal is currently unavailable. Please use Stripe for payments.");
+      return;
+    }
+    
+    setIsProcessing(true);
+    
+    try {
+      const body = {
+          productName: 'Thanks for supporting!',
+          userPrice: amount
+      };
+
+      const headers = {
+          "Content-Type": "application/json"
+      };
+
+      const response = await fetch(`${API_URL}/api/create-paypal-order-tip`, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body)
+      });
+
+      const result = await response.json();
+
+      if (result.approvalUrl) {
+          window.location.href = result.approvalUrl;
+      } else if (result.error) {
+          setError(result.error);
+      } else {
+          setError("Failed to create PayPal order. Please try again.");
+      }
+    } catch (err) {
+      setError("PayPal payment processing failed. Please try again.");
+      console.error("PayPal payment error:", err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const handleVenmoPayment = () => {
     if (!isValidAmount()) {
@@ -330,6 +429,8 @@ const handleTip = () => {
     
     if (paymentMethod === 'stripe') {
       handleStripePayment();
+    } else if (paymentMethod === 'paypal') {
+      handlePayPalPayment();
     } else if (paymentMethod === 'venmo') {
       handleVenmoPayment();
     }
@@ -338,9 +439,9 @@ const handleTip = () => {
 
 
 
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  
-  console.log(windowWidth);
+      // const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+    
+    // Window width updated
   // const navigateTo = (sectionId) => {
   //   const element = document.getElementById(sectionId);
   //   if (element) {
@@ -348,9 +449,9 @@ const handleTip = () => {
   //   }
   // };
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+    // const handleResize = () => {
+    //   // setWindowWidth(window.innerWidth);
+    // };
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -370,11 +471,16 @@ const handleTip = () => {
       }
     })
   };
-
   return (
     <>
+      <SEO 
+        title="The New York Oracle - Professional Tarot Readings & Spiritual Guidance | Marina Smargiannakis"
+        description="Get professional tarot readings and spiritual guidance from The New York Oracle. Featured in Forbes and PopSugar. Express readings, live consultations, and mentorship available. Book your session today."
+        keywords="tarot reading, spiritual guidance, psychic reading, New York oracle, Marina Smargiannakis, express reading, live tarot, spiritual consultation, intuitive reading, professional psychic"
+        image="https://thenewyorkoracle.com/hero.png"
+        url="https://thenewyorkoracle.com/"
+      />
       <div className="relative">
-      <>
       {/* Main Navbar */}
       <motion.header
         initial={{ y: -100 }}
@@ -500,9 +606,9 @@ const handleTip = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 100 }}
-              className="h-full flex flex-col justify-center items-center"
+              className="h-full flex flex-col justify-center items-center px-4"
             >
-              <div className="flex flex-col space-y-8 items-center">
+              <div className="flex flex-col space-y-8 items-center w-full max-w-xs">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.id}
@@ -510,12 +616,12 @@ const handleTip = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
-                    
+                    className="w-full flex justify-center"
                   >
                     <a
                       href={`#${item.id}`}
                       onClick={() => navigateTo(item.id)}
-                      className="group flex justify-center items-center text-lg font-medium text-white hover:text-purple-300 transition-colors duration-300"
+                      className="group flex justify-center items-center text-lg font-medium text-white hover:text-purple-300 transition-colors duration-300 text-center"
                     >
                       <span>{item.label}</span>
                       <motion.div
@@ -537,12 +643,12 @@ const handleTip = () => {
                   transition={{ delay: navItems.length * 0.1, duration: 0.5 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="mt-8"
+                  className="mt-8 w-full flex justify-center"
                 >
                   <a
                     href="mailto:soulsticetarot143@gmail.com"
                     onClick={handleContactClick}
-                    className="relative text-sm overflow-hidden inline-flex items-center px-8 py-3 font-medium rounded-full text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="relative text-sm overflow-hidden inline-flex items-center justify-center px-8 py-3 font-medium rounded-full text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <span className="relative z-10">Contact me</span>
                     <motion.span
@@ -559,11 +665,11 @@ const handleTip = () => {
               transition={{ delay: navItems.length * 0.1, duration: 0.5 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-8"
+              className="mt-8 w-full flex justify-center"
             >
             <button
               onClick={handleTip}
-              className="flex text-sm items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20 backdrop-blur-sm"
+              className="flex text-sm items-center justify-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20 backdrop-blur-sm"
              
             >
               <Coffee size={18} className="text-emerald-100" /> Support My Work
@@ -574,7 +680,7 @@ const handleTip = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+  
 
         {/* HERO SECTION STARTS FROM HERE!! */}
         <div className="bg-black text-white min-h-screen flex items-center overflow-hidden relative">
@@ -788,6 +894,7 @@ const handleTip = () => {
         <div id="about">
           <About/>
         </div>
+        <Press />
         <div id="testimonials">
           {reviews.length > 0 ? (
             <Testimonials reviews={reviews} />
@@ -795,6 +902,7 @@ const handleTip = () => {
             <p></p>
           )}
         </div>
+
         <div className='my-10 md:my-20 flex justify-center'>
         <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white p-8 rounded-xl shadow-2xl overflow-hidden relative">
       {/* Glass-like background effects */}
@@ -818,8 +926,8 @@ const handleTip = () => {
               Illuminate Your Path <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Instantly</span>
             </h2>
             
-            <p className="text-gray-300 text-lg">
-              Skip the queue and receive profound spiritual guidance within hours, not weeks. Urgent questions deserve immediate answers.
+            <p className="text-[1rem] md:text-lg text-gray-300 text-lg">
+              Skip the queue and receive profound spiritual guidance within days, not months. Urgent questions deserve immediate answers.
             </p>
             
             {getBreakMessage() && (
@@ -827,7 +935,7 @@ const handleTip = () => {
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
                     <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M8.257 3.099c.3-.921 1.603-.921 1.902 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div>
@@ -841,10 +949,10 @@ const handleTip = () => {
             
             <div className="space-y-4 py-2">
               <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
-                <PlayCircle className="h-5 w-5 text-blue-400" />
+                <PlayCircle className="h-10 w-10 md:h-5 md:w-5 text-blue-400" />
                 <div>
                   <span className="font-semibold">Pre-Recorded Readings</span>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-xs sm:text-sm mt-2 md:mt-0 text-gray-300">
                     {isOnBreak() 
                       ? "Detailed analysis delivered to your inbox post Aug 1" 
                       : "Detailed analysis delivered to your inbox within 24-72 hours"
@@ -854,10 +962,10 @@ const handleTip = () => {
               </div>
               
               <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
-                <Clock className="h-5 w-5 text-purple-400" />
+                <Clock className="h-10 w-10 md:h-5 md:w-5 text-purple-400" />
                 <div>
                   <span className="font-semibold">Live Readings</span>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-xs sm:text-sm mt-2 md:mt-0 text-gray-300">
                     {isOnBreak() 
                       ? "Priority real-time consultations post Aug 1" 
                       : "Priority real-time consultations within 24-72 hours after purchase"
@@ -876,7 +984,7 @@ const handleTip = () => {
       block: 'start'
     });
   }}
-  className="group w-full md:w-[70%] lg:w-[50%] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 px-8 py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-purple-500/25 backdrop-blur-sm border border-white/10"
+  className="group text-sm md:text-[1rem] w-full md:w-[70%] lg:w-[50%] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 px-8 py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-purple-500/25 backdrop-blur-sm border border-white/10"
 >
   Accelerate Your Journey
   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
@@ -924,9 +1032,9 @@ const handleTip = () => {
         </div>
 
         <FeedbackForm />
-        <div id="newsletter">
+        {/* <div id="newsletter">
           <NewsletterPopup/>
-        </div>
+        </div> */}
            
         <Footer />
       </div>
@@ -1046,16 +1154,17 @@ const handleTip = () => {
                     <CreditCard size={18} className={paymentMethod === 'stripe' ? 'text-emerald-200' : 'text-gray-300'} /> 
                     Stripe
                   </button>
-                  {/* <button 
-                    onClick={() => setPaymentMethod('venmo')}
+                  <button 
+                    onClick={() => setPaymentMethod('paypal')}
                     className={`text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 ${
-                      paymentMethod === 'venmo'
+                      paymentMethod === 'paypal'
                         ? 'bg-gradient-to-br from-emerald-600 to-teal-700 shadow-lg shadow-emerald-900/20'
                         : 'bg-gray-800 hover:bg-gray-700'
-                    }`}
+                    } ${!paypalAvailable ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={!paypalAvailable}
                   >
-                    {copied ? 'Copied!' : 'Venmo'}
-                  </button> */}
+                    PayPal
+                  </button>
                 </div>
               </div>
               
@@ -1086,13 +1195,73 @@ const handleTip = () => {
                 ) : (
                   <>
                     <Heart size={18} className="text-green-200" /> 
-                    Send ${getFinalAmount()} via {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : '...'}
+                    Send ${getFinalAmount()} via {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : '...'}
                   </>
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : 'our payment partners'}</p>
+              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : 'Venmo'}</p>
             </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-br from-emerald-900 to-teal-900 border border-emerald-500/20 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center"
+          >
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-emerald-300 mb-2">Payment Successful!</h3>
+              <p className="text-emerald-200">{paymentMessage}</p>
+            </div>
+            
+            <button 
+              onClick={() => setShowSuccessMessage(false)}
+              className="w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors duration-200"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {showErrorMessage && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-br from-red-900 to-red-800 border border-red-500/20 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center"
+          >
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-red-300 mb-2">Payment Failed</h3>
+              <p className="text-red-200">{paymentMessage}</p>
+            </div>
+            
+            <button 
+              onClick={() => setShowErrorMessage(false)}
+              className="w-full py-3 px-6 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition-colors duration-200"
+            >
+              Close
+            </button>
           </motion.div>
         </div>
       )}

@@ -5,6 +5,7 @@
   "proxy": "https://api.soulsticetarot.com",
   "dependencies": {
     "@appointlet/appointlet.js": "^3.0.7",
+    "@paypal/react-paypal-js": "^8.8.3",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
     "@stripe/stripe-js": "^4.10.0",
@@ -20,6 +21,7 @@
     "maath": "^0.10.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
