@@ -314,7 +314,7 @@ const MarinaAbout = () => {
             className="space-y-4 text-sm md:text-[1rem]"
           >
             <p className="text-white/80 leading-loose">
-              I offer insightful Tarot Readings to illuminate your path and provide clarity. Beyond readings, my Mentorship program empowers you to tap into your inner wisdom, refine your intuition, and manifest your desires.
+             I offer insightful Tarot Readings to illuminate your path, provide clarity. Longer readings entail empowering you to tap into your inner wisdom, refine your intuition, and manifest your desires.
             </p>
             
             <p className="text-white/80 leading-loose">
