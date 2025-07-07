@@ -321,13 +321,13 @@ const MarinaAbout = () => {
               Together, we'll align your energy and unlock your full potential. Just authentic guidance using Tarot, Intuition, and Divine connection. Allow me to help you on your journey and manifest your best life.
             </p>
           </motion.div>
-          <div className='pt-6 flex flex-wrap items-center justify-between'>
+          <div className='pt-10 flex flex-wrap items-center gap-5 justify-between'>
             {/* Social Links */}
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="flex -mb-8 space-x-4"
+            className="flex items-center space-x-4"
           >
             <button  onClick={() => handleInsta('https://www.instagram.com/soulstice_tarot')} className="w-10 h-10 flex items-center justify-center rounded-full relative overflow-hidden  group transition-all duration-500">
       <svg className="fill-white relative z-10 transition-all duration-500 group-hover:fill-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 51 51" fill="none">
@@ -374,12 +374,12 @@ const MarinaAbout = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-           className="flex mt-14 [340px]:mt-0 [422px]:-mt-2 flex-wrap justify-end gap-2">
+           className="flex items-center gap-2">
             <button 
               className="flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20 backdrop-blur-sm"
               onClick={handleTip}
             >
-              <Coffee size={18} className="text-emerald-100" /> Support My Work
+              <Coffee size={18} className="text-emerald-100 text-sm md:text-base" /> Support My Work
             </button>
           </motion.div>
 

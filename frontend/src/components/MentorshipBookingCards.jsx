@@ -123,13 +123,13 @@ function MentorshipBookingCards() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.3 }}
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 sm:mb-6 md:mb-8 lg:mb-12 text-center md:text-left"
+                    className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 md:mb-8 lg:mb-12 text-center md:text-left"
                 >
                     Mentorship Program
                 </motion.h1>
 
                 <motion.div 
-                    className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8"
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-8"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -172,7 +172,7 @@ function MentorshipBookingCards() {
                                         onClick={() => openModal(card.title, card.description, card.price,card.time,card.cancellationPolicy, card.type)}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="w-full w-[8rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                                        className="w-full w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                                     >
                                         Book a Slot
                                     </motion.button>
@@ -187,13 +187,13 @@ function MentorshipBookingCards() {
 
                
                        {showModal && (
-                         <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4">
+                         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
                            <motion.div
                              initial={{ opacity: 0, scale: 0.9 }}
                              animate={{ opacity: 1, scale: 1 }}
                              transition={{ duration: 0.3, ease: "easeInOut" }}
-                             className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-none sm:rounded-xl md:rounded-2xl w-full h-full sm:max-w-2xl sm:h-auto sm:mx-4 shadow-2xl border border-gray-800 max-h-screen sm:max-h-[90vh] flex flex-col"
+                             className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border border-gray-800 max-h-[90vh] flex flex-col"
                            >
                              <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
                                <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
@@ -263,18 +263,18 @@ function MentorshipBookingCards() {
                                  </p>
                                </div>
                
-                               <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                                 <button
-                                   onClick={closeModal}
-                                   className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
-                                 >
-                                   Close
-                                 </button>
+                               <div className="mt-6 sm:mt-8 flex flex-row justify-end space-x-4">
                                  <button
                                    onClick={() => handleBookingRedirect(modalContent.title)}
                                    className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:from-blue-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                                  >
                                    Book Now
+                                 </button>
+                                 <button
+                                   onClick={closeModal}
+                                   className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
+                                 >
+                                   Close
                                  </button>
                                </div>
                              </div>
