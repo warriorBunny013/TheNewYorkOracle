@@ -1012,7 +1012,7 @@ const handleTip = () => {
           <div id="samedayexpress">
           <SameDayCards />
           </div>
-          <MentorshipBookingCards />
+          {/* <MentorshipBookingCards /> */}
         </div>
 
         <FeedbackForm />
