@@ -7,7 +7,7 @@ function Footer() {
   };
 
   const handleContactClick = (e) => {
-    const isMobile = window.innerWidth <= 767;
+    // const isMobile = window.innerWidth <= 767;
     const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
     if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {

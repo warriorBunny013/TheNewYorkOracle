@@ -1,6 +1,7 @@
+import SEO from "./SEO";
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { Coffee, Heart, Send, X, Plus, Minus, DollarSign, CreditCard, AlertCircle } from 'lucide-react';
+import { Coffee, Heart, X, Plus, Minus, DollarSign, CreditCard, AlertCircle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { API_URL } from "../utils/apiConfig";
 
@@ -15,14 +16,74 @@ const MarinaAbout = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
+  const [paypalAvailable, setPaypalAvailable] = useState(true);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [paymentMessage, setPaymentMessage] = useState('');
   
-  const handleCopyVenmo = () => {
-    navigator.clipboard.writeText('@Marina-Tarot');
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-    setPaymentMethod('venmo');
-  };
+  // Check PayPal availability on component mount
+  useEffect(() => {
+    const checkPayPalAvailability = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/test-paypal`);
+        const result = await response.json();
+        setPaypalAvailable(result.success);
+      } catch (error) {
+        // PayPal not available
+        setPaypalAvailable(false);
+      }
+    };
+    
+    checkPayPalAvailability();
+  }, []);
+
+  // Check for payment success/failure in URL parameters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const payment = urlParams.get('payment');
+    const method = urlParams.get('method');
+    const type = urlParams.get('type');
+    const amount = urlParams.get('amount');
+    const error = urlParams.get('error');
+    
+    if (payment === 'success' && method === 'paypal' && type === 'tip') {
+      setPaymentMessage(`Thank you for your $${amount} tip!`);
+      setShowSuccessMessage(true);
+      // Clear the URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 5000);
+    } else if (payment === 'failed' && method === 'paypal' && type === 'tip') {
+      let errorMessage = 'Payment failed. Please try again.';
+      if (error === 'capture_failed') {
+        errorMessage = 'Payment was not completed. Please try again.';
+      } else if (error === 'booking_not_found') {
+        errorMessage = 'Payment processing error. Please contact support.';
+      } else if (error === 'capture_error') {
+        errorMessage = 'Payment processing failed. Please try again.';
+      }
+      setPaymentMessage(errorMessage);
+      setShowErrorMessage(true);
+      // Clear the URL parameters
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Hide error message after 5 seconds
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 5000);
+    }
+  }, []);
+
+  // const handleCopyVenmo = () => {
+  //   navigator.clipboard.writeText('@Marina-Tarot');
+  //   setCopied(true);
+  //   setTimeout(() => setCopied(false), 2000);
+  //   setPaymentMethod('venmo');
+  // };
 
   const handleTip = () => {
     setShowTipModal(true);
@@ -104,7 +165,7 @@ const MarinaAbout = () => {
               "Content-Type": "application/json"
           };
   
-          const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+          const response = await fetch(`${API_URL}/api/create-checkout-session-tip`, {
               method: "POST",
               headers: headers,
               body: JSON.stringify(body)
@@ -117,26 +178,9 @@ const MarinaAbout = () => {
           });
   
           if (result.error) {
-              console.log(result.error.message);
+              // Payment error
+              setError(result.error.message);
           }
-      
-      const { clientSecret, error: backendError } = await response.json();
-      
-      if (backendError) {
-        setError(backendError);
-        setIsProcessing(false);
-        return;
-      }
-    
-      
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({
-        clientSecret,
-      });
-      
-      if (error) {
-        setError(error.message);
-      }
     } catch (err) {
       setError("Payment processing failed. Please try again.");
       console.error("Payment error:", err);
@@ -145,19 +189,52 @@ const MarinaAbout = () => {
     }
   };
 
-
-  const handleVenmoPayment = () => {
+  const handlePayPalPayment = async () => {
+    const amount = getFinalAmount();
+    
     if (!isValidAmount()) {
       setError("Please select an amount greater than 0");
       return;
     }
     
-    // For a real implementation, you'd redirect to Venmo's payment page
-    // or use their SDK to initiate a payment
-    window.open(`https://venmo.com/?txn=pay&audience=private&recipients=Marina-Tarot&amount=${getFinalAmount()}&note=Tarot%20Support`, "_blank");
+    if (!paypalAvailable) {
+      setError("PayPal is currently unavailable. Please use Stripe for payments.");
+      return;
+    }
     
-    // Close modal after opening Venmo
-    setShowTipModal(false);
+    setIsProcessing(true);
+    
+    try {
+      const body = {
+          productName: 'Thanks for supporting!',
+          userPrice: amount
+      };
+
+      const headers = {
+          "Content-Type": "application/json"
+      };
+
+      const response = await fetch(`${API_URL}/api/create-paypal-order-tip`, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body)
+      });
+
+      const result = await response.json();
+
+      if (result.approvalUrl) {
+          window.location.href = result.approvalUrl;
+      } else if (result.error) {
+          setError(result.error);
+      } else {
+          setError("Failed to create PayPal order. Please try again.");
+      }
+    } catch (err) {
+      setError("PayPal payment processing failed. Please try again.");
+      console.error("PayPal payment error:", err);
+    } finally {
+      setIsProcessing(false);
+    }
   };
   
   const handlePayment = () => {
@@ -173,8 +250,8 @@ const MarinaAbout = () => {
     
     if (paymentMethod === 'stripe') {
       handleStripePayment();
-    } else if (paymentMethod === 'venmo') {
-      handleVenmoPayment();
+    } else if (paymentMethod === 'paypal') {
+      handlePayPalPayment();
     }
   };
   const handleInsta = (url) => {
@@ -185,7 +262,15 @@ const MarinaAbout = () => {
     window.open(url, "_blank");
   }
   return (
-    <div className="flex items-center justify-center px-4 py-16 pt-40">
+    <>
+      <SEO 
+        title="About Marina - Professional Tarot Reader & Spiritual Guide | The New York Oracle"
+        description="Meet Marina, your professional tarot reader and spiritual guide. Discover her journey in intuitive healing, manifestation coaching, and providing insightful tarot readings."
+        keywords="Marina tarot reader, spiritual guide, intuitive healer, manifestation coach, professional psychic, tarot reading"
+        image="https://thenewyorkoracle.com/soulsticetarot.jpg"
+        url="https://thenewyorkoracle.com/about"
+      />
+      <div className="flex items-center justify-center px-4 py-16 pt-40">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -208,7 +293,7 @@ const MarinaAbout = () => {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
+            className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600"
           >
             About Marina
           </motion.h2>
@@ -217,7 +302,7 @@ const MarinaAbout = () => {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-md text-gray-500 tracking-wide leading-relaxed"
+            className="text-sm md:text-[1rem] text-gray-500 tracking-wide leading-relaxed"
           >
             Tarot Reader | Intuitive Healer | Manifestation Coach
           </motion.p>
@@ -226,7 +311,7 @@ const MarinaAbout = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="space-y-4 text-md"
+            className="space-y-4 text-sm md:text-[1rem]"
           >
             <p className="text-white/80 leading-loose">
               I offer insightful Tarot Readings to illuminate your path and provide clarity. Beyond readings, my Mentorship program empowers you to tap into your inner wisdom, refine your intuition, and manifest your desires.
@@ -406,16 +491,17 @@ const MarinaAbout = () => {
                     <CreditCard size={18} className={paymentMethod === 'stripe' ? 'text-emerald-200' : 'text-gray-300'} /> 
                     Stripe
                   </button>
-                  {/* <button 
-                    onClick={() => setPaymentMethod('venmo')}
+                  <button 
+                    onClick={() => setPaymentMethod('paypal')}
                     className={`text-white py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 ${
-                      paymentMethod === 'venmo'
+                      paymentMethod === 'paypal'
                         ? 'bg-gradient-to-br from-emerald-600 to-teal-700 shadow-lg shadow-emerald-900/20'
                         : 'bg-gray-800 hover:bg-gray-700'
-                    }`}
+                    } ${!paypalAvailable ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    disabled={!paypalAvailable}
                   >
-                    {copied ? 'Copied!' : 'Venmo'}
-                  </button> */}
+                    PayPal
+                  </button>
                 </div>
               </div>
               
@@ -446,17 +532,78 @@ const MarinaAbout = () => {
                 ) : (
                   <>
                     <Heart size={18} className="text-green-200" /> 
-                    Send ${getFinalAmount()} via {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : '...'}
+                    Send ${getFinalAmount()} via {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : '...'}
                   </>
                 )}
               </button>
 
-              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'venmo' ? 'Venmo' : 'our payment partners'}</p>
+              <p className="text-xs text-gray-500 text-center">Secure payment powered by {paymentMethod === 'stripe' ? 'Stripe' : paymentMethod === 'paypal' ? 'PayPal' : 'our payment partners'}</p>
             </div>
           </motion.div>
         </div>
       )}
-    </div>
+
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-br from-emerald-900 to-teal-900 border border-emerald-500/20 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center"
+          >
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-emerald-300 mb-2">Payment Successful!</h3>
+              <p className="text-emerald-200">{paymentMessage}</p>
+            </div>
+            
+            <button 
+              onClick={() => setShowSuccessMessage(false)}
+              className="w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition-colors duration-200"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {showErrorMessage && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="bg-gradient-to-br from-red-900 to-red-800 border border-red-500/20 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center"
+          >
+            <div className="mb-6">
+              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-red-300 mb-2">Payment Failed</h3>
+              <p className="text-red-200">{paymentMessage}</p>
+            </div>
+            
+            <button 
+              onClick={() => setShowErrorMessage(false)}
+              className="w-full py-3 px-6 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition-colors duration-200"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )}
+      </div>
+    </>
   );
 };
 

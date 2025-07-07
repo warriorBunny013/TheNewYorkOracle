@@ -1,0 +1,5 @@
+Contact: mailto:soulsticetarot143@gmail.com
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://thenewyorkoracle.com/.well-known/security.txt
+Policy: https://thenewyorkoracle.com/security-policy 

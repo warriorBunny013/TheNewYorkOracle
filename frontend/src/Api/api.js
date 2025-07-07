@@ -9,8 +9,13 @@ const url = `${API_URL}/api`;
 export const logout = async () => {
     try {
       const response = await axios.post(`${url}/admin/logout`, {}, { withCredentials: true });
+      
+      // Show success message
+      toast.success('Logged out successfully');
+      
       return response; // Successfully logged out
     } catch (err) {
+      console.error('Logout error:', err);
       toast.error('Logout failed. Please try again.');
       throw err; // Rethrow the error if you need to handle it further up the call chain
     }
@@ -21,7 +26,16 @@ export const logout = async () => {
       const response = await axios.get(`${url}/getreviews`);
       return response; // Successfully fetched reviews
     } catch (err) {
-      toast.error('Failed to fetch reviews. Please check your connection.');
+      console.error('API Error:', err);
+      if (err.code === 'NETWORK_ERROR' || err.message.includes('Network Error')) {
+        toast.error('Network error. Please check your internet connection.');
+      } else if (err.response?.status === 404) {
+        toast.error('Reviews endpoint not found.');
+      } else if (err.response?.status >= 500) {
+        toast.error('Server error. Please try again later.');
+      } else {
+        toast.error('Failed to fetch reviews. Please try again.');
+      }
       throw err; // Rethrow the error for further handling if necessary
     }
   };

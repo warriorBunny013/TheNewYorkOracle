@@ -43,66 +43,102 @@ function FeedbackForm() {
   };
 
   return (
-    <div 
-    
-    >
-      <div className="flex my-10 mt-20 justify-center">
-        <div className="flex flex-col justify-center">
-          <div className="mt-20 my-4 mx-2 text-center flex justify-center lg:ml-20 text-4xl font-bold tracking-tight text-white dark:text-white">Send your feedback</div>
-          <p className="mx-6 text-center max-w-[35rem] text-gray-300">Please feel free to share any specific feedback about your reading experience. Your comments will help us improve our services.</p>
+    <div className="relative overflow-hidden">
+      {/* Background gradient overlay */}
+      <div className="absolute inset-0 "></div>
+      
+
+      <div className="flex my-6 sm:my-8 md:my-10 mt-16 sm:mt-18 md:mt-20 justify-center relative z-10">
+        <div className="flex flex-col justify-center px-4 sm:px-6">
+          <div className="mt-16 sm:mt-18 md:mt-20 my-4 mx-2 text-center flex justify-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Share Your Experience
+            </h2>
+          </div>
+          <p className="mx-2 sm:mx-4 md:mx-6 text-center max-w-[20rem] sm:max-w-[25rem] md:max-w-[35rem] text-gray-300 leading-relaxed text-sm sm:text-base">
+            Your feedback helps us create even more magical experiences. We'd love to hear about your journey with us.
+          </p>
         </div>
       </div>
-      <div className="max-w-[85rem] px-2 py-2 sm:px-4 lg:px-4 lg:py-2 mx-auto">
+
+      <div className="max-w-[85rem] px-2 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 mx-auto relative z-10">
         <div className="flex justify-center">
-          <div className="w-[100vh] relative">
-            <div className="flex flex-col px-4 sm:px-6 lg:px-6">
-              <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-4 lg:gap-10">
-                  <div className="flex flex-wrap justify-between gap-4 lg:gap-6">
-                    <div>
-                      <label htmlFor="clientName" className="block mb-2 text-sm text-white">Your name</label>
-                      <input
-                        type="text"
-                        id="clientName"
-                        name="clientName"
-                        value={clientName}
-                        onChange={(e) => setClientName(e.target.value)}
-                        className="w-full block lg:w-[50vh] py-3 px-4 bg-white/5 border border-gray-700 rounded-lg focus:outline-none text-white placeholder-gray-400 transition-all duration-300"
-                        required
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between">
-                      <div className="rating my-7 rating-lg">
-                        {[1, 2, 3, 4, 5].map((star) => (
+          <div className="w-full max-w-2xl lg:max-w-4xl relative">
+            <div className="flex flex-col px-2 sm:px-4 md:px-6 lg:px-8">
+              <form onSubmit={handleSubmit} className="relative">
+                {/* Glassmorphism form container */}
+                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
+                  <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
+                    <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 lg:gap-8">
+                      <div className="flex-1 min-w-0">
+                        <label htmlFor="clientName" className="block mb-2 sm:mb-3 text-sm font-medium text-white/90">
+                          Your Name
+                        </label>
+                        <div className="relative group">
                           <input
-                            key={star}
-                            type="radio"
-                            name="rating"
-                            value={star}
-                            checked={rating === star}
-                            onChange={handleRatingChange}
-                            className="mask mask-star-2"
+                            type="text"
+                            id="clientName"
+                            name="clientName"
+                            value={clientName}
+                            onChange={(e) => setClientName(e.target.value)}
+                            className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 backdrop-blur-sm text-sm sm:text-base"
+                            placeholder="Enter your name"
                             required
                           />
-                        ))}
+                          {/* Glow effect on focus */}
+                          <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col justify-center sm:justify-between">
+                        <div className="rating rating-lg sm:rating-xl my-4 sm:mt-9 flex justify-center sm:justify-start">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <input
+                              key={star}
+                              type="radio"
+                              name="rating"
+                              value={star}
+                              checked={rating === star}
+                              onChange={handleRatingChange}
+                              className="mask mask-star-2"
+                              required
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="comments" className="block mb-2 sm:mb-3 text-sm font-medium text-white/90">
+                        Your Review
+                      </label>
+                      <div className="relative group">
+                        <textarea
+                          id="comments"
+                          name="comments"
+                          rows="3"
+                          className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 backdrop-blur-sm resize-none text-sm sm:text-base"
+                          placeholder="Share your experience with us..."
+                          value={comments}
+                          onChange={(e) => setComments(e.target.value)}
+                          required
+                        ></textarea>
+                        {/* Glow effect on focus */}
+                        <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <label htmlFor="comments" className="block mb-2 text-sm text-white">Review</label>
-                    <textarea
-                      id="comments"
-                      name="comments"
-                      rows="4"
-                      value={comments}
-                      onChange={(e) => setComments(e.target.value)}
-                      className="w-full py-3 px-4 bg-white/5 border border-gray-700 rounded-lg focus:outline-none text-white placeholder-gray-400 transition-all duration-300"
-                      required
-                    ></textarea>
+                  
+                  <div className="mt-6 sm:mt-8 flex justify-center">
+                    <button 
+                      type="submit" 
+                      className="relative group px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-gradient-to-r from-purple-600  to-blue-600 hover:from-purple-500  hover:to-blue-500 text-white font-semibold rounded-xl sm:rounded-2xl shadow-2xl transition-all duration-500 transform hover:scale-105 hover:shadow-purple-500/25 text-sm sm:text-base"
+                    >
+                      <span className="relative z-10">Submit Feedback</span>
+                      {/* Button glow effect */}
+                      <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                    </button>
                   </div>
-                </div>
-                <div className="mt-6 flex justify-center">
-                  <button type="submit" className="btn px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center space-x-2">Submit</button>
                 </div>
               </form>
               <ToastContainer containerId="containerA" limit={1}/>
@@ -111,7 +147,6 @@ function FeedbackForm() {
           </div>
         </div>
       </div>
-    
     </div>
   );
 }

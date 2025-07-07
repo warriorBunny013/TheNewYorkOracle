@@ -1,3 +1,54 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://thenewyorkoracle.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow admin and private pages
+Disallow: /adminlogin
+Disallow: /adminpanel
+Disallow: /booking/
+Disallow: /book/
+Disallow: /cancelpayment
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /testimonials
+Allow: /press
+Allow: /contact
+
+# Block common bot patterns
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: dotbot
+Crawl-delay: 10
+
+User-agent: BLEXBot
+Crawl-delay: 10
+
+User-agent: PetalBot
+Crawl-delay: 10
+
+# Allow Google and Bing bots with normal crawl rate
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
