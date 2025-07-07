@@ -65,7 +65,7 @@ app.use(cors({
   : "http://localhost:3000";
 
   const backendapi = process.env.NODE_ENV === "production"
-  ? "https://www.soulsticetarot.com"
+  ? "https://api.soulsticetarot.com"
   : "http://localhost:8080";
 
   const PAYPAL_API_BASE = process.env.PAYPAL_API_BASE || "https://api-m.sandbox.paypal.com";
