@@ -17,25 +17,26 @@ const MarinaAbout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
   // const [copied, setCopied] = useState(false);
-  const [paypalAvailable, setPaypalAvailable] = useState(true);
+  const [paypalAvailable, setPaypalAvailable] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState('');
   
-  // Check PayPal availability on component mount
+  // Check PayPal availability on component mount - TEMPORARILY DISABLED
   useEffect(() => {
-    const checkPayPalAvailability = async () => {
-      try {
-        const response = await fetch(`${API_URL}/api/test-paypal`);
-        const result = await response.json();
-        setPaypalAvailable(result.success);
-      } catch (error) {
-        // PayPal not available
-        setPaypalAvailable(false);
-      }
-    };
+    // const checkPayPalAvailability = async () => {
+    //   try {
+    //     const response = await fetch(`${API_URL}/api/test-paypal`);
+    //     const result = await response.json();
+    //     setPaypalAvailable(result.success);
+    //   } catch (error) {
+    //     // PayPal not available
+    //     setPaypalAvailable(false);
+    //   }
+    // };
     
-    checkPayPalAvailability();
+    // checkPayPalAvailability();
+    setPaypalAvailable(false); // Temporarily disable PayPal
   }, []);
 
   // Check for payment success/failure in URL parameters
@@ -190,51 +191,55 @@ const MarinaAbout = () => {
   };
 
   const handlePayPalPayment = async () => {
-    const amount = getFinalAmount();
+    // PayPal functionality temporarily disabled
+    setError("PayPal is temporarily unavailable. Please use Stripe for payments.");
+    return;
     
-    if (!isValidAmount()) {
-      setError("Please select an amount greater than 0");
-      return;
-    }
+    // const amount = getFinalAmount();
     
-    if (!paypalAvailable) {
-      setError("PayPal is currently unavailable. Please use Stripe for payments.");
-      return;
-    }
+    // if (!isValidAmount()) {
+    //   setError("Please select an amount greater than 0");
+    //   return;
+    // }
     
-    setIsProcessing(true);
+    // if (!paypalAvailable) {
+    //   setError("PayPal is currently unavailable. Please use Stripe for payments.");
+    //   return;
+    // }
     
-    try {
-      const body = {
-          productName: 'Thanks for supporting!',
-          userPrice: amount
-      };
+    // setIsProcessing(true);
+    
+    // try {
+    //   const body = {
+    //       productName: 'Thanks for supporting!',
+    //       userPrice: amount
+    //   };
 
-      const headers = {
-          "Content-Type": "application/json"
-      };
+    //   const headers = {
+    //       "Content-Type": "application/json"
+    //   };
 
-      const response = await fetch(`${API_URL}/api/create-paypal-order-tip`, {
-          method: "POST",
-          headers: headers,
-          body: JSON.stringify(body)
-      });
+    //   const response = await fetch(`${API_URL}/api/create-paypal-order-tip`, {
+    //       method: "POST",
+    //       headers: headers,
+    //       body: JSON.stringify(body)
+    //   });
 
-      const result = await response.json();
+    //   const result = await response.json();
 
-      if (result.approvalUrl) {
-          window.location.href = result.approvalUrl;
-      } else if (result.error) {
-          setError(result.error);
-      } else {
-          setError("Failed to create PayPal order. Please try again.");
-      }
-    } catch (err) {
-      setError("PayPal payment processing failed. Please try again.");
-      console.error("PayPal payment error:", err);
-    } finally {
-      setIsProcessing(false);
-    }
+    //   if (result.approvalUrl) {
+    //       window.location.href = result.approvalUrl;
+    //   } else if (result.error) {
+    //       setError(result.error);
+    //   } else {
+    //       setError("Failed to create PayPal order. Please try again.");
+    //   }
+    // } catch (err) {
+    //   setError("PayPal payment processing failed. Please try again.");
+    //   console.error("PayPal payment error:", err);
+    // } finally {
+    //   setIsProcessing(false);
+    // }
   };
   
   const handlePayment = () => {
