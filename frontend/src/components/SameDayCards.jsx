@@ -17,7 +17,7 @@ function SameDayCards() {
     const [paymentMethod, setPaymentMethod] = useState('stripe'); // 'stripe' or 'paypal'
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState(null);
-    const [paypalAvailable, setPaypalAvailable] = useState(true);
+    const [paypalAvailable, setPaypalAvailable] = useState(false);
     const [modalContent, setModalContent] = useState({
         title: "",
         description: "",
@@ -50,20 +50,21 @@ function SameDayCards() {
         return "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days";
     };
 
-    // Check PayPal availability on component mount
+    // Check PayPal availability on component mount - TEMPORARILY DISABLED
     useEffect(() => {
-        const checkPayPalAvailability = async () => {
-            try {
-                const response = await fetch(`${API_URL}/api/test-paypal`);
-                const result = await response.json();
-                setPaypalAvailable(result.success);
-            } catch (error) {
-                // PayPal not available
-                setPaypalAvailable(false);
-            }
-        };
+        // const checkPayPalAvailability = async () => {
+        //     try {
+        //         const response = await fetch(`${API_URL}/api/test-paypal`);
+        //         const result = await response.json();
+        //         setPaypalAvailable(result.success);
+        //     } catch (error) {
+        //         // PayPal not available
+        //         setPaypalAvailable(false);
+        //     }
+        // };
         
-        checkPayPalAvailability();
+        // checkPayPalAvailability();
+        setPaypalAvailable(false); // Temporarily disable PayPal
     }, []);
 
     useEffect(() => {
@@ -150,45 +151,49 @@ function SameDayCards() {
                 setIsProcessing(false);
             }
         } else if (paymentMethod === 'paypal') {
-            if (!paypalAvailable) {
-                setError("PayPal is currently unavailable. Please use Stripe for payments.");
-                return;
-            }
+            // PayPal functionality temporarily disabled
+            setError("PayPal is temporarily unavailable. Please use Stripe for payments.");
+            return;
             
-            setIsProcessing(true);
-            setError(null);
+            // if (!paypalAvailable) {
+            //     setError("PayPal is currently unavailable. Please use Stripe for payments.");
+            //     return;
+            // }
             
-            try {
-                const body = {
-                    productName: modalContent.title,
-                    userPrice: modalContent.price
-                };
+            // setIsProcessing(true);
+            // setError(null);
+            
+            // try {
+            //     const body = {
+            //         productName: modalContent.title,
+            //         userPrice: modalContent.price
+            //     };
 
-                const headers = {
-                    "Content-Type": "application/json"
-                };
+            //     const headers = {
+            //         "Content-Type": "application/json"
+            //     };
 
-                const response = await fetch(`${API_URL}/api/create-paypal-order`, {
-                    method: "POST",
-                    headers: headers,
-                    body: JSON.stringify(body)
-                });
+            //     const response = await fetch(`${API_URL}/api/create-paypal-order`, {
+            //         method: "POST",
+            //         headers: headers,
+            //         body: JSON.stringify(body)
+            //     });
 
-                const result = await response.json();
+            //     const result = await response.json();
 
-                if (result.approvalUrl) {
-                    window.location.href = result.approvalUrl;
-                } else if (result.error) {
-                    setError(result.error);
-                } else {
-                    setError("Failed to create PayPal order. Please try again.");
-                }
-            } catch (err) {
-                setError("PayPal payment processing failed. Please try again.");
-                console.error("PayPal payment error:", err);
-            } finally {
-                setIsProcessing(false);
-            }
+            //     if (result.approvalUrl) {
+            //         window.location.href = result.approvalUrl;
+            //     } else if (result.error) {
+            //         setError(result.error);
+            //     } else {
+            //         setError("Failed to create PayPal order. Please try again.");
+            //     }
+            // } catch (err) {
+            //     setError("PayPal payment processing failed. Please try again.");
+            //     console.error("PayPal payment error:", err);
+            // } finally {
+            //     setIsProcessing(false);
+            // }
         }
     };
 
