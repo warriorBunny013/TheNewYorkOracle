@@ -111,7 +111,7 @@ function SameDayForm() {
         </div>
 
         <div className="mt-8">
-          <div className="text-2xl font-bold text-pink-600"> Soulsticetarot143@gmail.com </div>
+          <div className="text-2xl font-bold text-pink-600"> info@soulsticetarot.com </div>
 
           <address className="mt-2 not-italic text-white">If you have any questions or concerns, feel free to reach out. Thank you for trusting Marina with your journey! 🌟</address>
         </div>
