@@ -427,6 +427,7 @@ if (!name || !email || !message || !readingtype) {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: `${email}`, // Recipient email
+        cc: "dawn@soulsticetarot.com", // CC recipient
         subject: "Booking Confirmation with Marina",
         html: `
          <div style="background-color: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px; text-align: center; max-width: 600px; margin: auto; border-radius: 10px;">
@@ -469,6 +470,7 @@ if (!name || !email || !message || !readingtype) {
       const mailOptions1 = {
         from: `${email}`,
         to: process.env.EMAIL_USER, // Recipient email
+        cc: "dawn@soulsticetarot.com", // CC recipient
         subject: `New Booking of Same Day Express with your client: ${name}`,
         html: `
          <div style="background-color: #000; color: #fff; font-family: Arial, sans-serif; padding: 20px; text-align: center; max-width: 600px; margin: auto; border-radius: 10px;">
@@ -557,7 +559,7 @@ app.patch('/api/booking/:id/status', async (req, res) => {
             { status },        { new: true }
         );
 
-   if (!booking) {
+        if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
 

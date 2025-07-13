@@ -180,7 +180,7 @@ const MainPage = () => {
 
       if (isDesktop && !navigator.userAgent.includes("iPhone") && !navigator.userAgent.includes("iPad")) {
         e.preventDefault();
-        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=soulsticetarot143@gmail.com`, '_blank');
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=info@soulsticetarot.com`, '_blank');
       }
     }
   };
@@ -539,7 +539,7 @@ const handleTip = () => {
               className="hidden lg:block"
             >
               <a
-                href="mailto:soulsticetarot143@gmail.com"
+                href="mailto:info@soulsticetarot.com"
                 onClick={handleContactClick}
                 className="relative text-sm overflow-hidden inline-flex items-center px-6 py-3 font-medium rounded-full text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-md hover:shadow-lg transition-all duration-300"
               >
@@ -635,7 +635,7 @@ const handleTip = () => {
                   className="mt-8 w-full flex justify-center"
                 >
                   <a
-                    href="mailto:soulsticetarot143@gmail.com"
+                    href="mailto:info@soulsticetarot.com"
                     onClick={handleContactClick}
                     className="relative text-sm overflow-hidden inline-flex items-center justify-center px-8 py-3 font-medium rounded-full text-white bg-gradient-to-r from-purple-600 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300"
                   >
@@ -1035,7 +1035,7 @@ const handleTip = () => {
             <button className="absolute top-2 right-2 text-white text-2xl font-bold" onClick={closePopup}>
               &times;
             </button>
-            <p className="text-md min-w-4 mr-3">Mail to <strong>soulsticetarot143@gmail.com</strong> for any inquiries.</p>
+            <p className="text-md min-w-4 mr-3">Mail to <strong>info@soulsticetarot.com</strong> for any inquiries.</p>
           </div>
         </div>
       )}

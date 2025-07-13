@@ -181,7 +181,7 @@ const MarinaAbout = () => {
           if (result.error) {
               // Payment error
               setError(result.error.message);
-          }
+      }
     } catch (err) {
       setError("Payment processing failed. Please try again.");
       console.error("Payment error:", err);
@@ -275,7 +275,7 @@ const MarinaAbout = () => {
         image="https://thenewyorkoracle.com/soulsticetarot.jpg"
         url="https://thenewyorkoracle.com/about"
       />
-      <div className="flex items-center justify-center px-4 py-16 pt-40">
+    <div className="flex items-center justify-center px-4 py-16 pt-40">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -607,7 +607,7 @@ const MarinaAbout = () => {
           </motion.div>
         </div>
       )}
-      </div>
+    </div>
     </>
   );
 };
