@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 // import Appointlet from '@appointlet/appointlet.js';
 import '@appointlet/appointlet.js/dist/appointlet.min.css';
+import { API_URL } from "../utils/apiConfig";
 
 const BookingSlotfourtyfiveminutes = () => {
   const { id } = useParams(); // Extract the booking ID from the URL
@@ -12,7 +13,7 @@ const BookingSlotfourtyfiveminutes = () => {
     // Fetch booking data from the server using the booking ID
     const fetchBooking = async () => {
       try {
-        const response = await fetch(`/api/booking/${id}`);
+        const response = await fetch(`${API_URL}/api/booking/${id}`);
         if (response.ok) {
           
           setIsAuthorized(true);
