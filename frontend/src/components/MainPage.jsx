@@ -47,7 +47,7 @@ const MainPage = () => {
     if (isOnBreak()) {
       return "Aug 1";
     }
-    return "24-72h";
+    return "5-7 Days";
   };
 
   const getBreakMessage = () => {
@@ -944,7 +944,7 @@ const handleTip = () => {
                   <p className="text-xs sm:text-sm mt-2 md:mt-0 text-gray-300">
                     {isOnBreak() 
                       ? "Detailed analysis delivered to your inbox post Aug 1" 
-                      : "Detailed analysis delivered to your inbox within 24-72 hours"
+                      : "Detailed analysis delivered to your inbox within 5-7 days"
                     }
                   </p>
                 </div>
@@ -957,7 +957,7 @@ const handleTip = () => {
                   <p className="text-xs sm:text-sm mt-2 md:mt-0 text-gray-300">
                     {isOnBreak() 
                       ? "Priority real-time consultations post Aug 1" 
-                      : "Priority real-time consultations within 24-72 hours after purchase"
+                      : "Priority real-time consultations within 5-7 days after purchase"
                     }
                   </p>
                 </div>
