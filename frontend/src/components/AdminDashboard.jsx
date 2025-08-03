@@ -11,7 +11,7 @@ import {
   Mail,
   Clock
 } from 'lucide-react';
-import ManageBookings from './AdminComponents/ManageBookings';
+import ManageTips from './AdminComponents/ManageTips';
 import ManageReviews from './AdminComponents/ManageReviews';
 import ManagePrices from './AdminComponents/ManagePrices';
 import { getAllReview, logout } from '../Api/api';
@@ -19,7 +19,7 @@ import { getAllReview, logout } from '../Api/api';
 function AdminDashboard() {
   const [reviews, setReviews] = useState([]);
   const [isOpen, setIsOpen] = useState(false); // Mobile sidebar state
-  const [activePage, setActivePage] = useState('bookings');
+  const [activePage, setActivePage] = useState('tips');
   // const [stats, setStats] = useState({
   //   totalBookings: 0,
   //   pendingBookings: 0,
@@ -93,7 +93,7 @@ function AdminDashboard() {
   };
 
   const menuItems = [
-    { id: 'bookings', label: 'Manage Bookings', icon: Calendar, color: 'from-blue-500 to-blue-600' },
+    { id: 'tips', label: 'Manage Tips', icon: Calendar, color: 'from-blue-500 to-blue-600' },
     { id: 'prices', label: 'Manage Prices', icon: DollarSign, color: 'from-green-500 to-green-600' },
     { id: 'reviews', label: 'Manage Reviews', icon: MessageSquare, color: 'from-purple-500 to-purple-600' },
     { id: 'newsletter', label: 'Newsletter', icon: Mail, color: 'from-orange-500 to-orange-600' },
@@ -211,7 +211,7 @@ function AdminDashboard() {
               transition={{ duration: 0.3 }}
               className="h-full"
             >
-          {activePage === 'bookings' && <ManageBookings />}
+          {activePage === 'tips' && <ManageTips />}
               {activePage === 'prices' && <ManagePrices />}
           {activePage === 'reviews' &&
             (reviews.length > 0 ? <ManageReviews reviews={reviews} setReviews={setReviews}/> : <p>Loading...</p>)}

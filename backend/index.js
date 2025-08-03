@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import crypto from 'crypto';
 import Booking from './models/Booking.js';
+import Tip from './models/Tip.js';
 import Admin from './routes/Admin.js';
 import AdminPanel from './routes/AdminPanel.js';
 import AdminModel from './models/Admin.js';
@@ -91,6 +92,12 @@ connectToMongoDB()
    
 app.get("/home", (req, res) => {
     res.status(200).json({ message: "I requested for home", success: true });
+});
+
+// Test webhook endpoint
+app.get('/webhook', (req, res) => {
+  console.log('Webhook GET request received');
+  res.status(200).json({ message: 'Webhook endpoint is accessible' });
 });
 
 // Test endpoint for debugging
@@ -237,62 +244,13 @@ app.post('/api/create-checkout-session', async (req, res) => {
 });
 
 app.post('/api/create-checkout-session-tip', async (req, res) => {
-  const { productName,userPrice } = req.body;
+  const { productName, userPrice, message } = req.body;
 
-  // Validate the presence of required fields
-  // if (!userName || !userEmail) {
-  //     return res.status(400).json({ error: "userName and userEmail are required" });
-  // }
-  
-  const bookingId = crypto.randomBytes(16).toString('hex');
-
-  // Extract appointmentid with improved error handling
-  // let appointmentid;
-  // try {
-  //     if (products[0].alt === 'mentorship') {
-  //         appointmentid = 4;
-  //     } else {
-  //         const title = products[0].title;
-  //         const durationMatch = title.match(/\d+/);
-
-  //         if (!durationMatch) {
-  //             throw new Error(`No numeric value found in title: ${title}`);
-  //         }
-
-  //         const duration = parseInt(durationMatch[0], 10);
-  //         switch (duration) {
-  //             case 10:
-  //                 appointmentid = 1;
-  //                 break;
-  //             case 30:
-  //                 appointmentid = 2;
-  //                 break;
-  //             case 45:
-  //                 appointmentid = 3;
-  //                 break;
-  //             default:
-  //                 throw new Error(`Unexpected duration value: ${duration}`);
-  //         }
-  //     }
-  // } catch (error) {
-  //     console.error(`Error extracting appointmentid: ${error.message}`);
-  //     return res.status(400).json({ error: `Invalid product title format: ${products[0].title}` });
-  // }
-
-  // const lineItems = products.map(product => ({
-  //     price_data: {
-  //         currency: 'usd',
-  //         product_data: { name: product.title },
-  //         unit_amount: Math.round(parseFloat(product.price * 100)), // Stripe expects amounts in cents
-  //     },
-  //     quantity: 1,
-  // }));
-  // const totalAmount = lineItems.reduce((sum, item) => sum + item.price_data.unit_amount, 0);
+  const tipId = crypto.randomBytes(16).toString('hex');
 
   try {
       const session = await stripe.checkout.sessions.create({
           payment_method_types: ['card'],
-          // line_items: lineItems,
           mode: 'payment',
           success_url: `${frontendapi}`,
           cancel_url: `${frontendapi}/cancelpayment`,
@@ -308,23 +266,129 @@ app.post('/api/create-checkout-session-tip', async (req, res) => {
                 quantity: 1,
               },
             ],
-            metadata: { productName, userPrice },
+            metadata: { productName, userPrice, message: message || '' },
       });
 
-      await Booking.create({
-          bookingId,
+      const newTip = await Tip.create({
+          tipId,
           sessionId: session.id,
-          productName,
-          userPrice,
+          amount: userPrice,
           currency: 'usd',
+          message: message || '',
           status: 'pending'
       });
 
       res.status(200).json({ id: session.id });
-      console.log("payment done!!!")
+      console.log("tip payment created!!!", newTip.tipId);
+      
+      // For development/testing, also send email immediately
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Development mode - sending email immediately');
+        setTimeout(async () => {
+          try {
+            await sendTipNotificationEmail(newTip);
+          } catch (error) {
+            console.error('Development email error:', error);
+          }
+        }, 2000); // Wait 2 seconds to simulate webhook delay
+      }
   } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
+  }
+});
+
+// Route to get all tips for admin dashboard
+app.get('/api/tips', authMiddleware, async (req, res) => {
+  try {
+    const tips = await Tip.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, data: tips });
+  } catch (error) {
+    console.error('Error fetching tips:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch tips' });
+  }
+});
+
+// Test endpoint to manually trigger tip email (for debugging)
+app.post('/api/test-tip-email', async (req, res) => {
+  try {
+    const testTip = {
+      tipId: 'test-tip-123',
+      amount: 25,
+      message: 'Test message from debugging',
+      createdAt: new Date(),
+      status: 'completed'
+    };
+    
+    console.log('Testing tip email function...');
+    await sendTipNotificationEmail(testTip);
+    
+    res.status(200).json({ success: true, message: 'Test email sent' });
+  } catch (error) {
+    console.error('Test email error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Manual webhook trigger for testing
+app.post('/api/trigger-webhook', async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    console.log('Manually triggering webhook for session:', sessionId);
+    
+    // Simulate webhook event
+    const tip = await Tip.findOne({ sessionId });
+    if (tip) {
+      tip.status = 'completed';
+      await tip.save();
+      console.log(`Tip ${tip.tipId} marked as completed`);
+      
+      await sendTipNotificationEmail(tip);
+      res.status(200).json({ success: true, message: 'Webhook triggered successfully' });
+    } else {
+      res.status(404).json({ success: false, message: 'Tip not found for session' });
+    }
+  } catch (error) {
+    console.error('Manual webhook error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Simple email test endpoint
+app.post('/api/test-email', async (req, res) => {
+  try {
+    console.log('Testing basic email configuration...');
+    console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET');
+    console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET');
+    
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: "Solsticetarot143@gmail.com",
+      subject: "Email Test - Soulstice Tarot",
+      html: `
+        <h2>Email Test Successful! ✅</h2>
+        <p>Your email configuration is working properly.</p>
+        <p><strong>Email:</strong> ${process.env.EMAIL_USER}</p>
+        <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: 'Test email sent successfully!' });
+  } catch (error) {
+    console.error('Email test error:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
@@ -351,14 +415,21 @@ app.get('/api/booking/:id', async (req, res) => {
 
 // Webhook to handle payment success
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+    console.log("=== WEBHOOK RECEIVED ===");
     console.log("POST WEBHOOK MEIN HOON!!!")
+    console.log("Webhook headers:", req.headers);
+    console.log("Webhook body length:", req.body ? req.body.length : 'No body');
+    console.log("Webhook URL:", req.originalUrl);
+    console.log("Webhook method:", req.method);
     const signature = req.headers['stripe-signature'];
   
     try {
       const event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
   
+      console.log('Webhook event type:', event.type);
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
+        console.log('Processing completed checkout session:', session.id);
   
         // Find and update the booking status
         const booking = await Booking.findOne({ sessionId: session.id });
@@ -366,6 +437,23 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
           booking.status = 'completed';
           await booking.save();
           console.log(`Booking ${booking.bookingId} marked as completed`);
+        }
+
+        // Find and update the tip status
+        const tip = await Tip.findOne({ sessionId: session.id });
+        console.log('Looking for tip with sessionId:', session.id);
+        console.log('Found tip:', tip ? tip.tipId : 'No tip found');
+        
+        if (tip) {
+          tip.status = 'completed';
+          await tip.save();
+          console.log(`Tip ${tip.tipId} marked as completed`);
+          
+          // Send email notification for tip
+          console.log('Calling sendTipNotificationEmail...');
+          await sendTipNotificationEmail(tip);
+        } else {
+          console.log('No tip found for sessionId:', session.id);
         }
         
       }
@@ -378,6 +466,187 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
   });
   
 
+
+// Function to send tip notification email
+const sendTipNotificationEmail = async (tip) => {
+  console.log('Starting email notification for tip:', tip.tipId);
+  console.log('Email config - USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET');
+  console.log('Email config - PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET');
+  
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: "konceept.contact@gmail.com",
+      subject: "New Tip Received! 💝",
+      html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>New Tip Received</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { 
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                    line-height: 1.6; 
+                    color: #1a1a1a; 
+                    background-color: #f8f9fa;
+                }
+                .email-container { 
+                    max-width: 600px; 
+                    margin: 0 auto; 
+                    background: #ffffff;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+                .header { 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    padding: 40px 30px; 
+                    text-align: center;
+                    position: relative;
+                    overflow: hidden;
+                }
+                .header::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: url('${frontendapi}/logo.png') center/contain no-repeat;
+                    opacity: 0.1;
+                }
+                .header h1 { 
+                    color: white; 
+                    font-size: 28px; 
+                    font-weight: bold; 
+                    margin-bottom: 10px;
+                    position: relative;
+                    z-index: 1;
+                }
+                .content { 
+                    padding: 40px 30px; 
+                }
+                .success-section { 
+                    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); 
+                    border-radius: 12px; 
+                    padding: 30px; 
+                    margin-bottom: 30px;
+                    border-left: 5px solid #28a745;
+                }
+                .tip-amount {
+                    font-size: 32px;
+                    font-weight: bold;
+                    color: #28a745;
+                    text-align: center;
+                    margin: 20px 0;
+                }
+                .message-section {
+                    background: #f8f9fa;
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    border-left: 5px solid #17a2b8;
+                }
+                .message-text {
+                    font-style: italic;
+                    color: #6c757d;
+                    margin-top: 10px;
+                }
+                .footer { 
+                    background: #343a40; 
+                    color: white; 
+                    text-align: center; 
+                    padding: 20px; 
+                }
+                .cta-button { 
+                    display: inline-block; 
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                    color: white; 
+                    padding: 12px 30px; 
+                    text-decoration: none; 
+                    border-radius: 25px; 
+                    font-weight: bold; 
+                    margin-top: 20px; 
+                    transition: transform 0.3s ease;
+                }
+                .cta-button:hover { 
+                    transform: translateY(-2px); 
+                }
+                .copyright { 
+                    font-size: 12px; 
+                    opacity: 0.8; 
+                    margin-top: 20px; 
+                }
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <h1>New Tip Received! 💝</h1>
+                </div>
+                
+                <div class="content">
+                    <div class="success-section">
+                        <h2 style="color: #28a745; margin-bottom: 15px;">Someone just tipped you!</h2>
+                        <div class="tip-amount">$${tip.amount}</div>
+                        <p style="color: #155724; margin-bottom: 0;">Thank you for your amazing work! This tip shows how much people value your guidance.</p>
+                    </div>
+                    
+                    ${tip.message ? `
+                    <div class="message-section">
+                        <h3 style="color: #17a2b8; margin-bottom: 10px;">Message from the tipper:</h3>
+                        <div class="message-text">"${tip.message}"</div>
+                    </div>
+                    ` : ''}
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <p style="color: #6c757d; margin-bottom: 20px;">Tip received on: ${new Date(tip.createdAt).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</p>
+                        
+                        <a href="https://www.soulsticetarot.com" class="cta-button">Visit Your Website</a>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <div class="copyright">
+                        © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+      `
+    };
+
+    console.log('Attempting to send email...');
+    const result = await transporter.sendMail(mailOptions);
+    console.log('Tip notification email sent successfully:', result);
+  } catch (error) {
+    console.error('Error sending tip notification email:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      command: error.command
+    });
+  }
+};
 
 // SENDING EMAILS
 
