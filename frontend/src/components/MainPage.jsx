@@ -250,11 +250,13 @@ const MainPage = () => {
   const [tipAmount, setTipAmount] = useState(5);
   const [customAmount, setCustomAmount] = useState("");
   const [isCustom, setIsCustom] = useState(false);
+  const [tipMessage, setTipMessage] = useState("");
 
 const handleTip = () => {
     setShowTipModal(true);
     setError(null);
     setPaymentMethod(null);
+    setTipMessage("");
   };
 
   const handleCustomAmountChange = (e) => {
@@ -324,7 +326,8 @@ const handleTip = () => {
   
           const body = {
               productName: 'Thanks for supporting!',
-              userPrice: amount
+              userPrice: amount,
+              message: tipMessage
           };
   
           const headers = {
@@ -1126,6 +1129,22 @@ const handleTip = () => {
                   >
                     <Plus size={16} />
                   </button>
+                </div>
+              </div>
+
+              {/* Message Input */}
+              <div className="space-y-3">
+                <p className="text-white text-sm font-medium">Add your message (optional):</p>
+                <textarea
+                  value={tipMessage}
+                  onChange={(e) => setTipMessage(e.target.value)}
+                  placeholder="Share your thoughts, gratitude, or any message you'd like to send..."
+                  className="w-full bg-gray-800/50 border border-gray-700/50 rounded-xl p-3 text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500/50 transition-colors duration-200 resize-none"
+                  rows={3}
+                  maxLength={500}
+                />
+                <div className="text-xs text-gray-400 text-right">
+                  {tipMessage.length}/500 characters
                 </div>
               </div>
               
