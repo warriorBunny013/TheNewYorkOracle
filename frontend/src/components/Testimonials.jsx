@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Quote, Heart, Sparkles, Move } from "lucide-react";
+import { Star, Quote, Heart, Sparkles, Move, ChevronLeft, ChevronRight } from "lucide-react";
 
 function Testimonials({ reviews }) {
     const [selectedReview, setSelectedReview] = useState(null);
@@ -20,6 +20,39 @@ function Testimonials({ reviews }) {
         setIsPopupVisible(false);
         setSelectedReview(null);
     }, []);
+
+    // Navigation functions for popup
+    const goToPrevious = useCallback(() => {
+        if (!selectedReview) return;
+        const currentIndex = reviews.findIndex(review => review._id === selectedReview._id);
+        const previousIndex = currentIndex === 0 ? reviews.length - 1 : currentIndex - 1;
+        setSelectedReview(reviews[previousIndex]);
+    }, [selectedReview, reviews]);
+
+    const goToNext = useCallback(() => {
+        if (!selectedReview) return;
+        const currentIndex = reviews.findIndex(review => review._id === selectedReview._id);
+        const nextIndex = currentIndex === reviews.length - 1 ? 0 : currentIndex + 1;
+        setSelectedReview(reviews[nextIndex]);
+    }, [selectedReview, reviews]);
+
+    // Keyboard navigation
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!isPopupVisible) return;
+            
+            if (e.key === 'Escape') {
+                closePopup();
+            } else if (e.key === 'ArrowLeft') {
+                goToPrevious();
+            } else if (e.key === 'ArrowRight') {
+                goToNext();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isPopupVisible, closePopup, goToPrevious, goToNext]);
 
     // Max comment length before "Read more" appears
     const MAX_COMMENT_LENGTH = 150;
@@ -39,17 +72,17 @@ function Testimonials({ reviews }) {
     const settings = {
         dots: false,
         infinite: true,
-        speed: 300,
+        speed: 150,
         slidesToShow: 3,
         slidesToScroll: 1,
         arrows: false,
         autoplay: true,
-        autoplaySpeed: 2500,
-        touchThreshold: 3,
+        autoplaySpeed: 2000,
+        touchThreshold: 5,
         swipeToSlide: true,
         useCSS: true,
         useTransform: true,
-        cssEase: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
         pauseOnHover: true,
         pauseOnFocus: true,
         touchMove: true,
@@ -64,13 +97,14 @@ function Testimonials({ reviews }) {
                     infinite: true,
                     dots: false,
                     arrows: false,
-                    touchThreshold: 3,
+                    touchThreshold: 5,
                     swipeToSlide: true,
                     touchMove: true,
                     draggable: true,
                     swipe: true,
-                    speed: 300,
-                    autoplaySpeed: 2500
+                    speed: 150,
+                    autoplaySpeed: 2000,
+                    cssEase: "cubic-bezier(0.4, 0, 0.2, 1)"
                 }
             },
             {
@@ -81,13 +115,14 @@ function Testimonials({ reviews }) {
                     infinite: true,
                     dots: false,
                     arrows: false,
-                    touchThreshold: 3,
+                    touchThreshold: 5,
                     swipeToSlide: true,
                     touchMove: true,
                     draggable: true,
                     swipe: true,
-                    speed: 300,
-                    autoplaySpeed: 2500
+                    speed: 150,
+                    autoplaySpeed: 2000,
+                    cssEase: "cubic-bezier(0.4, 0, 0.2, 1)"
                 }
             }
         ]
@@ -143,13 +178,13 @@ function Testimonials({ reviews }) {
                             top: `${Math.random() * 100}%`,
                         }}
                         animate={{
-                            y: [0, -20, 0],
-                            opacity: [0.3, 1, 0.3],
+                            y: [0, -15, 0],
+                            opacity: [0.2, 0.8, 0.2],
                         }}
                         transition={{
-                            duration: 3 + Math.random() * 2,
+                            duration: 2 + Math.random() * 1,
                             repeat: Infinity,
-                            delay: Math.random() * 2,
+                            delay: Math.random() * 1,
                         }}
                     />
                 ))}
@@ -159,9 +194,9 @@ function Testimonials({ reviews }) {
                 {/* Header Section */}
                 <motion.div 
                     className="text-center mb-16"
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.5 }}
                     viewport={{ once: true }}
                 >
                     <div className="inline-flex items-center gap-3 mb-6">
@@ -191,15 +226,15 @@ function Testimonials({ reviews }) {
                             <motion.div 
                                 key={review._id || index} 
                                 className="p-2 sm:p-3"
-                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
                                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                                transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
+                                transition={{ duration: 0.25, delay: index * 0.03, ease: "easeOut" }}
                                 viewport={{ once: true }}
                             >
                                 <motion.div 
                                     className="relative group cursor-grab active:cursor-grabbing"
-                                    whileHover={{ scale: 1.03, y: -8 }}
-                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    whileHover={{ scale: 1.02, y: -4 }}
+                                    transition={{ duration: 0.15, ease: "easeOut" }}
                                     onClick={() => handleReadMore(review)}
                                 >
                                     {/* Card Background with Gradient Border */}
@@ -215,9 +250,9 @@ function Testimonials({ reviews }) {
                                             {Array.from({ length: review.rating }, (_, i) => (
                                                     <motion.div
                                                         key={i}
-                                                        initial={{ scale: 0, rotate: -180 }}
+                                                        initial={{ scale: 0, rotate: -90 }}
                                                         animate={{ scale: 1, rotate: 0 }}
-                                                        transition={{ delay: i * 0.05, duration: 0.3, ease: "easeOut" }}
+                                                        transition={{ delay: i * 0.02, duration: 0.2, ease: "easeOut" }}
                                                     >
                                                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
                                                     </motion.div>
@@ -352,6 +387,36 @@ function Testimonials({ reviews }) {
                             {/* Popup Background with Gradient Border */}
                             <div className="relative p-1 sm:p-2 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-pink-500/30 via-purple-500/30 to-blue-500/30 backdrop-blur-sm">
                                 <div className="relative bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-gray-900/95 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-white/20 shadow-2xl flex flex-col max-h-[calc(80vh-2rem)] sm:max-h-[calc(85vh-2rem)] md:max-h-[calc(90vh-2rem)]">
+                                    {/* Navigation Buttons - Positioned Inside Content Area */}
+                                    <motion.button
+                                        whileHover={{ scale: 1.05, x: -3 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            goToPrevious();
+                                        }}
+                                        className="absolute left-2 sm:left-4 md:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-gray-900/40 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center text-white hover:bg-gray-800/60 hover:border-white/20 transition-all duration-300 group"
+                                    >
+                                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
+                                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-white/10">
+                                            Previous
+                                        </div>
+                                    </motion.button>
+
+                                    <motion.button
+                                        whileHover={{ scale: 1.05, x: 3 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            goToNext();
+                                        }}
+                                        className="absolute right-2 sm:right-4 md:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full bg-gray-900/40 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center text-white hover:bg-gray-800/60 hover:border-white/20 transition-all duration-300 group"
+                                    >
+                                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
+                                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-white/10">
+                                            Next
+                                        </div>
+                                    </motion.button>
                                     {/* Close Button */}
                             <motion.button
                                         whileHover={{ scale: 1.1, rotate: 90 }}
@@ -363,7 +428,7 @@ function Testimonials({ reviews }) {
                             </motion.button>
                             
                                     {/* Header */}
-                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 sm:justify-between mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt-10">
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 sm:justify-between mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt-10 px-8 sm:px-12 md:px-16 lg:px-20">
                                         <div className="flex items-center gap-3 sm:gap-4">
                                             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg sm:text-xl md:text-2xl shadow-lg">
                                                 {selectedReview.clientName.charAt(0)}
@@ -385,12 +450,12 @@ function Testimonials({ reviews }) {
                                 </div>
 
                                     {/* Content */}
-                                    <div className="flex-1 text-white text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-6 md:mb-8 overflow-y-auto custom-scrollbar pr-2 sm:pr-4 max-h-48 sm:max-h-64 md:max-h-80">
+                                    <div className="flex-1 text-white text-sm sm:text-base md:text-lg leading-relaxed mb-4 sm:mb-6 md:mb-8 overflow-y-auto custom-scrollbar px-8 sm:px-12 md:px-16 lg:px-20 max-h-48 sm:max-h-64 md:max-h-80">
                                         <p className="text-gray-200 leading-6 sm:leading-7 md:leading-8">{selectedReview.comments}</p>
                             </div>
 
                                     {/* Footer */}
-                                    <div className="flex flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-white/10">
+                                    <div className="flex flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-white/10 px-8 sm:px-12 md:px-16 lg:px-20">
                                         <div className="flex items-center gap-2">
                                             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-purple-400" />
                                             <span className="text-xs sm:text-sm text-gray-400">Verified Review</span>

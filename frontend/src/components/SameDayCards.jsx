@@ -257,74 +257,74 @@ function SameDayCards() {
 
                 {showModal && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-4">
-                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                                  <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
+                                  <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full h-full md:h-auto md:max-w-2xl md:mx-4 shadow-2xl border border-gray-800 md:max-h-[90vh] flex flex-col"
                     >
                       <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
                         <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
                           <h2 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-200">
-                            {modalContent.title}
-                          </h2>
-                          <button
-                            onClick={closeModal}
-                            className="text-gray-400 hover:text-gray-200 transition-colors"
-                          >
+                                          {modalContent.title}
+                                        </h2>
+                                        <button
+                                          onClick={closeModal}
+                                          className="text-gray-400 hover:text-gray-200 transition-colors"
+                                        >
                             <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                          </button>
-                        </div>
-        
+                                        </button>
+                                      </div>
+                      
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                           <div className="space-y-3 sm:space-y-4 md:space-y-5">
                             <div className="flex items-center space-x-3 sm:space-x-4">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
                                 <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
-                              </div>
+                                            </div>
                               <span className="text-sm sm:text-base text-gray-300">Reading Type: {modalContent.type}</span>
-                            </div>
-                            
+                                          </div>
+                                          
                             <div className="flex items-center space-x-3 sm:space-x-4">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
                                 <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300" />
-                              </div>
+                                            </div>
                               <span className="text-sm sm:text-base text-gray-300">
-                                Price: ${modalContent.price}
-                              </span>
-                            </div>
-                          </div>
-        
+                                              Price: ${modalContent.price}
+                                            </span>
+                                          </div>
+                                        </div>
+                      
                           <div className="space-y-3 sm:space-y-4">
                             <h3 className="text-base sm:text-lg font-medium text-gray-200">
-                              Important Notes
-                            </h3>
+                                            Important Notes
+                                          </h3>
                             <ul className="text-xs sm:text-sm text-gray-400 space-y-2 sm:space-y-3">
-                              {[
-                                "Private, one-on-one LIVE reading session",
-                                "No pre-recordings available",
-                                "Cancellations allowed up to 1 day before",
-                                "Late arrivals may result in session cancellation"
-                              ].map((item, i) => (
-                                <li key={i} className="flex items-start space-x-2">
-                                  <div className="w-1 h-1 rounded-full bg-gray-500 mt-2"></div>
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-        
+                                            {[
+                                              "Private, one-on-one LIVE reading session",
+                                              "No pre-recordings available",
+                                              "Cancellations allowed up to 1 day before",
+                                              "Late arrivals may result in session cancellation"
+                                            ].map((item, i) => (
+                                              <li key={i} className="flex items-start space-x-2">
+                                                <div className="w-1 h-1 rounded-full bg-gray-500 mt-2"></div>
+                                                <span>{item}</span>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      </div>
+                      
                         <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
                           <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
-                            Cancellation Policy
-                          </h4>
+                                          Cancellation Policy
+                                        </h4>
                           <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
-                            {modalContent.cancellationPolicy}
-                          </p>
-                        </div>
-
+                                          {modalContent.cancellationPolicy}
+                                        </p>
+                                      </div>
+                      
                         {/* Break Message */}
                         {isOnBreak() && (
                           <div className="mt-6 sm:mt-8 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-4 sm:p-5 backdrop-blur-sm">
@@ -432,18 +432,18 @@ function SameDayCards() {
                               paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Pay with PayPal'
                             )}
                           </button>
-                          <button
-                            onClick={closeModal}
+                                        <button
+                                          onClick={closeModal}
                             disabled={isProcessing}
                             className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-                )}
+                                        >
+                                          Close
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                </div>
+                              )}
             </div>
         </div>
     );

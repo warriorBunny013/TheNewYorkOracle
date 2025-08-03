@@ -650,8 +650,8 @@ if (!name || !email || !message || !readingtype) {
                         <img src="https://i.ibb.co/wNrZWpRs/logo.png" alt="Marina's Logo" class="logo">
                         <h1>Booking Confirmation</h1>
                     </div>
-                </div>
-                
+      </div>
+
                 <div class="content">
                     <div class="success-section">
                         <h2 class="main-title">Booking Confirmed!</h2>
@@ -693,13 +693,13 @@ if (!name || !email || !message || !readingtype) {
                     <div class="next-steps">
                         <h3>🌟 What to Expect Next</h3>
                         <ul class="steps-list">
-                            <li>You'll receive a detailed email within 24-72 hours with specific instructions for your reading</li>
+                            <li>You'll receive a detailed email within 5-7 days with specific instructions for your reading</li>
                             <li>For live readings: Scheduling information will be provided based on Marina's availability</li>
                             <li>For pre-recorded readings: Your personalized reading will be delivered to this email address</li>
                             <li>If you have any questions, feel free to reply to this email</li>
-                        </ul>
-                    </div>
-                    
+          </ul>
+      </div>
+
                     <div class="cta-section">
                         <a href="https://www.soulsticetarot.com" class="cta-button">Visit Our Website</a>
                     </div>
@@ -712,8 +712,8 @@ if (!name || !email || !message || !readingtype) {
                     <p>Website: <a href="https://www.soulsticetarot.com">www.soulsticetarot.com</a></p>
                     <div class="copyright">
                         © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
-                    </div>
-                </div>
+      </div>
+    </div>
             </div>
         </body>
         </html>
@@ -946,8 +946,8 @@ if (!name || !email || !message || !readingtype) {
                         <img src="https://i.postimg.cc/NFy9qjgS/Group-1991.png" alt="Marina's Logo" class="logo">
                         <h1>New Booking Notification</h1>
                     </div>
-                </div>
-                
+      </div>
+
                 <div class="content">
                     <div class="notification-section">
                         <div class="notification-icon">
@@ -996,9 +996,9 @@ if (!name || !email || !message || !readingtype) {
                             <li>For live readings: Contact client to schedule the session</li>
                             <li>Send confirmation email to client with specific instructions</li>
                             <li>Update booking status in your system</li>
-                        </ul>
-                    </div>
-                    
+          </ul>
+      </div>
+
                     <div class="status-box">
                         <strong>✅ Status:</strong> This booking has been automatically confirmed. The client has already received a confirmation email with their booking details.
                     </div>
@@ -1011,8 +1011,8 @@ if (!name || !email || !message || !readingtype) {
                     <p>Website: <a href="https://www.soulsticetarot.com">www.soulsticetarot.com</a></p>
                     <div class="copyright">
                         © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
-                    </div>
-                </div>
+      </div>
+    </div>
             </div>
         </body>
         </html>
