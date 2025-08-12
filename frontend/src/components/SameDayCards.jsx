@@ -40,14 +40,14 @@ function SameDayCards() {
         if (isOnBreak()) {
             return "Your order will be delivered post Aug 1";
         }
-        return "Your order will be delivered within 24-72 hours of purchase";
+        return "Your order will be delivered within 5-7 days of purchase";
     };
 
     const getLiveDeliveryMessage = () => {
         if (isOnBreak()) {
             return "Delivery post Aug 1. Reading is a first come, first serve within the next few business days";
         }
-        return "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days";
+        return "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days";
     };
 
     // Check PayPal availability on component mount - TEMPORARILY DISABLED
@@ -96,7 +96,7 @@ function SameDayCards() {
             description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. " + getDeliveryMessage() + ". Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 24-72 hours",
+            extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 5-7 days",
             paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"
         },
         {
@@ -106,7 +106,7 @@ function SameDayCards() {
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days " + getLiveDeliveryMessage(),
             price: "475",
             cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
-            extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 24-72 hours. Reading is a first come, first serve within the next few business days",
+            extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days",
             paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
         }
     ];
