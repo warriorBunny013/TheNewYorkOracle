@@ -656,7 +656,7 @@ const handleTip = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <span className="relative text-white flex items-center gap-2">
-                  Join the waitlist
+                 Book Your Reading
                   <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
