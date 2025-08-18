@@ -469,7 +469,7 @@ const handleTip = () => {
         title="The New York Oracle - Professional Tarot Readings & Spiritual Guidance | Marina Smargiannakis"
         description="Get professional tarot readings and spiritual guidance from The New York Oracle. Featured in Forbes and PopSugar. Express readings, live consultations, and mentorship available. Book your session today."
         keywords="tarot reading, spiritual guidance, psychic reading, New York oracle, Marina Smargiannakis, express reading, live tarot, spiritual consultation, intuitive reading, professional psychic"
-        image="https://thenewyorkoracle.com/hero.png"
+        image="https://thenewyorkoracle.com/hero.webp"
         url="https://thenewyorkoracle.com/"
       />
       <div className="relative">
@@ -824,11 +824,13 @@ const handleTip = () => {
           >
             <div className="relative max-w-md sm:max-w-lg md:max-w-xl xl:max-w-none">
               {/* Image wrapper with responsive sizing */}
-              <div className="aspect-[3/4] w-full max-w-lg md:max-w-xl xl:max-w-xl">
+              <div className="w-full max-w-lg md:max-w-xl xl:max-w-xl">
                 <img 
-                  src='hero.png' 
+                  src='/hero.webp'
                   alt='New York Oracle' 
                   className="object-contain h-full rounded-2xl"
+                  loading="eager"
+                  crossOrigin="anonymous"
                 />
                 
                 {/* Decorative elements */}
@@ -840,7 +842,7 @@ const handleTip = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1, duration: 0.5 }}
-                  className="absolute -left-6 top-6 sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
+                  className="absolute -left-6 top-2 sm:top-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
                   style={{ backdropFilter: 'blur(8px)' }}
                 >
                   <div className="flex items-center gap-3">
@@ -860,7 +862,7 @@ const handleTip = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.3, duration: 0.5 }}
-                  className="absolute -right-6 bottom-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
+                  className="absolute -right-6 bottom-2 sm:bottom-1/4 bg-black/40 backdrop-blur-md rounded-xl p-3 border border-white/10"
                   style={{ backdropFilter: 'blur(8px)' }}
                 >
                   <div className="flex items-center gap-3">
