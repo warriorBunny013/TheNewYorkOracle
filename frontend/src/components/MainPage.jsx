@@ -1,5 +1,5 @@
 import SEO from "./SEO";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import About from './About';
 import Testimonials from './Testimonials';
 import LoveBookingCards from './LoveBookingCards';
@@ -33,6 +33,8 @@ const MainPage = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState('');
+  const [cardInView, setCardInView] = useState(false);
+  const eliteCardRef = useRef(null);
 
   // Date detection logic
   const isOnBreak = () => {
@@ -463,6 +465,32 @@ const handleTip = () => {
       }
     })
   };
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+      const observer = new IntersectionObserver(
+          ([entry]) => {
+              if (entry.isIntersecting) {
+                  setCardInView(true);
+              }
+          },
+          {
+              threshold: 0.1,
+              rootMargin: '0px 0px -50px 0px'
+          }
+      );
+
+      if (eliteCardRef.current) {
+          observer.observe(eliteCardRef.current);
+      }
+
+      return () => {
+          if (eliteCardRef.current) {
+              observer.unobserve(eliteCardRef.current);
+          }
+      };
+  }, []);
+
   return (
     <>
       <SEO 
@@ -898,34 +926,63 @@ const handleTip = () => {
         </div>
 
         <div className='my-10 md:my-20 flex justify-center'>
-        <div className="bg-gradient-to-br from-black via-gray-900 to-black text-white p-8 rounded-xl shadow-2xl overflow-hidden relative">
+        <div 
+            ref={eliteCardRef}
+            className={`bg-gradient-to-br from-black via-gray-900 to-black text-white p-8 rounded-xl shadow-2xl overflow-hidden relative transition-all duration-1000 ease-out ${
+                cardInView 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-12'
+            }`}
+        >
       {/* Glass-like background effects */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <div className="absolute top-1/4 left-1/3 w-64 h-64 rounded-full bg-purple-500 filter blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-blue-500 filter blur-3xl"></div>
+      <div className={`absolute top-0 left-0 w-full h-full opacity-10 transition-all duration-1000 delay-300 ${
+          cardInView ? 'opacity-10' : 'opacity-0'
+      }`}>
+        <div className={`absolute top-1/4 left-1/3 w-64 h-64 rounded-full bg-purple-500 filter blur-3xl transition-all duration-1000 delay-500 ${
+            cardInView ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
+        }`}></div>
+        <div className={`absolute bottom-1/3 right-1/4 w-64 h-64 rounded-full bg-blue-500 filter blur-3xl transition-all duration-1000 delay-700 ${
+            cardInView ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
+        }`}></div>
       </div>
       
       {/* Animated glass border */}
-      <div className="absolute inset-0 rounded-xl border border-white/10 backdrop-blur-sm bg-white/5"></div>
+      <div className={`absolute inset-0 rounded-xl border border-white/10 backdrop-blur-sm bg-white/5 transition-all duration-1000 delay-200 ${
+          cardInView ? 'opacity-100' : 'opacity-0'
+      }`}></div>
       
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-6 flex-1">
-            <div className="flex items-center space-x-2">
-              <Zap className={`text-purple-400 h-5 w-5 ${animate ? 'animate-pulse' : ''}`} />
-              <span className="text-purple-400 font-medium uppercase tracking-wider text-sm">Elite Instant Access</span>
+          <div className={`space-y-6 flex-1 transition-all duration-1000 delay-300 ${
+              cardInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+          }`}>
+            <div className={`flex items-center space-x-2 transition-all duration-700 delay-400 ${
+                cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
+              <Zap className={`text-purple-400 h-5 w-5 transition-all duration-700 delay-500 ${
+                  animate ? 'animate-pulse' : ''
+              } ${cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
+              <span className={`text-purple-400 font-medium uppercase tracking-wider text-sm transition-all duration-700 delay-500 ${
+                  cardInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+              }`}>Elite Instant Access</span>
             </div>
             
-            <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+            <h2 className={`text-3xl md:text-5xl font-bold leading-tight transition-all duration-700 delay-600 ${
+                cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+            }`}>
               Illuminate Your Path <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">Instantly</span>
             </h2>
             
-            <p className="text-[1rem] md:text-lg text-gray-300 text-lg">
+            <p className={`text-[1rem] md:text-lg text-gray-300 text-lg transition-all duration-700 delay-700 ${
+                cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               Skip the queue and receive profound spiritual guidance within days, not months. Urgent questions deserve immediate answers.
             </p>
             
             {getBreakMessage() && (
-              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-lg p-4 backdrop-blur-sm">
+              <div className={`bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-lg p-4 backdrop-blur-sm transition-all duration-700 delay-800 ${
+                  cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              }`}>
                 <div className="flex items-start gap-3">
                   <div className="flex-shrink-0 mt-1">
                     <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
@@ -941,8 +998,12 @@ const handleTip = () => {
               </div>
             )}
             
-            <div className="space-y-4 py-2">
-              <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
+            <div className={`space-y-4 py-2 transition-all duration-700 delay-900 ${
+                cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
+              <div className={`flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10 ${
+                  cardInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}>
                 <PlayCircle className="h-10 w-10 md:h-5 md:w-5 text-blue-400" />
                 <div>
                   <span className="font-semibold">Pre-Recorded Readings</span>
@@ -955,7 +1016,9 @@ const handleTip = () => {
                 </div>
               </div>
               
-              <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
+              <div className={`flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10 ${
+                  cardInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}>
                 <Clock className="h-10 w-10 md:h-5 md:w-5 text-purple-400" />
                 <div>
                   <span className="font-semibold">Live Readings</span>
@@ -970,43 +1033,56 @@ const handleTip = () => {
             </div>
             
             <a 
-  href="#samedayexpress" 
-  onClick={(e) => {
-    e.preventDefault();
-    document.getElementById('samedayexpress')?.scrollIntoView({ 
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }}
-  className="group text-sm md:text-[1rem] w-full md:w-[70%] lg:w-[50%] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 px-8 py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-purple-500/25 backdrop-blur-sm border border-white/10"
->
-  Accelerate Your Journey
-  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
-</a>
+              href="#samedayexpress" 
+              className={`group text-sm md:text-[1rem] w-full md:w-[70%] lg:w-[50%] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 px-8 py-4 rounded-lg font-medium transition-all duration-300 shadow-lg hover:shadow-purple-500/25 backdrop-blur-sm border border-white/10 ${
+                  cardInView ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+              }`}
+            >
+              Accelerate Your Journey
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-2" />
+            </a>
             
           </div>
           
-          <div className="relative mt-6 flex-shrink-0">
+          <div className={`relative mt-6 flex-shrink-0 transition-all duration-1000 delay-500 ${
+              cardInView ? 'opacity-100 translate-x-0 scale-100' : 'opacity-0 translate-x-8 scale-95'
+          }`}>
             {/* Animated glow effect */}
-            <div className={`absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 rounded-full blur-3xl opacity-50 ${animate ? 'scale-110' : 'scale-100'} transition-all duration-1000`}></div>
+            <div className={`absolute inset-0 bg-gradient-to-r from-purple-500/30 to-blue-500/30 rounded-full blur-3xl opacity-50 transition-all duration-1000 delay-600 ${
+                animate ? 'scale-110' : 'scale-100'
+            } ${cardInView ? 'opacity-50' : 'opacity-0'}`}></div>
             
             {/* Glass orb with animated rings */}
             <div className="relative w-72 h-72 flex items-center justify-center rounded-full bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md border border-white/10">
               {/* Animated pulse rings */}
-              <div className={`w-60 h-60 rounded-full border border-purple-500/30 absolute transition-all duration-700 ${animate ? 'scale-105 opacity-100' : 'scale-95 opacity-50'}`}></div>
-              <div className={`w-50 h-50 rounded-full border border-blue-500/30 absolute transition-all duration-700 delay-100 ${animate ? 'scale-110 opacity-100' : 'scale-90 opacity-50'}`}></div>
+              <div className={`w-60 h-60 rounded-full border border-purple-500/30 absolute transition-all duration-700 delay-700 ${
+                  animate ? 'scale-105 opacity-100' : 'scale-95 opacity-50'
+              } ${cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}></div>
+              <div className={`w-50 h-50 rounded-full border border-blue-500/30 absolute transition-all duration-700 delay-800 ${
+                  animate ? 'scale-110 opacity-100' : 'scale-90 opacity-50'
+              } ${cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}></div>
               
-              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md flex items-center justify-center border border-white/10">
-                <div className="w-36 h-36 rounded-full bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center border border-white/10">
-                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/50 transition-transform duration-500 ${animate ? 'scale-110' : 'scale-100'}`}>
-                    <Zap className={`h-12 w-12 text-white transition-all duration-300 ${animate ? 'scale-125' : 'scale-100'}`} />
+              <div className={`w-48 h-48 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-md flex items-center justify-center border border-white/10 transition-all duration-700 delay-900 ${
+                  cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+              }`}>
+                <div className={`w-36 h-36 rounded-full bg-gradient-to-br from-purple-500/30 to-blue-500/30 flex items-center justify-center border border-white/10 transition-all duration-700 delay-1000 ${
+                    cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+                }`}>
+                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/50 transition-all duration-500 delay-1100 ${
+                      animate ? 'scale-110' : 'scale-100'
+                  } ${cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                    <Zap className={`h-12 w-12 text-white transition-all duration-300 delay-1200 ${
+                        animate ? 'scale-125' : 'scale-100'
+                    } ${cardInView ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`} />
                   </div>
                 </div>
               </div>
             </div>
             
             {/* Floating time indicators */}
-            <div className="absolute -top-4 right-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse">
+            <div className={`absolute -top-4 right-0 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full px-3 py-1 text-xs font-bold flex items-center gap-1 shadow-lg animate-pulse transition-all duration-700 delay-1200 ${
+                cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}>
               <Hourglass className="h-3 w-3" />
               <span>{getDeliveryTime()}</span>
             </div>

@@ -159,7 +159,7 @@ function Testimonials({ reviews }) {
     }, [handleReadMore]);
 
     return (
-        <div className="relative  pt-16 pb-20 px-4 overflow-hidden">
+        <div className="relative pt-16 pb-20 px-4 overflow-hidden">
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
