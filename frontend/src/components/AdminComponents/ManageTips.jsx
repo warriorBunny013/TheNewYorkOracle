@@ -5,11 +5,11 @@ import {
   DollarSign, 
   Clock, 
   CheckCircle, 
-  AlertCircle, 
+  // AlertCircle, 
   XCircle,
   RefreshCw,
   Search,
-  Eye,
+  // Eye,
   MessageCircle,
   Heart
 } from 'lucide-react';
