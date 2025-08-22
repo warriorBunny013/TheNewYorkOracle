@@ -70,12 +70,170 @@ const MainPage = () => {
     // Add resize listener
     window.addEventListener('resize', handleResize);
 
+    // Comprehensive iOS pull-to-refresh prevention
+    let startY = 0;
+    let isScrolling = false;
+    
+    const preventRefresh = (e) => {
+      // Prevent any touch events that could trigger refresh
+      if (e.type === 'touchstart') {
+        startY = e.touches[0].clientY;
+        isScrolling = false;
+      }
+      
+      if (e.type === 'touchmove') {
+        if (!isScrolling) {
+          const currentY = e.touches[0].clientY;
+          const deltaY = currentY - startY;
+          
+          // If at the top and trying to scroll up, prevent it
+          if (window.scrollY <= 0 && deltaY > 0) {
+            e.preventDefault();
+            return false;
+          }
+          
+          // If scrolling down from top, allow it but mark as scrolling
+          if (deltaY < 0) {
+            isScrolling = true;
+          }
+        }
+      }
+    };
+
+    // Block all potential refresh triggers
+    const blockRefresh = (e) => {
+      // Prevent pull-to-refresh
+      if (e.type === 'touchmove' && window.scrollY <= 0) {
+        const deltaY = e.touches[0].clientY - startY;
+        if (deltaY > 0) {
+          e.preventDefault();
+          return false;
+        }
+      }
+      
+      // Prevent any key combinations that could refresh
+      if (e.type === 'keydown') {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'r') {
+          e.preventDefault();
+          return false;
+        }
+        if (e.key === 'F5') {
+          e.preventDefault();
+          return false;
+        }
+      }
+    };
+
+    // Add event listeners with proper options
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      document.addEventListener('touchstart', preventRefresh, { passive: false });
+      document.addEventListener('touchmove', blockRefresh, { passive: false });
+      document.addEventListener('keydown', blockRefresh, { passive: false });
+      
+      // Additional iOS-specific prevention
+      document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+      document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
+      document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });
+    }
+
+    // Global refresh prevention
+    const preventPageRefresh = (e) => {
+      // Block pull-to-refresh
+      if (e.type === 'touchmove' && window.scrollY <= 0) {
+        const touch = e.touches[0];
+        if (touch.clientY > startY) {
+          e.preventDefault();
+          return false;
+        }
+      }
+      
+      // Block any other refresh triggers
+      if (e.type === 'beforeunload') {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    };
+
+    // Add global prevention
+    document.addEventListener('touchmove', preventPageRefresh, { passive: false });
+    window.addEventListener('beforeunload', preventPageRefresh);
+
+    // Additional iOS-specific protection
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      // Block all potential refresh mechanisms
+      const blockAllRefresh = (e) => {
+        // Block pull-to-refresh at document level
+        if (e.type === 'touchmove') {
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          if (scrollTop <= 0) {
+            const touch = e.touches[0];
+            if (touch.clientY > startY) {
+              e.preventDefault();
+              e.stopPropagation();
+              return false;
+            }
+          }
+        }
+        
+        // Block any other events that could cause refresh
+        if (e.type === 'gesturestart' || e.type === 'gesturechange' || e.type === 'gestureend') {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      };
+
+      // Block any scroll events that could trigger refresh
+      const blockScrollRefresh = () => {
+        if (window.scrollY < 0) {
+          window.scrollTo(0, 0);
+        }
+      };
+
+      // Add comprehensive event blocking
+      document.addEventListener('touchmove', blockAllRefresh, { passive: false, capture: true });
+      document.addEventListener('gesturestart', blockAllRefresh, { passive: false, capture: true });
+      document.addEventListener('gesturechange', blockAllRefresh, { passive: false, capture: true });
+      document.addEventListener('gestureend', blockAllRefresh, { passive: false, capture: true });
+      
+      // Block any scroll events that could trigger refresh
+      window.addEventListener('scroll', blockScrollRefresh, { passive: true });
+      
+      // Store references for cleanup
+      window._blockAllRefresh = blockAllRefresh;
+      window._blockScrollRefresh = blockScrollRefresh;
+    }
+
     // Cleanup on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('touchmove', preventPageRefresh);
+      window.removeEventListener('beforeunload', preventPageRefresh);
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        document.removeEventListener('touchstart', preventRefresh);
+        document.removeEventListener('touchmove', blockRefresh);
+        document.removeEventListener('keydown', blockRefresh);
+        document.removeEventListener('gesturestart', preventRefresh);
+        document.removeEventListener('gesturechange', preventRefresh);
+        document.removeEventListener('gestureend', preventRefresh);
+        
+        // Remove additional protection listeners
+        if (window._blockAllRefresh) {
+          document.removeEventListener('touchmove', window._blockAllRefresh, { capture: true });
+          document.removeEventListener('gesturestart', window._blockAllRefresh, { capture: true });
+          document.removeEventListener('gesturechange', window._blockAllRefresh, { capture: true });
+          document.removeEventListener('gestureend', window._blockAllRefresh, { capture: true });
+        }
+        if (window._blockScrollRefresh) {
+          window.removeEventListener('scroll', window._blockScrollRefresh);
+        }
+        
+        // Clean up stored references
+        delete window._blockAllRefresh;
+        delete window._blockScrollRefresh;
+      }
     };
-
- 
   }, []);
 
   useEffect(()=>{
@@ -193,27 +351,53 @@ const MainPage = () => {
   const [activeSection, setActiveSection] = useState('');
 
   useEffect(() => {
+    // Throttle function to limit scroll event frequency
+    let ticking = false;
+    
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      
-      // Determine active section based on scroll position
-      const sections = ['about', 'services', 'press', 'testimonials'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      
-      if (currentSection) {
-        setActiveSection(currentSection);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 20);
+          
+          // Determine active section based on scroll position
+          const sections = ['about', 'services', 'press', 'testimonials'];
+          const currentSection = sections.find(section => {
+            const element = document.getElementById(section);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              return rect.top <= 100 && rect.bottom >= 100;
+            }
+            return false;
+          });
+          
+          if (currentSection) {
+            setActiveSection(currentSection);
+          }
+          
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Use passive event listener for better performance on mobile
+    const scrollOptions = { passive: true };
+    
+    // Check if passive is supported
+    try {
+      window.addEventListener('scroll', handleScroll, scrollOptions);
+    } catch (e) {
+      // Fallback for browsers that don't support passive
+      window.addEventListener('scroll', handleScroll);
+    }
+    
+    return () => {
+      try {
+        window.removeEventListener('scroll', handleScroll, scrollOptions);
+      } catch (e) {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
   }, []);
 
   const toggleMenu = () => {
@@ -226,10 +410,23 @@ const MainPage = () => {
     setIsMenuOpen(false);
     document.body.style.overflow = 'auto';
     
-    // Smooth scroll to section
+    // Smooth scroll to section with iOS compatibility
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // Use scrollIntoView with better iOS support
+      if ('scrollBehavior' in document.documentElement.style) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      } else {
+        // Fallback for older browsers
+        const targetPosition = element.offsetTop - 80; // Account for header
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
     
     setActiveSection(sectionId);
