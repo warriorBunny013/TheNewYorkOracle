@@ -70,6 +70,33 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="The New York Oracle" />
     
+    <!-- Prevent pull-to-refresh on iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+    
+    <!-- Additional iOS refresh prevention -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Script to prevent pull-to-refresh -->
+    <script>
+      // Prevent pull-to-refresh on iOS
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        document.addEventListener('touchmove', function(e) {
+          if (window.scrollY <= 0) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+        
+        // Block any refresh attempts
+        window.addEventListener('beforeunload', function(e) {
+          e.preventDefault();
+          e.returnValue = '';
+          return '';
+        });
+      }
+    </script>
+    
     <!-- Social Media Meta Tags -->
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:secure_url" content="https://thenewyorkoracle.com/hero.png" />
