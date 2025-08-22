@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 // import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
@@ -26,6 +26,10 @@ function SameDayCards() {
         cancellationPolicy: "",
         alt: ""
     });
+
+    // Refs for animation elements
+    const titleRef = useRef(null);
+    const cardRefs = useRef([]);
 
     // Date detection logic
     const isOnBreak = () => {
@@ -197,14 +201,51 @@ function SameDayCards() {
         }
     };
 
+    // Intersection Observer for scroll animations
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe title
+        if (titleRef.current) {
+            observer.observe(titleRef.current);
+        }
+
+        // Observe cards
+        cardRefs.current.forEach(card => {
+            if (card) observer.observe(card);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Add ref to card
+    const addCardRef = (el, index) => {
+        cardRefs.current[index] = el;
+    };
+
     return (
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+            <style jsx>{`
+                .animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+            `}</style>
             <div className="max-w-7xl mx-auto">
                 <h1 
-                    // initial={{ opacity: 0, y: -50 }}
-                    // animate={{ opacity: 1, y: 0 }}
-                    // transition={{ duration: 0.8 }}
-                    className="text-3xl md:text-5xl font-extrabold text-white mb-6 md:mb-12"
+                    ref={titleRef}
+                    className="text-3xl md:text-5xl font-extrabold text-white mb-6 md:mb-12 opacity-0 translate-y-8 transition-all duration-700 ease-out"
                 >
                     Express Reading
                 </h1>
@@ -213,18 +254,13 @@ function SameDayCards() {
                     {cards.filter(price => price.type === "Express reading").map((card, index) => (
                         <div
                             key={index}
-                            // initial={{ opacity: 0, scale: 0.9 }}
-                            // whileInView={{ opacity: 1, scale: 1 }}
-                            // transition={{ 
-                            //     duration: 0.6, 
-                            //     ease: "easeInOut",
-                            //     delay: index * 0.2 
-                            // }}
-                            className="bg-gray-900/40 backdrop-blur-md rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:translate-y-1"
+                            ref={(el) => addCardRef(el, index)}
+                            className="bg-gray-900/40 backdrop-blur-md rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:translate-y-1 opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                            style={{ transitionDelay: `${index * 100}ms` }}
                         >
                             <div className="relative bg-white">
                                 <img 
-                                    className="w-full h-64 object-cover" 
+                                    className="w-full h-64 object-cover transition-transform duration-300 hover:scale-105" 
                                     src={card.img} 
                                     alt={card.type} 
                                 />
@@ -242,7 +278,7 @@ function SameDayCards() {
                                 <div className="flex flex-row items-center justify-between">
                                     <button
                                         onClick={() => openModal(card.title, card.description, card.price,card.type, card.cancellationPolicy,card.type,card.extrainfo)}
-                                        className="w-[7.5rem] sm:w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-[7.5rem] sm:w-40 py-3 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         Book Now
                                     </button>

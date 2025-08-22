@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // import { motion } from "framer-motion";
 import { 
     Calendar, 
@@ -18,6 +18,10 @@ function CareerBookingCards() {
         alt: ""
     });
 
+    // Refs for animation elements
+    const titleRef = useRef(null);
+    const cardRefs = useRef([]);
+
     useEffect(() => {
         if (showModal) {
             document.body.style.overflow = 'hidden';
@@ -28,6 +32,39 @@ function CareerBookingCards() {
             document.body.style.overflow = 'unset';
         };
     }, [showModal]);
+
+    // Intersection Observer for scroll animations
+    useEffect(() => {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe title
+        if (titleRef.current) {
+            observer.observe(titleRef.current);
+        }
+
+        // Observe cards
+        cardRefs.current.forEach(card => {
+            if (card) observer.observe(card);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // Add ref to card
+    const addCardRef = (el, index) => {
+        cardRefs.current[index] = el;
+    };
 
     const openModal = (title, description, price,time, cancellationPolicy, alt) => {
         setModalContent({ title, description, price,time, cancellationPolicy, alt });
@@ -137,46 +174,40 @@ function CareerBookingCards() {
 
     return (
         <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+            <style jsx>{`
+                .animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+                
+                .card-animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+            `}</style>
               <div className="max-w-7xl mx-auto">
                 <h1
-                  // variants={titleVariants}
-                  // initial="hidden"
-                  // whileInView="visible"
-                  // viewport={{ once: true, amount: 0.3 }}
-                  className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8 lg:mb-12 text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 text-center md:text-left"
+                  ref={titleRef}
+                  className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8 lg:mb-12 text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 text-center md:text-left opacity-0 translate-y-8 transition-all duration-700 ease-out"
                 >
                   Career Readings
                 </h1>
         
-                <div 
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8"
-                  // variants={containerVariants}
-                  // initial="hidden"
-                  // whileInView="visible"
-                  // viewport={{ once: true, amount: 0.1 }}
-                >
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8">
                   {cards
                     .filter((price) => price.type === "career")
                     .map((card, index) => (
                       <div
                         key={index}
-                        // variants={cardVariants}
-                        // whileHover={{ 
-                        //   y: -8,
-                        //   scale: 1.02,
-                        //   transition: { duration: 0.3, ease: "easeOut" }
-                        // }}
-                        className="bg-gray-900/40 backdrop-blur-md rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+                        ref={(el) => addCardRef(el, index)}
+                        className="bg-gray-900/40 backdrop-blur-md rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                        style={{ transitionDelay: `${index * 100}ms` }}
                       >
                         <div className="relative overflow-hidden">
                           <img
-                            className="w-full h-48 sm:h-56 md:h-64 object-cover filter saturate-75"
+                            className="w-full h-48 sm:h-56 md:h-64 object-cover filter saturate-75 transition-transform duration-300 hover:scale-105"
                             src={card.img}
                             alt={card.type}
-                            // whileHover={{ 
-                            //   scale: 1.05,
-                            //   transition: { duration: 0.4, ease: "easeOut" }
-                            // }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                         </div>
@@ -203,9 +234,7 @@ function CareerBookingCards() {
                                   card.type
                                 )
                               }
-                              // whileHover={{ scale: 1.05 }}
-                              // whileTap={{ scale: 0.95 }}
-                              className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                              className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                             >
                               Book a Slot
                             </button>
