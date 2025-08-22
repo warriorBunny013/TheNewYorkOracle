@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Quote, Heart, Sparkles, Move, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote, Sparkles, Move, ChevronLeft, ChevronRight } from "lucide-react";
 
 function Testimonials({ reviews }) {
     const [selectedReview, setSelectedReview] = useState(null);
@@ -418,14 +418,14 @@ function Testimonials({ reviews }) {
                                         </div>
                                     </motion.button>
                                     {/* Close Button */}
-                            <motion.button
-                                        whileHover={{ scale: 1.1, rotate: 90 }}
-                                        whileTap={{ scale: 0.9 }}
-                                        className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-red-500 to-pink-600 flex items-center justify-center text-white text-lg sm:text-xl md:text-2xl font-bold hover:from-red-600 hover:to-pink-700 transition-all duration-300 shadow-lg z-10"
+                            <button
+                                        className="absolute top-2 right-2 sm:top-4 sm:right-4 md:top-6 md:right-6 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-gray-800/80 hover:bg-gray-700/80 flex items-center justify-center text-gray-300 hover:text-white transition-all duration-200 border border-gray-600/50 hover:border-gray-500/50 z-10"
                                 onClick={closePopup}
                             >
-                                        ×
-                            </motion.button>
+                                        <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                            </button>
                             
                                     {/* Header */}
                                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-0 sm:justify-between mb-4 sm:mb-6 md:mb-8 mt-8 sm:mt-10 px-8 sm:px-12 md:px-16 lg:px-20">

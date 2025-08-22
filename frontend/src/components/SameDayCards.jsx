@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from '@stripe/stripe-js';
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
 import { 
     Calendar, 
@@ -200,26 +200,26 @@ function SameDayCards() {
     return (
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <motion.h1 
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                <h1 
+                    // initial={{ opacity: 0, y: -50 }}
+                    // animate={{ opacity: 1, y: 0 }}
+                    // transition={{ duration: 0.8 }}
                     className="text-3xl md:text-5xl font-extrabold text-white mb-6 md:mb-12"
                 >
                     Express Reading
-                </motion.h1>
+                </h1>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {cards.filter(price => price.type === "Express reading").map((card, index) => (
-                        <motion.div
+                        <div
                             key={index}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            transition={{ 
-                                duration: 0.6, 
-                                ease: "easeInOut",
-                                delay: index * 0.2 
-                            }}
+                            // initial={{ opacity: 0, scale: 0.9 }}
+                            // whileInView={{ opacity: 1, scale: 1 }}
+                            // transition={{ 
+                            //     duration: 0.6, 
+                            //     ease: "easeInOut",
+                            //     delay: index * 0.2 
+                            // }}
                             className="bg-gray-900/40 backdrop-blur-md rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:translate-y-1"
                         >
                             <div className="relative bg-white">
@@ -251,17 +251,17 @@ function SameDayCards() {
                                     </span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
                 {showModal && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-4">
                                   <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-                                  <motion.div
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                  <div
+                                    // initial={{ opacity: 0, scale: 0.9 }}
+                                    // animate={{ opacity: 1, scale: 1 }}
+                                    // transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full h-full md:h-auto md:max-w-2xl md:mx-4 shadow-2xl border border-gray-800 md:max-h-[90vh] flex flex-col"
                     >
                       <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
@@ -441,7 +441,7 @@ function SameDayCards() {
                                         </button>
                                       </div>
                                     </div>
-                                  </motion.div>
+                                  </div>
                                 </div>
                               )}
             </div>

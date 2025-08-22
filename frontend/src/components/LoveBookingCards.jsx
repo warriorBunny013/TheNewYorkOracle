@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Calendar, Clock, X, CreditCard } from "lucide-react";
 
 function LoveBookingCards() {
@@ -88,38 +88,38 @@ function LoveBookingCards() {
   ];
 
   // Animation variants for smooth scroll animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       staggerChildren: 0.15,
+  //       delayChildren: 0.1
+  //     }
+  //   }
+  // };
 
-  const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50,
-      scale: 0.95,
-      filter: "blur(10px)"
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      filter: "blur(0px)",
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      }
-    }
-  };
+  // const cardVariants = {
+  //   hidden: { 
+  //     opacity: 0, 
+  //     y: 50,
+  //     scale: 0.95,
+  //     filter: "blur(10px)"
+  //   },
+  //   visible: {
+  //     opacity: 1,
+  //     y: 0,
+  //     scale: 1,
+  //     filter: "blur(0px)",
+  //     transition: {
+  //       duration: 0.8,
+  //       ease: [0.25, 0.46, 0.45, 0.94],
+  //       type: "spring",
+  //       stiffness: 100,
+  //       damping: 15
+  //     }
+  //   }
+  // };
 
   const titleVariants = {
     hidden: { 
@@ -142,7 +142,7 @@ function LoveBookingCards() {
   return (
     <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <motion.h1
+        <h1
           variants={titleVariants}
           initial="hidden"
           whileInView="visible"
@@ -150,11 +150,11 @@ function LoveBookingCards() {
           className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 md:mb-8 lg:mb-12 text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400 text-center md:text-left"
         >
           Love Readings
-        </motion.h1>
+        </h1>
 
-        <motion.div 
+        <div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8"
-          variants={containerVariants}
+          // variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
@@ -162,18 +162,18 @@ function LoveBookingCards() {
           {cards
             .filter((price) => price.type === "love")
             .map((card, index) => (
-              <motion.div
+              <div
                 key={index}
-                variants={cardVariants}
-                whileHover={{ 
-                  y: -8,
-                  scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
-                }}
-                className="bg-gray-900/40 backdrop-blur-md rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+                // variants={cardVariants}
+                // whileHover={{ 
+                //   y: -8,
+                //   scale: 1.02,
+                //   transition: { duration: 0.3, ease: "easeOut" }
+                // }}
+                className="bg-gray-900/40 rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
               >
                 <div className="relative overflow-hidden">
-                  <motion.img
+                  <img
                     className="w-full h-48 sm:h-56 md:h-64 object-cover filter saturate-75"
                     src={card.img}
                     alt={card.type}
@@ -196,7 +196,7 @@ function LoveBookingCards() {
                     {card.description}
                   </p>
                   <div className="flex flex-row pt-5 items-center justify-between gap-3 sm:gap-0">
-                    <motion.button
+                    <button
                       onClick={() =>
                         openModal(
                           card.title,
@@ -207,28 +207,24 @@ function LoveBookingCards() {
                           card.type
                         )
                       }
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+
                       className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
                     >
                       Book a Slot
-                    </motion.button>
+                    </button>
                     <span className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-200 to-purple-300">
                       ${card.price}
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-        </motion.div>
+        </div>
 
         {showModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+            <div
               className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border border-gray-800 max-h-[90vh] flex flex-col"
             >
               <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
@@ -314,7 +310,7 @@ function LoveBookingCards() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
       </div>
