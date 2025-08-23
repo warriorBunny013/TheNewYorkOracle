@@ -917,13 +917,13 @@ const handleTip = () => {
           <About/>
         </div>
         <Press />
-        <div id="testimonials">
+        {/* <div id="testimonials">
           {reviews.length > 0 ? (
             <Testimonials reviews={reviews} />
           ) : (
             <p></p>
           )}
-        </div>
+        </div> */}
 
         <div className='my-10 md:my-20 flex justify-center'>
         <div 
