@@ -8,7 +8,7 @@ const ERROR404 = () => {
           title="Page Not Found - The New York Oracle"
           description="The page you are looking for does not exist. Please return to the homepage for professional tarot readings and spiritual guidance."
           keywords="404, page not found, tarot reading, spiritual guidance"
-          image="https://thenewyorkoracle.com/hero.png"
+          image="https://thenewyorkoracle.com/hero.webp"
           url="https://thenewyorkoracle.com/404"
         />
         <div>

@@ -5,20 +5,13 @@
   "proxy": "https://api.soulsticetarot.com",
   "dependencies": {
     "@appointlet/appointlet.js": "^3.0.7",
+    "@craco/craco": "^7.1.0",
     "@paypal/react-paypal-js": "^8.8.3",
-    "@react-three/drei": "^9.109.2",
-    "@react-three/fiber": "^8.16.8",
     "@stripe/stripe-js": "^4.10.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.4",
-    "build": "^0.1.4",
     "emailjs-com": "^3.2.0",
-    "framer-motion": "^11.3.21",
-    "gapi-script": "^1.2.0",
+    "framer-motion": "^12.23.12",
     "lucide-react": "^0.477.0",
-    "maath": "^0.10.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
@@ -27,18 +20,19 @@
     "react-scripts": "5.0.1",
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
-    "run": "^1.5.0",
     "slick-carousel": "^1.8.1",
-    "three": "^0.167.1",
     "web-vitals": "^2.1.4"
   },
   "engines": {
     "node": "20.x"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "build:analyze": "GENERATE_SOURCEMAP=false npm run build && npx webpack-bundle-analyzer build/static/js/*.js",
+    "build:size": "npm run build && npx size-limit",
+    "size": "npx size-limit",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -61,6 +55,8 @@
   },
   "devDependencies": {
     "daisyui": "^4.12.10",
-    "tailwindcss": "^3.4.7"
+    "size-limit": "^11.1.3",
+    "tailwindcss": "^3.4.7",
+    "webpack-bundle-analyzer": "^4.10.1"
   }
 }

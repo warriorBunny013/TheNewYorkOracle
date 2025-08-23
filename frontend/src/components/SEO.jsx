@@ -5,7 +5,7 @@ const SEO = ({ title, description, keywords, image, url, type = "website" }) => 
   const defaultTitle = "The New York Oracle - Professional Tarot Readings & Spiritual Guidance | Marina Smargiannakis";
   const defaultDescription = "Get professional tarot readings and spiritual guidance from The New York Oracle. Featured in Forbes and PopSugar. Express readings, live consultations, and mentorship available. Book your session today.";
   const defaultKeywords = "tarot reading, spiritual guidance, psychic reading, New York oracle, Marina Smargiannakis, express reading, live tarot, spiritual consultation, intuitive reading, professional psychic";
-  const defaultImage = "https://thenewyorkoracle.com/hero.png";
+  const defaultImage = "https://thenewyorkoracle.com/hero.webp";
   const defaultUrl = "https://thenewyorkoracle.com/";
 
   const seoTitle = title || defaultTitle;
