@@ -441,7 +441,7 @@ function SameDayCards() {
                                     <h2 className={`text-3xl md:text-5xl font-bold leading-tight transition-all duration-700 delay-600 ${
                                         cardInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                                     }`}>
-                                        Within a Week<span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500"><br></br> Divine reading</span>
+                                        Within a Week<span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500"><br></br> Divine Reading</span>
                                     </h2>
                                     
                                     <p className={`text-[1rem] md:text-lg text-gray-300 text-lg transition-all duration-700 delay-700 ${
