@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 // import { loadStripe } from '@stripe/stripe-js';
-// import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
 
 // const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
@@ -36,16 +35,6 @@ function SameDayForm() {
     fetchBooking();
   }, [id, navigate]);
 
-  // useEffect(() => {
-  //   if (isAuthorized) {
-  //     const appointlet = new Appointlet('https://appt.link/meet-with-marina-kLDXzYpH/in-person-meeting');
-  //     const inlineEmbed = async () => {
-  //       const meetingData = await appointlet.inlineEmbed(document.getElementById('appointlet-embed'));
-  //       console.log(meetingData);
-  //     };
-  //     inlineEmbed();
-  //   }
-  // }, [isAuthorized]);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -134,7 +123,7 @@ function SameDayForm() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-400">✓</span>
-                  <span>Marina will review your information and get back to you within 24-72 hours</span>
+                  <span>Marina will review your information and get back to you within 5-7 days</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-green-400">✓</span>
@@ -278,12 +267,12 @@ function SameDayForm() {
                 tabIndex="-1" 
                 // name="option" 
                 name="readingtype"
-                value="Live 45-minute reading ($475)"
+                value="Live 45mins one-one-one reading ($475)"
                 onChange={handleChange}
                 disabled={isCompleted}
                 required />
 
-                <span className="text-xs sm:text-sm"> LIVE 45-minute reading ($475) </span>
+                <span className="text-xs sm:text-sm"> Live 45mins one-one-one reading ($475) </span>
               </label>
             </div>
           </div>

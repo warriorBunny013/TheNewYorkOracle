@@ -67,7 +67,7 @@ function FeedbackForm() {
             <div className="flex flex-col px-2 sm:px-4 md:px-6 lg:px-8">
               <form onSubmit={handleSubmit} className="relative">
                 {/* Glassmorphism form container */}
-                <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
+                <div className="bg-white/5 border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
                   <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
                     <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-6 lg:gap-8">
                       <div className="flex-1 min-w-0">
@@ -81,7 +81,7 @@ function FeedbackForm() {
                             name="clientName"
                             value={clientName}
                             onChange={(e) => setClientName(e.target.value)}
-                            className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 backdrop-blur-sm text-sm sm:text-base"
+                            className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 text-sm sm:text-base"
                             placeholder="Enter your name"
                             required
                           />
@@ -117,7 +117,7 @@ function FeedbackForm() {
                           id="comments"
                           name="comments"
                           rows="3"
-                          className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 backdrop-blur-sm resize-none text-sm sm:text-base"
+                          className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 resize-none text-sm sm:text-base"
                           placeholder="Share your experience with us..."
                           value={comments}
                           onChange={(e) => setComments(e.target.value)}

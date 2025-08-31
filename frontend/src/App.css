@@ -69,28 +69,7 @@
   }
 }
 
-/* Performance optimizations for mobile */
-@media (max-width: 768px) {
-  * {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  
-  .backdrop-blur-sm {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  
-  .backdrop-blur-md {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  
-  .backdrop-blur-xl {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
+
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {

@@ -25,9 +25,24 @@ function CareerBookingCards() {
     useEffect(() => {
         if (showModal) {
             document.body.style.overflow = 'hidden';
+            
+            // Add keyboard event listener for Escape key
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            };
+            
+            document.addEventListener('keydown', handleEscape);
+            
+            return () => {
+                document.removeEventListener('keydown', handleEscape);
+                document.body.style.overflow = 'unset';
+            };
         } else {
             document.body.style.overflow = 'unset';
         }
+        
         return () => {
             document.body.style.overflow = 'unset';
         };
@@ -66,9 +81,17 @@ function CareerBookingCards() {
         cardRefs.current[index] = el;
     };
 
-    const openModal = (title, description, price,time, cancellationPolicy, alt) => {
-        setModalContent({ title, description, price,time, cancellationPolicy, alt });
+    const openModal = (title, description, price, time, cancellationPolicy, alt) => {
+        setModalContent({ title, description, price, time, cancellationPolicy, alt });
         setShowModal(true);
+        
+        // Focus the close button after modal opens
+        setTimeout(() => {
+            const closeButton = document.querySelector('[aria-label="Close modal"]');
+            if (closeButton) {
+                closeButton.focus();
+            }
+        }, 100);
     };
 
     const closeModal = () => {
@@ -92,29 +115,29 @@ function CareerBookingCards() {
     
     const cards = [
         {
-            img: "Image-2.png",
+            img: "Image-2.webp",
             type: "career",
             title: "15 minutes detailed reading",
             description: "15 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-            price: "65",
+            price: "85",
             time:"15 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
-            img: "Image-3.png",
+            img: "Image-3.webp",
             type: "career",
             title: "30 minutes detailed reading",
             description: "30 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-            price: "125",
+            price: "150",
             time:"30 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         },
         {
-            img: "Image-4.png",
+            img: "Image-4.webp",
             type: "career",
             title: "45 minutes detailed reading",
             description: "45 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
-            price: "185",
+            price: "225",
             time:"45 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
         }
@@ -154,26 +177,10 @@ function CareerBookingCards() {
     //     }
     // };
 
-    const titleVariants = {
-        hidden: { 
-            opacity: 0, 
-            y: -30,
-            filter: "blur(5px)"
-        },
-        visible: {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            transition: {
-                duration: 0.6,
-                ease: [0.25, 0.46, 0.45, 0.94],
-                delay: 0.2
-            }
-        }
-    };
+
 
     return (
-        <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="px-4 sm:px-6 lg:px-8">
             <style jsx>{`
                 .animate-in {
                     opacity: 1 !important;
@@ -200,7 +207,7 @@ function CareerBookingCards() {
                       <div
                         key={index}
                         ref={(el) => addCardRef(el, index)}
-                        className="bg-gray-900/40 backdrop-blur-md rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                        className="bg-gray-900/40 rounded-xl sm:rounded-2xl border border-gray-800 overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 opacity-0 translate-y-8 transition-all duration-700 ease-out"
                         style={{ transitionDelay: `${index * 100}ms` }}
                       >
                         <div className="relative overflow-hidden">
@@ -248,29 +255,42 @@ function CareerBookingCards() {
                 </div>
         
                 {showModal && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-                    <div
-                      // initial={{ opacity: 0, scale: 0.9 }}
-                      // animate={{ opacity: 1, scale: 1 }}
-                      // transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 backdrop-blur-xl rounded-xl md:rounded-2xl w-full max-w-2xl mx-4 shadow-2xl border border-gray-800 max-h-[90vh] flex flex-col"
+                  <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-title"
+                    aria-describedby="modal-description"
+                  >
+            
+                    <div 
+                      className="absolute inset-0 bg-black/70 backdrop-blur-sm" 
+                      onClick={closeModal}
+                    />
+                    
+                    {/* Modal Content */}
+                    <div 
+                      className="relative bg-gradient-to-br from-gray-900/90 to-gray-950/90 rounded-xl md:rounded-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] shadow-2xl border border-gray-800 flex flex-col"
+                      role="document"
                     >
-                      <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
-                        <div className="flex justify-between items-center mb-4 sm:mb-6 md:mb-8">
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-medium text-gray-200">
-                            {modalContent.title}
-                          </h2>
-                          <button
-                            onClick={closeModal}
-                            className="text-gray-400 hover:text-gray-200 transition-colors"
-                          >
-                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                          </button>
-                        </div>
-        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-                          <div className="space-y-3 sm:space-y-4 md:space-y-5">
+                      {/* Header */}
+                      <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-800">
+                        <h2 id="modal-title" className="text-lg sm:text-xl md:text-2xl font-medium text-gray-200">
+                          {modalContent.title}
+                        </h2>
+                        <button
+                          onClick={closeModal}
+                          className="text-gray-400 hover:text-gray-200 transition-colors p-2 rounded-full hover:bg-gray-800/50 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                          aria-label="Close modal"
+                        >
+                          <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                        </button>
+                      </div>
+                      
+                      {/* Modal Body */}
+                      <div id="modal-description" className="p-4 sm:p-6 overflow-y-auto flex-1">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                          <div className="space-y-3 sm:space-y-4">
                             <div className="flex items-center space-x-3 sm:space-x-4">
                               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-800/60 flex items-center justify-center">
                                 <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-rose-300" />
@@ -307,7 +327,7 @@ function CareerBookingCards() {
                                 "Late arrivals may result in session cancellation"
                               ].map((item, i) => (
                                 <li key={i} className="flex items-start space-x-2">
-                                  <div className="w-1 h-1 rounded-full bg-gray-500 mt-2"></div>
+                                  <div className="w-1 h-1 rounded-full bg-gray-500 mt-2 flex-shrink-0"></div>
                                   <span>{item}</span>
                                 </li>
                               ))}
@@ -315,7 +335,8 @@ function CareerBookingCards() {
                           </div>
                         </div>
         
-                        <div className="mt-6 sm:mt-8 bg-gray-800/40 backdrop-blur-md p-4 sm:p-5 rounded-xl border border-gray-700/30">
+                        {/* Cancellation Policy */}
+                        <div className="mt-6 sm:mt-8 bg-gray-800/40 p-4 sm:p-5 rounded-xl border border-gray-700/30">
                           <h4 className="text-base sm:text-lg font-medium text-gray-200 mb-3">
                             Cancellation Policy
                           </h4>
@@ -323,21 +344,22 @@ function CareerBookingCards() {
                             {modalContent.cancellationPolicy}
                           </p>
                         </div>
-        
-                        <div className="mt-6 sm:mt-8 flex flex-row justify-end space-x-4">
-                          <button
-                            onClick={() => handleBookingRedirect(modalContent.title)}
-                            className="w-[7.5rem] sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
-                          >
-                            Book Now
-                          </button>
-                          <button
-                            onClick={closeModal}
-                            className="px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
-                          >
-                            Close
-                          </button>
-                        </div>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="p-4 sm:p-6 border-t border-gray-800 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
+                        <button
+                          onClick={() => handleBookingRedirect(modalContent.title)}
+                          className="w-full sm:w-40 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm sm:text-base"
+                        >
+                          Book Now
+                        </button>
+                        <button
+                          onClick={closeModal}
+                          className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-gray-600"
+                        >
+                          Close
+                        </button>
                       </div>
                     </div>
                   </div>

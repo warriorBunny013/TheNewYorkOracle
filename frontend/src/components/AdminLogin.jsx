@@ -108,7 +108,7 @@ function AdminLogin() {
                 className="relative z-10 w-full max-w-md"
             >
                 {/* Login Card */}
-                <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl border border-gray-700/50 p-8 shadow-2xl">
+                <div className="bg-gray-800/50 rounded-2xl border border-gray-700/50 p-8 shadow-2xl">
                     {/* Header */}
                     <div className="text-center mb-8">
                         <motion.div

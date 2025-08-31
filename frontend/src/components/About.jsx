@@ -283,12 +283,12 @@ const MarinaAbout = () => {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeInOut" }}
-        className="max-w-5xl w-full grid md:grid-cols-2 gap-12 items-center bg-gray-900/50 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-[#4a4e69]/20"
+        className="max-w-5xl w-full grid md:grid-cols-2 gap-12 items-center bg-gray-900/50 rounded-3xl overflow-hidden shadow-2xl border border-[#4a4e69]/20"
       >
         {/* Image Section */}
         <div className="relative group overflow-hidden">
           <img 
-            src="soulsticetarot.jpg" 
+            src="soulsticetarot.webp" 
             alt="Marina - Soulstice Tarot" 
             className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
           />
@@ -384,7 +384,7 @@ const MarinaAbout = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
            className="flex items-center gap-2">
             <button 
-              className="flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20 backdrop-blur-sm"
+              className="flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 shadow-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white border border-emerald-400/20"
               onClick={handleTip}
             >
               <Coffee size={18} className="text-emerald-100 text-sm md:text-base" /> Support My Work
@@ -398,7 +398,7 @@ const MarinaAbout = () => {
 
       {/* Donation Modal with Modern UI */}
       {showTipModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -569,7 +569,7 @@ const MarinaAbout = () => {
 
       {/* Success Message */}
       {showSuccessMessage && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -599,7 +599,7 @@ const MarinaAbout = () => {
 
       {/* Error Message */}
       {showErrorMessage && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
