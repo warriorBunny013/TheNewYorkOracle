@@ -267,12 +267,12 @@ function SameDayForm() {
                 tabIndex="-1" 
                 // name="option" 
                 name="readingtype"
-                value="Live 45mins one-one-one reading ($475)"
+                value="Live 45mins one-on-one reading ($475)"
                 onChange={handleChange}
                 disabled={isCompleted}
                 required />
 
-                <span className="text-xs sm:text-sm"> Live 45mins one-one-one reading ($475) </span>
+                <span className="text-xs sm:text-sm"> Live 45mins one-on-one reading ($475) </span>
               </label>
             </div>
           </div>
