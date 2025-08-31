@@ -174,7 +174,7 @@ function SameDayCards() {
             type: "ELITE",
             title: "LIVE one-on-one 45-minute reading",
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days " + getLiveDeliveryMessage(),
-            price: "475",
+            price: "495",
             cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
             extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days",
             paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
