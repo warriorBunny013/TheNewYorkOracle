@@ -322,7 +322,7 @@ function ExclusiveTierCards() {
                                 <div className="space-y-6">
                                     <div className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500/20 to-red-700/20 border border-red-500/30 rounded-full animate-fade-up ${animationsTriggered ? 'show' : ''}`} style={{ transitionDelay: '100ms' }}>
                                         <Zap className="w-4 h-4 text-red-400" />
-                                        <span className="text-red-300 text-sm font-semibold">QUICK READING</span>
+                                        <span className="text-red-300 text-sm font-semibold">PREMIUM ACCESS</span>
                                     </div>
                                     
                                     <h1 
