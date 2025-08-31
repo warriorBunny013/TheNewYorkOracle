@@ -67,12 +67,15 @@ function Testimonials({ reviews }) {
         pauseOnHover: false,
         swipe: true,
         touchMove: true,
+        centerMode: false,
+        centerPadding: '0px',
         responsive: [
             {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
+                    centerMode: false,
                 }
             },
             {
@@ -80,6 +83,7 @@ function Testimonials({ reviews }) {
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
+                    centerMode: false,
                 }
             }
         ]
@@ -114,9 +118,9 @@ function Testimonials({ reviews }) {
     }, [handleReadMore]);
 
     return (
-        <div className="relative pt-16 pb-20 px-4">
+        <div className="relative pt-16 pb-20 px-4 overflow-x-hidden">
             {/* Minimal background - just a few subtle elements for Safari */}
-            <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Simple top gradient */}
                 <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-500/5 rounded-full"></div>
                 
@@ -142,7 +146,7 @@ function Testimonials({ reviews }) {
                 <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 bg-white rounded-full opacity-40"></div>
             </div>
 
-            <div className="relative max-w-7xl mx-auto z-10">
+            <div className="relative max-w-7xl mx-auto z-10 overflow-hidden">
                 {/* Simple Header Section */}
                 <div className="text-center mb-16">
                     <h2 className="text-3xl sm:text-5xl font-bold text-white mb-6">

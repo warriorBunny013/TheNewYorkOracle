@@ -121,7 +121,7 @@ function AdminDashboard() {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 z-50 w-80 h-full bg-gradient-to-b from-gray-900 to-gray-800 border-r border-gray-700/50 backdrop-blur-xl ${
+      <aside className={`fixed top-0 left-0 z-50 w-80 h-full bg-gradient-to-b from-gray-900 to-gray-800 border-r border-gray-700/50 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:relative lg:translate-x-0 lg:block lg:translate-x-0 lg:animate-none transition-transform duration-300`}>
         {/* Sidebar Header */}
@@ -185,7 +185,7 @@ function AdminDashboard() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden w-full lg:ml-0">
         {/* Header */}
-        <header className="bg-gray-800/50 backdrop-blur-xl border-b border-gray-700/50 p-4">
+        <header className="bg-gray-800/50 border-b border-gray-700/50 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
           <button

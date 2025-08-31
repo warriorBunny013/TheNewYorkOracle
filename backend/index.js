@@ -150,59 +150,11 @@ app.use("/api/adminpanel", authMiddleware, AdminPanel);
 
 
 
-// Stripe Checkout Session Endpoint (Express reading payment)
+// Stripe Checkout Session Endpoint (Elite reading payment)
 app.post('/api/create-checkout-session', async (req, res) => {
     const { productName,userPrice } = req.body;
-
-    // Validate the presence of required fields
-    // if (!userName || !userEmail) {
-    //     return res.status(400).json({ error: "userName and userEmail are required" });
-    // }
     
     const bookingId = crypto.randomBytes(16).toString('hex');
-
-    // Extract appointmentid with improved error handling
-    // let appointmentid;
-    // try {
-    //     if (products[0].alt === 'mentorship') {
-    //         appointmentid = 4;
-    //     } else {
-    //         const title = products[0].title;
-    //         const durationMatch = title.match(/\d+/);
-
-    //         if (!durationMatch) {
-    //             throw new Error(`No numeric value found in title: ${title}`);
-    //         }
-
-    //         const duration = parseInt(durationMatch[0], 10);
-    //         switch (duration) {
-    //             case 10:
-    //                 appointmentid = 1;
-    //                 break;
-    //             case 30:
-    //                 appointmentid = 2;
-    //                 break;
-    //             case 45:
-    //                 appointmentid = 3;
-    //                 break;
-    //             default:
-    //                 throw new Error(`Unexpected duration value: ${duration}`);
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.error(`Error extracting appointmentid: ${error.message}`);
-    //     return res.status(400).json({ error: `Invalid product title format: ${products[0].title}` });
-    // }
-
-    // const lineItems = products.map(product => ({
-    //     price_data: {
-    //         currency: 'usd',
-    //         product_data: { name: product.title },
-    //         unit_amount: Math.round(parseFloat(product.price * 100)), // Stripe expects amounts in cents
-    //     },
-    //     quantity: 1,
-    // }));
-    // const totalAmount = lineItems.reduce((sum, item) => sum + item.price_data.unit_amount, 0);
 
     try {
         const session = await stripe.checkout.sessions.create({
@@ -243,6 +195,52 @@ app.post('/api/create-checkout-session', async (req, res) => {
     }
 });
 
+// Stripe Checkout Session Endpoint (premium reading payment)
+app.post('/api/create-checkout-session-premium', async (req, res) => {
+    const { productName,userPrice } = req.body;
+    
+    const bookingId = crypto.randomBytes(16).toString('hex');
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            // line_items: lineItems,
+            mode: 'payment',
+            success_url: `${frontendapi}/book-premium/${bookingId}`,
+            cancel_url: `${frontendapi}/cancelpayment`,
+            line_items: [
+                {
+                  price_data: {
+                    currency: 'usd',
+                    product_data: {
+                      name: productName,
+                    },
+                    unit_amount: userPrice*100, // Price in cents
+                  },
+                  quantity: 1,
+                },
+              ],
+              metadata: { productName, userPrice },
+        });
+
+        await Booking.create({
+            bookingId,
+            sessionId: session.id,
+            productName,
+            userPrice,
+            currency: 'usd',
+            status: 'pending'
+        });
+
+        res.status(200).json({ id: session.id });
+        console.log("payment done!!!")
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Stripe Checkout Session Endpoint (tip payment)
 app.post('/api/create-checkout-session-tip', async (req, res) => {
   const { productName, userPrice, message } = req.body;
 
@@ -524,7 +522,7 @@ const sendTipNotificationEmail = async (tip) => {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: url('${frontendapi}/logo.png') center/contain no-repeat;
+                    background: url('https://i.postimg.cc/4nkhPF9y/logo.png') center/contain no-repeat;
                     opacity: 0.1;
                 }
                 .header h1 { 
@@ -1225,7 +1223,7 @@ if (!name || !email || !message || !readingtype) {
                             </svg>
                         </div>
                         
-                        <h2 class="main-title">New Same Day Express Booking</h2>
+                        <h2 class="main-title">New Booking INFO</h2>
                         <p class="subtitle">A new client has completed their booking</p>
                     </div>
                     
@@ -1359,8 +1357,6 @@ app.patch('/api/booking/:id/status', async (req, res) => {
 app.use('/api/prices', priceRoutes);
 
 
-
-
 //mailjet integration for newsletter
 
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -1368,8 +1364,6 @@ const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = process.env.BREVO_API_V3_KEY;  // Use your Brevo API key here
 
 const apiInstance = new SibApiV3Sdk.ContactsApi();
-
-// const mailjetClient = Mailjet.apiConnect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
 
 app.post('/api/subscribe', (req, res) => {
     const { email } = req.body;
@@ -1383,394 +1377,7 @@ app.post('/api/subscribe', (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Subscription failed.' });
     });
-
-    
-    // const request = mailjetClient
-    //     .post('contact', { version: 'v3' })
-    //     .request({
-    //         Email: email,
-    //         IsExcludedFromCampaigns: false,
-    //     });
-        
-    // request.then(result => {
-    //     res.status(200).json({ message: 'Successfully subscribed!' });
-    // })
-    // .catch(err => {
-    //     console.log(err.statusCode);
-    //     res.status(500).json({ message: 'Subscription failed.' });
-    // });
 });
-
-// PayPal OAuth token management - TEMPORARILY DISABLED
-// let paypalAccessToken = null;
-// let tokenExpiry = null;
-
-// async function getPayPalAccessToken() {
-//     // Check if we have a valid token
-//     if (paypalAccessToken && tokenExpiry && Date.now() < tokenExpiry) {
-//         return paypalAccessToken;
-//     }
-
-//     try {
-//         console.log('Getting new PayPal access token...');
-        
-//         const response = await fetch(`${PAYPAL_API_BASE}/v1/oauth2/token`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/x-www-form-urlencoded',
-//                 'Authorization': `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID_LIVE}:${process.env.PAYPAL_CLIENT_SECRET_LIVE}`).toString('base64')}`
-//             },
-//             body: 'grant_type=client_credentials'
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`PayPal OAuth failed: ${response.status} ${response.statusText}`);
-//         }
-
-//         const data = await response.json();
-//         paypalAccessToken = data.access_token;
-//         tokenExpiry = Date.now() + (data.expires_in * 1000) - 60000; // Expire 1 minute early
-        
-//         console.log('PayPal access token obtained successfully');
-//         return paypalAccessToken;
-//     } catch (error) {
-//         console.error('PayPal OAuth error:', error);
-//         throw error;
-//     }
-// }
-
-// PayPal Checkout Session Endpoint (Express reading payment) - TEMPORARILY DISABLED
-// app.post('/api/create-paypal-order', async (req, res) => {
-//     const { productName, userPrice } = req.body;
-    
-//     const bookingId = crypto.randomBytes(16).toString('hex');
-
-//     try {
-//         console.log('Creating PayPal order for:', productName, userPrice);
-        
-//         // Check if PayPal credentials are set
-//         if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
-//             console.error('PayPal credentials not configured');
-//             return res.status(500).json({ error: 'PayPal not configured' });
-//         }
-
-//         const accessToken = await getPayPalAccessToken();
-//         console.log('PayPal access token obtained');
-
-//         const requestBody = {
-//             intent: 'CAPTURE',
-//             purchase_units: [{
-//                 reference_id: bookingId,
-//                 description: productName,
-//                 amount: {
-//                     currency_code: 'USD',
-//                     value: userPrice.toString()
-//                 }
-//             }],
-//             application_context: {
-//                 return_url: `${backendapi}/api/paypal-capture`,
-//                 cancel_url: `${frontendapi}/cancelpayment`,
-//                 brand_name: 'The New York Oracle',
-//                 landing_page: 'BILLING',
-//                 user_action: 'PAY_NOW',
-//                 shipping_preference: 'NO_SHIPPING'
-//             }
-//         };
-
-//         console.log('PayPal request body:', JSON.stringify(requestBody, null, 2));
-
-//         const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${accessToken}`
-//             },
-//             body: JSON.stringify(requestBody)
-//         });
-
-//         console.log('PayPal API response status:', response.status);
-        
-//         const order = await response.json();
-//         console.log('PayPal API response:', JSON.stringify(order, null, 2));
-
-//         if (order.id) {
-//             await Booking.create({
-//                 bookingId,
-//                 sessionId: order.id,
-//                 productName,
-//                 userPrice,
-//                 currency: 'usd',
-//                 status: 'pending',
-//                 paymentMethod: 'paypal'
-//             });
-
-//             const approvalUrl = order.links.find(link => link.rel === 'approve')?.href;
-            
-//             if (!approvalUrl) {
-//                 console.error('No approval URL found in PayPal response:', order);
-//                 throw new Error('PayPal order created but no approval URL received');
-//             }
-            
-//             res.status(200).json({ 
-//                 id: order.id,
-//                 approvalUrl: approvalUrl
-//             });
-//             console.log("PayPal order created successfully!");
-//         } else {
-//             console.error('PayPal order creation failed:', order);
-            
-//             // Handle specific PayPal errors
-//             if (order.error) {
-//                 if (order.error.name === 'CURRENCY_NOT_SUPPORTED') {
-//                     throw new Error('Currency not supported. Please contact support.');
-//                 } else if (order.error.name === 'INVALID_REQUEST') {
-//                     throw new Error('Invalid payment request. Please try again.');
-//                 } else {
-//                     throw new Error(`PayPal error: ${order.error.message || order.error.name}`);
-//                 }
-//             }
-            
-//             throw new Error(`Failed to create PayPal order: ${JSON.stringify(order)}`);
-//         }
-//     } catch (error) {
-//         console.error('PayPal order creation error:', error);
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-
-// PayPal Checkout Session Endpoint (Tip payment) - TEMPORARILY DISABLED
-// app.post('/api/create-paypal-order-tip', async (req, res) => {
-//     const { productName, userPrice } = req.body;
-    
-//     const bookingId = crypto.randomBytes(16).toString('hex');
-
-//     try {
-//         console.log('Creating PayPal tip order for:', productName, userPrice);
-        
-//         // Check if PayPal credentials are set
-//         if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
-//             console.error('PayPal credentials not configured');
-//             return res.status(500).json({ error: 'PayPal not configured' });
-//         }
-
-//         const accessToken = await getPayPalAccessToken();
-//         console.log('PayPal access token obtained for tip');
-
-//         const requestBody = {
-//             intent: 'CAPTURE',
-//             purchase_units: [{
-//                 reference_id: bookingId,
-//                 description: productName,
-//                 amount: {
-//                     currency_code: 'USD',
-//                     value: userPrice.toString()
-//                 }
-//             }],
-//             application_context: {
-//                 return_url: `${backendapi}/api/paypal-tip-capture`,
-//                 cancel_url: `${frontendapi}/cancelpayment`,
-//                 brand_name: 'The New York Oracle',
-//                 landing_page: 'BILLING',
-//                 user_action: 'PAY_NOW',
-//                 shipping_preference: 'NO_SHIPPING'
-//             }
-//         };
-
-//         console.log('PayPal tip request body:', JSON.stringify(requestBody, null, 2));
-
-//         const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${accessToken}`
-//             },
-//             body: JSON.stringify(requestBody)
-//         });
-
-//         console.log('PayPal tip API response status:', response.status);
-        
-//         const order = await response.json();
-//         console.log('PayPal tip API response:', JSON.stringify(order, null, 2));
-
-//         if (order.id) {
-//             await Booking.create({
-//                 bookingId,
-//                 sessionId: order.id,
-//                 productName,
-//                 userPrice,
-//                 currency: 'usd',
-//                 status: 'pending',
-//                 paymentMethod: 'paypal'
-//             });
-
-//             const approvalUrl = order.links.find(link => link.rel === 'approve')?.href;
-            
-//             if (!approvalUrl) {
-//                 console.error('No approval URL found in PayPal tip response:', order);
-//                 throw new Error('PayPal tip order created but no approval URL received');
-//             }
-            
-//             res.status(200).json({ 
-//                 id: order.id,
-//                 approvalUrl: approvalUrl
-//             });
-//             console.log("PayPal tip order created successfully!");
-//         } else {
-//             console.error('PayPal tip order creation failed:', order);
-            
-//             // Handle specific PayPal errors
-//             if (order.error) {
-//                 if (order.error.name === 'CURRENCY_NOT_SUPPORTED') {
-//                     throw new Error('Currency not supported. Please contact support.');
-//                 } else if (order.error.name === 'INVALID_REQUEST') {
-//                     throw new Error('Invalid payment request. Please try again.');
-//                 } else {
-//                     throw new Error(`PayPal error: ${order.error.message || order.error.name}`);
-//                 }
-//             }
-            
-//             throw new Error(`Failed to create PayPal tip order: ${JSON.stringify(order)}`);
-//         }
-//     } catch (error) {
-//         console.error('PayPal tip order creation error:', error);
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-
-// PayPal payment capture endpoint - TEMPORARILY DISABLED
-// app.get('/api/paypal-capture', async (req, res) => {
-//     const { token, PayerID } = req.query;
-    
-//     try {
-//         console.log('PayPal capture request:', { token, PayerID });
-        
-//         if (!token) {
-//             console.error('No token provided for PayPal capture');
-//             return res.redirect(`${frontendapi}/cancelpayment?error=no_token`);
-//         }
-
-//         const accessToken = await getPayPalAccessToken();
-        
-//         const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${token}/capture`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${accessToken}`
-//             }
-//         });
-
-//         console.log('PayPal capture response status:', response.status);
-        
-//         const result = await response.json();
-//         console.log('PayPal capture result:', JSON.stringify(result, null, 2));
-
-//         if (result.status === 'COMPLETED') {
-//             // Find the booking by PayPal order ID
-//             const booking = await Booking.findOne({ sessionId: token });
-            
-//             if (booking) {
-//                 // Update booking status
-//                 booking.status = 'completed';
-//                 booking.paymentMethod = 'paypal';
-//                 await booking.save();
-                
-//                 console.log('PayPal payment completed successfully for booking:', booking.bookingId);
-                
-//                 // Redirect to booking form for express readings
-//                 res.redirect(`${frontendapi}/book/${booking.bookingId}`);
-//             } else {
-//                 console.error('Booking not found for PayPal order:', token);
-//                 res.redirect(`${frontendapi}/cancelpayment?error=booking_not_found`);
-//             }
-//         } else {
-//             console.error('PayPal capture failed:', result);
-//             res.redirect(`${frontendapi}/cancelpayment?error=capture_failed`);
-//         }
-//     } catch (error) {
-//         console.error('PayPal capture error:', error);
-//         res.redirect(`${frontendapi}/cancelpayment?error=capture_error`);
-//     }
-// });
-
-// PayPal tip payment capture endpoint - TEMPORARILY DISABLED
-// app.get('/api/paypal-tip-capture', async (req, res) => {
-//     const { token, PayerID } = req.query;
-    
-//     try {
-//         console.log('PayPal tip capture request:', { token, PayerID });
-        
-//         if (!token) {
-//             console.error('No token provided for PayPal tip capture');
-//             return res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=no_token`);
-//         }
-
-//         const accessToken = await getPayPalAccessToken();
-        
-//         const response = await fetch(`${PAYPAL_API_BASE}/v2/checkout/orders/${token}/capture`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${accessToken}`
-//             }
-//         });
-
-//         console.log('PayPal tip capture response status:', response.status);
-        
-//         const result = await response.json();
-//         console.log('PayPal tip capture result:', JSON.stringify(result, null, 2));
-
-//         if (result.status === 'COMPLETED') {
-//             // Find the booking by PayPal order ID
-//             const booking = await Booking.findOne({ sessionId: token });
-            
-//             if (booking) {
-//                 // Update booking status
-//                 booking.status = 'completed';
-//                 booking.paymentMethod = 'paypal';
-//                 await booking.save();
-                
-//                 console.log('PayPal tip payment completed successfully for booking:', booking.bookingId);
-                
-//                 // Redirect to frontend with success parameters
-//                 res.redirect(`${frontendapi}/?payment=success&method=paypal&type=tip&amount=${booking.userPrice}`);
-//             } else {
-//                 console.error('Booking not found for PayPal tip order:', token);
-//                 res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=booking_not_found`);
-//             }
-//         } else {
-//             console.error('PayPal tip capture failed:', result);
-//             res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=capture_failed`);
-//         }
-//     } catch (error) {
-//         console.error('PayPal tip capture error:', error);
-//         res.redirect(`${frontendapi}/?payment=failed&method=paypal&type=tip&error=capture_error`);
-//     }
-// });
-
-// PayPal test endpoint - TEMPORARILY DISABLED
-// app.get('/api/test-paypal', async (req, res) => {
-//     try {
-//         // Check if PayPal credentials are set
-//         if (!process.env.PAYPAL_CLIENT_ID_LIVE || !process.env.PAYPAL_CLIENT_SECRET_LIVE) {
-//             console.error('PayPal credentials not configured');
-//             return res.status(500).json({ success: false, error: 'PayPal credentials not configured' });
-//         }
-
-//         // Try to get an access token
-//         const accessToken = await getPayPalAccessToken();
-        
-//         if (accessToken) {
-//             console.log('PayPal configuration is working');
-//             res.json({ success: true, message: 'PayPal is configured and working' });
-//         } else {
-//             console.error('Failed to get PayPal access token');
-//             res.status(500).json({ success: false, error: 'Failed to get PayPal access token' });
-//         }
-//     } catch (error) {
-//         console.error('PayPal test error:', error);
-//         res.status(500).json({ success: false, error: error.message });
-//     }
-// });
 
 // Start the server
 const PORT = process.env.PORT || 8080;

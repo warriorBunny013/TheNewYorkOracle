@@ -174,7 +174,7 @@ function Footer() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="leading-relaxed backdrop-blur-sm bg-white/5 p-4 rounded-lg"
+                  className="leading-relaxed bg-white/5 p-4 rounded-lg"
                 >
                   <span className="font-semibold text-purple-400">Disclaimer:</span> For entertainment purposes only. By using our services, you acknowledge that Marina is not a medical professional.
                 </motion.p>
@@ -182,7 +182,7 @@ function Footer() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="leading-relaxed backdrop-blur-sm bg-white/5 p-4 rounded-lg"
+                  className="leading-relaxed bg-white/5 p-4 rounded-lg"
                 >
                   No refunds for missed sessions or dissatisfaction with readings.
                 </motion.p>
