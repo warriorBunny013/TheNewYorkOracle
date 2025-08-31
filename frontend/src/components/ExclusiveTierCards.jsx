@@ -603,7 +603,7 @@ function ExclusiveTierCards() {
                                     </div>
                                     <div>
                                         <div className="text-xs text-gray-400 uppercase tracking-wide">Type</div>
-                                        <div className="text-sm font-semibold text-white">Exclusive</div>
+                                        <div className="text-sm font-semibold text-white">VIP LUXE</div>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-3 group">
@@ -611,7 +611,7 @@ function ExclusiveTierCards() {
                                         <Clock className="w-5 h-5 text-white" />
                                     </div>
                                     <div>
-                                        <div className="text-xs text-gray-400 uppercase tracking-wide">Duration</div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wide">Delivery</div>
                                         <div className="text-sm font-semibold text-white">{modalState.content.time}</div>
                                     </div>
                                 </div>

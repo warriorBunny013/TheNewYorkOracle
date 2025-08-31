@@ -11,7 +11,6 @@ import {
     Clock,
     Hourglass,
     Sparkles,
-    Star,
     AlertCircle
 } from "lucide-react";
 
@@ -162,21 +161,21 @@ function SameDayCards() {
     const cards = [
         {
             img: "sameday-1.webp",
-            type: "Express reading",
+            type: "ELITE",
             title: "PRE-RECORDED Reading",
             description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. " + getDeliveryMessage() + ". Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
             price: "295",
-            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
+            cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
             extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 5-7 days",
             paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"
         },
         {
             img: "sameday-2.webp",
-            type: "Express reading",
+            type: "ELITE",
             title: "LIVE one-on-one 45-minute reading",
             description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days " + getLiveDeliveryMessage(),
             price: "475",
-            cancellationPolicy: "By purchasing this order you are acknowledging and understanding that receiving a reading should not be used for anything other than entertainment purposes. No legal, no medical questions please. You understand that Marina Smargiannakis is not a doctor and you should seek a medical professional if you need medical attention.",
+            cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
             extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days",
             paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
         }
@@ -525,7 +524,7 @@ function SameDayCards() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {cards.filter(price => price.type === "Express reading").map((card, index) => (
+                    {cards.filter(price => price.type === "ELITE").map((card, index) => (
                         <div
                             key={index}
                             ref={(el) => addCardRef(el, index)}
@@ -655,7 +654,7 @@ function SameDayCards() {
                                 )}
 
                                 {/* Important Notes */}
-                                <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
+                                {/* <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
                                     <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
                                         <Star className="h-5 w-5 text-amber-400" />
                                         Important Notes
@@ -668,13 +667,10 @@ function SameDayCards() {
                                             <span className="group-hover:text-amber-200 transition-colors duration-300">No pre-recordings available</span>
                                         </li>
                                         <li className="flex items-start gap-3 group">
-                                            <span className="group-hover:text-amber-200 transition-colors duration-300">Cancellations allowed up to 1 day before</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 group">
-                                            <span className="group-hover:text-amber-200 transition-colors duration-300">Late arrivals may result in session cancellation</span>
+                                            <span className="group-hover:text-amber-200 transition-colors duration-300">Please provide accurate information for best results</span>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> */}
 
                                 {/* Payment Methods */}
                                 <div className="bg-gradient-to-r from-gray-800/60 to-gray-700/60 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
