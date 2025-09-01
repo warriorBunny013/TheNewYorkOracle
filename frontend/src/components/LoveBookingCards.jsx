@@ -14,8 +14,8 @@ const cards = [
   {
       img: "Image-6.webp",
       type: "love",
-      title: "15 minutes detailed reading",
-      description: "15 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+      title: "Focused Love Reading (15 min)",
+      description: "A quick yet insightful session offering clarity on relationships, soulmate connections, or a specific love question. Perfect for when you need fast guidance and clear answers.",
       price: "85",
       time: "15 min",
       cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price.",
@@ -26,8 +26,8 @@ const cards = [
   {
       img: "Image.webp",
       type: "love",
-      title: "30 minutes detailed reading",
-      description: "30 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+      title: "In-Depth Love Reading (30 min)",
+      description: "A deeper exploration of love, marriage, and partnership themes with time for more nuance and guidance. Ideal for gaining a fuller perspective on your current or future path.",
       price: "150",
       time: "30 min",
       cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price.",
@@ -38,8 +38,8 @@ const cards = [
   {
       img: "Image-1.webp",
       type: "love",
-      title: "45 minutes detailed reading",
-      description: "45 minutes in-depth and honest insight regarding love-related issues like soulmates, marriage, partnerships, and more.",
+      title: "Comprehensive Love Reading (45 min)",
+      description: "A complete relationship reading covering layered questions, future outlooks, and clear next steps on your love journey. Designed to give you the most detailed insight and direction.",
       price: "225",
       time: "45 min",
       cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price.",
@@ -297,11 +297,11 @@ function LoveBookingCards() {
   };
 
   const bookingLinks = {
-    "15 minutes detailed reading":
+    "Focused Love Reading (15 min)":
       "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
-    "30 minutes detailed reading":
+    "In-Depth Love Reading (30 min)":
       "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
-    "45 minutes detailed reading":
+    "Comprehensive Love Reading (45 min)":
       "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
   };
 
