@@ -99,9 +99,9 @@ function GeneralBookingCards() {
     };
 
     const bookingLinks = {
-        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
-        "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
-        "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
+        "15-Minute General Insight": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
+        "30-Minute General Guidance": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
+        "45-Minute General Clarity": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
 
     const handleBookingRedirect = (duration) => {
@@ -117,8 +117,8 @@ function GeneralBookingCards() {
         {
             img: "general-1.webp",
             type: "general",
-            title: "15 minutes detailed reading",
-            description: "15 minutes in-depth analysis for those who aren't focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            title: "15-Minute General Insight",
+            description: "A quick clarity session for when you don’t have a specific area in mind but want to know what’s most important right now. Perfect for immediate guidance and perspective.",
             price: "85",
             time:"15 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
@@ -126,7 +126,7 @@ function GeneralBookingCards() {
         {
             img: "general-2.webp",
             type: "general",
-            title: "30 minutes detailed reading",
+            title: "30-Minute General Guidance",
             description: "30 minutes in-depth analysis for those who aren't focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
             price: "150",
             time:"30 min",
@@ -135,8 +135,8 @@ function GeneralBookingCards() {
         {
             img: "general-3.webp",
             type: "general",
-            title: "45 minutes detailed reading",
-            description: "45 minutes in-depth analysis for those who aren't focused on a specific area, but seek guidance and have a genuine desire to know what is needed to hear during this time.",
+            title: "45-Minute General Clarity",
+            description: "A wide-lens reading that covers layered questions, future outlooks, and multiple life areas. Designed to provide comprehensive insight and tailored guidance for your path ahead.",
             price: "225",
             time:"45 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."

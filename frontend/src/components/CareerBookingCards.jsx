@@ -99,9 +99,9 @@ function CareerBookingCards() {
     };
 
     const bookingLinks = {
-        "15 minutes detailed reading": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
-        "30 minutes detailed reading": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
-        "45 minutes detailed reading": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
+        "15-Minute Career Check-In": "https://calendly.com/solsticetarot143/15-minutes-detailed-reading",
+        "30-Minute Career Blueprint": "https://calendly.com/solsticetarot143/30-minutes-detailed-reading",
+        "45-Minute Career Mastery & Evolution": "https://calendly.com/solsticetarot143/45-minutes-detailed-reading"
     };
 
     const handleBookingRedirect = (duration) => {
@@ -117,8 +117,8 @@ function CareerBookingCards() {
         {
             img: "Image-2.webp",
             type: "career",
-            title: "15 minutes detailed reading",
-            description: "15 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            title: "15-Minute Career Check-In",
+            description: "Focused guidance on a single career or financial concern to bring quick clarity. Perfect for support on a decision, next step, or immediate opportunity.",
             price: "85",
             time:"15 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
@@ -126,8 +126,8 @@ function CareerBookingCards() {
         {
             img: "Image-3.webp",
             type: "career",
-            title: "30 minutes detailed reading",
-            description: "30 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            title: "30-Minute Career Blueprint",
+            description: "An in-depth exploration of career direction, finances, and growth opportunities. Allows space to navigate crossroads, challenges, and goals with perspective.",
             price: "150",
             time:"30 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
@@ -135,8 +135,8 @@ function CareerBookingCards() {
         {
             img: "Image-4.webp",
             type: "career",
-            title: "45 minutes detailed reading",
-            description: "45 minutes in-depth insight regarding career, finances, and guidance as to how to proceed moving forward.",
+            title: "45-Minute Career Mastery & Evolution",
+            description: "A full-spectrum career reading offering clarity, strategy, and direction. Designed to help you unlock growth, transformation & align with your higher path.",
             price: "225",
             time:"45 min",
             cancellationPolicy: "Cancellations must be done at least 24 hours before your scheduled reading in order to avoid a rescheduling fee. Any last-minute cancellations and requests for rescheduling will result in a $75 rescheduling fee. Any no-show appointments result in a loss of your reading and will need to purchase another reading at full price."
