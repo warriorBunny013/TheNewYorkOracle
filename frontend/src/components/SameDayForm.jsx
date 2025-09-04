@@ -244,13 +244,13 @@ function SameDayForm() {
                 type="radio" 
                 tabIndex="-1" 
                 name="readingtype"
-                value="Pre-recorded session ($295)"
+                value="Pre-recorded session ($325)"
                 onChange={handleChange}
                 disabled={isCompleted}
                 // name="option" 
                 required />
 
-                <span className="text-xs sm:text-sm"> Pre-recorded session ($295)  </span>
+                <span className="text-xs sm:text-sm"> Pre-recorded session ($325)  </span>
               </label>
             </div>
 
