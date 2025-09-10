@@ -522,7 +522,6 @@ const sendTipNotificationEmail = async (tip) => {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: url('https://i.postimg.cc/4nkhPF9y/logo.png') center/contain no-repeat;
                     opacity: 0.1;
                 }
                 .header h1 { 
@@ -715,7 +714,6 @@ if (!name || !email || !message || !readingtype) {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
                     opacity: 0.3;
                 }
                 .header-content { position: relative; z-index: 1; }
@@ -914,7 +912,6 @@ if (!name || !email || !message || !readingtype) {
             <div class="email-container">
                 <div class="header">
                     <div class="header-content">
-                        <img src="https://i.ibb.co/wNrZWpRs/logo.png" alt="Marina's Logo" class="logo">
                         <h1>Booking Confirmation</h1>
                     </div>
       </div>
@@ -1029,7 +1026,6 @@ if (!name || !email || !message || !readingtype) {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
                     opacity: 0.3;
                 }
                 .header-content { position: relative; z-index: 1; }
@@ -1210,7 +1206,6 @@ if (!name || !email || !message || !readingtype) {
             <div class="email-container">
                 <div class="header">
                     <div class="header-content">
-                        <img src="https://i.postimg.cc/NFy9qjgS/Group-1991.png" alt="Marina's Logo" class="logo">
                         <h1>New Booking Notification</h1>
                     </div>
       </div>

@@ -125,10 +125,10 @@ function SameDayForm() {
                   <span className="text-green-400">✓</span>
                   <span>Marina will review your information and get back to you within 5-7 days</span>
                 </li>
-                <li className="flex items-start gap-3">
+                {/* <li className="flex items-start gap-3">
                   <span className="text-green-400">✓</span>
                   <span>For live readings, you'll receive scheduling information via email</span>
-                </li>
+                </li> */}
                 <li className="flex items-start gap-3">
                   <span className="text-green-400">✓</span>
                   <span>For pre-recorded readings, your reading will be delivered to your email</span>
@@ -164,9 +164,9 @@ function SameDayForm() {
         
         <div className="max-w-xl text-sm sm:text-md">
         <ul className="list mt-6 sm:mt-10 flex flex-col gap-2">
-            <li>🌺 Pre-recorded reading: Your reading will be delivered within 24-72 hours.</li>
-            <li>🌺 LIVE 45-minute reading: The time slot for your reading will be shared with you via email, based on Marina's best available time.</li>
-            <li>🌺 LIVE 45-minute reading: Reading is a first come, first serve within the next few business days(Delivery within 24-72 hours) </li>
+            <li>🌺 Pre-recorded reading: Your reading will be delivered within 5-7 days.</li>
+            {/* <li>🌺 LIVE 45-minute reading: The time slot for your reading will be shared with you via email, based on Marina's best available time.</li> */}
+            {/* <li>🌺 LIVE 45-minute reading: Reading is a first come, first serve within the next few business days(Delivery within 24-72 hours) </li> */}
             <li>🌺 Ensure that you enter your email address correctly, as all communication will happen through email.</li>
             {/* <li>🌺 Your reading will be provided as a pre-recorded digital file, which will be delivered to your email.</li> */}
             <li>🌺 Filling this form is essential; skipping it may delay your reading.</li>
@@ -254,7 +254,7 @@ function SameDayForm() {
               </label>
             </div>
 
-            <div>
+            {/* <div>
               <label
                 htmlFor="Option2"
                 className="block w-full cursor-pointer rounded-lg border border-gray-200 p-3 text-gray-300 hover:border-purple-500 has-[:checked]:border-purple-400 has-[:checked]:bg-purple-500 has-[:checked]:text-white text-sm"
@@ -274,7 +274,7 @@ function SameDayForm() {
 
                 <span className="text-xs sm:text-sm"> Live 45mins one-on-one reading ($495) </span>
               </label>
-            </div>
+            </div> */}
           </div>
 
           <div>
