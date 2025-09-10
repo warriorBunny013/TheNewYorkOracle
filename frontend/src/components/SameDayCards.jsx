@@ -168,16 +168,6 @@ function SameDayCards() {
             cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
             extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 5-7 days",
             paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"
-        },
-        {
-            img: "sameday-2.webp",
-            type: "ELITE",
-            title: "LIVE one-on-one 45-minute reading",
-            description: "For those who are in need of immediate guidance and clarity and want to talk virtually face-to-face.This will be either a Zoom or Instagram call, scheduled on a first come, first serve basis within the next few business days " + getLiveDeliveryMessage(),
-            price: "495",
-            cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
-            extrainfo: isOnBreak() ? "Delivery post Aug 1. Reading is a first come, first serve within the next few business days" : "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days",
-            paypalLink: "https://www.paypal.com/ncp/payment/PC7YZCRU5GDX8"
         }
     ];
 
@@ -463,7 +453,7 @@ function SameDayCards() {
                                             </div>
                                         </div>
                                         
-                                        <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
+                                        {/* <div className="flex items-center space-x-3 text-gray-200 backdrop-blur-md bg-white/5 p-3 rounded-lg border border-white/10 transition-all duration-300 hover:bg-white/10">
                                             <Clock className="h-10 w-10 md:h-5 md:w-5 text-green-400" />
                                             <div>
                                                 <span className="font-semibold">Live Readings</span>
@@ -471,7 +461,7 @@ function SameDayCards() {
                                                     Priority real-time consultations within 5-7 days after purchase
                                                 </p>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 
