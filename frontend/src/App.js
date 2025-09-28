@@ -14,6 +14,7 @@ import CancelPayment from './components/CancelPayment';
 import SameDayForm from './components/SameDayForm';
 import ERROR404 from './components/ERROR404';
 import ExclusiveTierForm from './components/ExclusiveTierForm';
+import BookingSuccess from './components/BookingSuccess';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/cancelpayment" element={<CancelPayment/>} />
           <Route path="/book/:id" element={<SameDayForm/>} />
           <Route path="/book-premium/:id" element={<ExclusiveTierForm/>} />
+          <Route path="/book-success/:id" element={<BookingSuccess/>} />
           <Route path="*" element={<ERROR404/>} />
         </Routes>
       </Router>

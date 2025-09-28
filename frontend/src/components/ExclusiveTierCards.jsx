@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { API_URL } from "../utils/apiConfig";
+import FormBeforePayment from "./FormBeforePayment";
 import { 
     Calendar, 
     Clock, 
@@ -216,6 +217,9 @@ function ExclusiveTierCards() {
         error: null
     });
     
+    // Form modal state
+    const [showFormModal, setShowFormModal] = useState(false);
+    
     const [animationsTriggered, setAnimationsTriggered] = useState(false);
     const cardRefs = useRef([]);
 
@@ -242,16 +246,20 @@ function ExclusiveTierCards() {
     const openModal = (title, description, price, time, cancellationPolicy, type) => {
         setModalState(prev => ({
             ...prev,
-            show: true,
             content: { title, description, price, time, cancellationPolicy, type },
             currentPage: 1,
             paymentMethod: 'stripe',
             error: null
         }));
+        setShowFormModal(true); // Show form modal instead of payment modal
     };
 
     const closeModal = () => {
         setModalState(prev => ({ ...prev, show: false }));
+    };
+
+    const closeFormModal = () => {
+        setShowFormModal(false);
     };
 
     const updateModalState = (updates) => {
@@ -780,6 +788,17 @@ function ExclusiveTierCards() {
                     </div>
                 </div>
             )}
+
+            {/* Form Before Payment Modal */}
+            <FormBeforePayment
+                isOpen={showFormModal}
+                onClose={closeFormModal}
+                productName={modalState.content.title}
+                price={modalState.content.price}
+                productType="premium"
+                description={modalState.content.description}
+                cancellationPolicy={modalState.content.cancellationPolicy}
+            />
         </div>
     );
 }

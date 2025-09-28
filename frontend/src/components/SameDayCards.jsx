@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { loadStripe } from '@stripe/stripe-js';
 // import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
+import FormBeforePayment from "./FormBeforePayment";
 import { 
     Calendar, 
     X, 
@@ -17,9 +18,7 @@ import {
 const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 function SameDayCards() {
-    const [showModal, setShowModal] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('stripe'); // 'stripe' or 'paypal'
-    const [isProcessing, setIsProcessing] = useState(false);
+    const [showFormModal, setShowFormModal] = useState(false);
     const [error, setError] = useState(null);
 
     const [modalContent, setModalContent] = useState({
@@ -56,12 +55,6 @@ function SameDayCards() {
         return "Your order will be delivered within 5-7 days of purchase";
     };
 
-    const getLiveDeliveryMessage = () => {
-        if (isOnBreak()) {
-            return "Delivery post Aug 1. Reading is a first come, first serve within the next few business days";
-        }
-        return "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days";
-    };
 
 
 
@@ -106,13 +99,13 @@ function SameDayCards() {
     }, []);
 
     useEffect(() => {
-        if (showModal) {
+        if (showFormModal) {
             document.body.style.overflow = 'hidden';
             
             // Add keyboard event listener for Escape key
             const handleEscape = (e) => {
                 if (e.key === 'Escape') {
-                    closeModal();
+                    closeFormModal();
                 }
             };
             
@@ -129,7 +122,7 @@ function SameDayCards() {
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [showModal]);
+    }, [showFormModal]);
 
     const openModal = (title, description, price, type, cancellationPolicy, alt, extrainfo) => {
         setModalContent({ 
@@ -141,21 +134,12 @@ function SameDayCards() {
             alt, 
             extrainfo 
         });
-        setPaymentMethod('stripe'); // Reset to default payment method
         setError(null); // Clear any previous errors
-        setShowModal(true);
-        
-        // Focus the close button after modal opens
-        setTimeout(() => {
-            const closeButton = document.querySelector('[aria-label="Close modal"]');
-            if (closeButton) {
-                closeButton.focus();
-            }
-        }, 100);
+        setShowFormModal(true); // Show form modal instead of payment modal
     };
 
-    const closeModal = () => {
-        setShowModal(false);
+    const closeFormModal = () => {
+        setShowFormModal(false);
     };
 
     const cards = [
@@ -171,91 +155,7 @@ function SameDayCards() {
         }
     ];
 
-    const makePayment = async () => {
-        if (paymentMethod === 'stripe') {
-            setIsProcessing(true);
-            setError(null);
-            
-            try {
-        const stripe = await stripePromise;
-
-        const body = {
-            productName: modalContent.title,
-            userPrice: modalContent.price
-        };
-
-        const headers = {
-            "Content-Type": "application/json"
-        };
-
-        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-        });
-
-        const session = await response.json();
-
-        const result = await stripe.redirectToCheckout({
-            sessionId: session.id
-        });
-
-        if (result.error) {
-                    // Payment error
-                    setError(result.error.message);
-                }
-            } catch (err) {
-                setError("Payment processing failed. Please try again.");
-                console.error("Payment error:", err);
-            } finally {
-                setIsProcessing(false);
-            }
-        } else if (paymentMethod === 'paypal') {
-            // PayPal functionality temporarily disabled
-            setError("PayPal is temporarily unavailable. Please use Stripe for payments.");
-            return;
-            
-            // if (!paypalAvailable) {
-            //     setError("PayPal is currently unavailable. Please use Stripe for payments.");
-            //     return;
-            // }
-            
-            // setIsProcessing(true);
-            // setError(null);
-            
-            // try {
-            //     const body = {
-            //         productName: modalContent.title,
-            //         userPrice: modalContent.price
-            //     };
-
-            //     const headers = {
-            //         "Content-Type": "application/json"
-            //     };
-
-            //     const response = await fetch(`${API_URL}/api/create-paypal-order`, {
-            //         method: "POST",
-            //         headers: headers,
-            //         body: JSON.stringify(body)
-            //     });
-
-            //     const result = await response.json();
-
-            //     if (result.approvalUrl) {
-            //         window.location.href = result.approvalUrl;
-            //     } else if (result.error) {
-            //         setError(result.error);
-            //     } else {
-            //         setError("Failed to create PayPal order. Please try again.");
-            //     }
-            // } catch (err) {
-            //     setError("PayPal payment processing failed. Please try again.");
-            //     console.error("PayPal payment error:", err);
-            // } finally {
-            //     setIsProcessing(false);
-            // }
-        }
-    };
+    // Removed makePayment function - now handled by FormBeforePayment component
 
     // Intersection Observer for scroll animations
     useEffect(() => {
@@ -554,196 +454,17 @@ function SameDayCards() {
                     ))}
                 </div>
 
-                {/* Enhanced Modal - Single Page Design */}
-                {showModal && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4">
-                        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeModal}></div>
-                        
-                        <div className="relative bg-gradient-to-br from-gray-900/95 to-gray-950/95 backdrop-blur-xl rounded-none sm:rounded-2xl w-full h-full sm:h-auto sm:max-w-2xl sm:mx-4 shadow-2xl border border-gray-800/50 max-h-full sm:max-h-[90vh] flex flex-col overflow-hidden">
-                            {/* Enhanced Modal Header */}
-                            <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-800/50 bg-gradient-to-r from-gray-800/30 to-gray-700/30">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
-                                        <Zap className="w-4 h-4 text-white" />
-                                    </div>
-                                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
-                                        {modalContent.title}
-                                    </h2>
-                                </div>
-                                <button
-                                    onClick={closeModal}
-                                    className="text-gray-400 hover:text-green-400 transition-all duration-300 hover:scale-110 p-2 rounded-full hover:bg-gray-800/50"
-                                >
-                                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
-                            </div>
 
-                            {/* Enhanced Modal Content */}
-                            <div className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1">
-                                {/* Enhanced Common Info */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-6 bg-gradient-to-r from-gray-800/60 to-gray-700/60 rounded-xl border border-gray-600/50 backdrop-blur-sm">
-                                    <div className="flex items-center space-x-3 group">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <Calendar className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wide">Type</div>
-                                            <div className="text-sm font-semibold text-white">{modalContent.type}</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center space-x-3 group">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <Clock className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wide">Delivery</div>
-                                            <div className="text-sm font-semibold text-white">5-7 Days</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center space-x-3 group">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                            <CreditCard className="w-5 h-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-gray-400 uppercase tracking-wide">Price</div>
-                                            <div className="text-sm font-semibold text-white">${modalContent.price}</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Service Description */}
-                                <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
-                                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
-                                        <Sparkles className="w-5 h-5 text-green-400" />
-                                        Service Description
-                                    </h3>
-                                    <p className="text-gray-300 text-sm leading-relaxed">
-                                        {modalContent.description}
-                                    </p>
-                                </div>
-
-                                {/* Break Message */}
-                                {isOnBreak() && (
-                                    <div className="mb-6 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-xl p-6 backdrop-blur-sm">
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 mt-1">
-                                                <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h4 className="text-lg font-medium text-amber-300 mb-2">
-                                                    Important Notice
-                                                </h4>
-                                                <p className="text-amber-200 leading-relaxed">
-                                                    Taking a short break from July 20-31. All bookings during these period will be delivered post Aug 1.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Important Notes */}
-                                {/* <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
-                                    <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
-                                        <Star className="h-5 w-5 text-amber-400" />
-                                        Important Notes
-                                    </h4>
-                                    <ul className="text-gray-300 text-sm space-y-3">
-                                        <li className="flex items-start gap-3 group">
-                                            <span className="group-hover:text-amber-200 transition-colors duration-300">Private, one-on-one LIVE reading session</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 group">
-                                            <span className="group-hover:text-amber-200 transition-colors duration-300">No pre-recordings available</span>
-                                        </li>
-                                        <li className="flex items-start gap-3 group">
-                                            <span className="group-hover:text-amber-200 transition-colors duration-300">Please provide accurate information for best results</span>
-                                        </li>
-                                    </ul>
-                                </div> */}
-
-                                {/* Payment Methods */}
-                                <div className="bg-gradient-to-r from-gray-800/60 to-gray-700/60 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm mb-6">
-                                    <h4 className="font-semibold text-white mb-4 flex items-center gap-3">
-                                        <CreditCard className="h-5 w-5 text-green-400" />
-                                        Payment Methods
-                                    </h4>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <button
-                                            onClick={() => setPaymentMethod('stripe')}
-                                            className={`p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-center space-x-2 sm:space-x-3 ${
-                                                paymentMethod === 'stripe'
-                                                    ? 'border-blue-500 bg-blue-500/20 text-blue-300'
-                                                    : 'border-gray-600 bg-gray-700/50 text-gray-300 hover:border-gray-500 hover:bg-gray-600/50'
-                                            }`}
-                                        >
-                                            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-                                            <span className="font-medium text-sm sm:text-base">Stripe Checkout</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Cancellation Policy */}
-                                <div className="bg-gradient-to-r from-amber-900/20 to-orange-900/20 rounded-xl p-6 border border-amber-700/50 backdrop-blur-sm mb-6">
-                                    <h4 className="font-semibold text-amber-300 mb-4 flex items-center gap-3">
-                                        <AlertCircle className="h-5 w-5 text-amber-400" />
-                                        Cancellation Policy
-                                    </h4>
-                                    <p className="text-gray-300 text-sm leading-relaxed">
-                                        {modalContent.cancellationPolicy}
-                                    </p>
-                                </div>
-
-                                {/* Error Display */}
-                                {error && (
-                                    <div className="bg-red-900/30 border border-red-500/30 rounded-lg p-4 backdrop-blur-sm mb-6">
-                                        <div className="flex items-start gap-3">
-                                            <div className="flex-shrink-0 mt-1">
-                                                <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p className="text-red-300 font-medium text-sm">
-                                                    {error}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Enhanced Modal Footer */}
-                            <div className="p-4 sm:p-6 md:p-8 border-t border-gray-800/50 bg-gradient-to-r from-gray-800/30 to-gray-700/30">
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <button
-                                        onClick={makePayment}
-                                        disabled={isProcessing}
-                                        className="flex-1 px-6 py-4 rounded-xl bg-gradient-to-r from-green-500 to-blue-600 text-white font-semibold hover:from-green-600 hover:to-blue-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        {isProcessing ? (
-                                            <span className="flex items-center gap-2">
-                                                <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                </svg>
-                                                Processing...
-                                            </span>
-                                        ) : (
-                                            'Proceed to Booking'
-                                        )}
-                                    </button>
-                                    <button
-                                        onClick={closeModal}
-                                        className="flex-1 px-6 py-4 rounded-xl border border-gray-600/50 text-gray-300 hover:text-white hover:bg-gray-800/50 hover:border-gray-500/50 transition-all duration-300 font-medium hover:scale-105"
-                                    >
-                                        Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {/* Form Before Payment Modal */}
+                <FormBeforePayment
+                    isOpen={showFormModal}
+                    onClose={closeFormModal}
+                    productName={modalContent.title}
+                    price={modalContent.price}
+                    productType="elite"
+                    description={modalContent.description}
+                    cancellationPolicy={modalContent.cancellationPolicy}
+                />
             </div>
         </div>
     );

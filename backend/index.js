@@ -257,6 +257,97 @@ app.post('/api/create-checkout-session-premium', async (req, res) => {
     }
 });
 
+// Create temporary booking with form data
+app.post('/api/create-temp-booking', async (req, res) => {
+    const { name, email, phone, message, readingtype, productName, price, productType } = req.body;
+    
+    // Input validation
+    if (!name || !email || !message || !readingtype) {
+        return res.status(400).json({ success: false, message: "All required fields must be provided." });
+    }
+
+    const tempBookingId = crypto.randomBytes(16).toString('hex');
+
+    try {
+        // Create a temporary booking record with form data
+        const tempBooking = await Booking.create({
+            bookingId: tempBookingId,
+            sessionId: null, // Will be set when payment is processed
+            productName,
+            userPrice: price,
+            currency: 'usd',
+            status: 'temp', // Temporary status
+            formData: {
+                name,
+                email,
+                phone: phone || '',
+                message,
+                readingtype
+            },
+            productType: productType || 'premium'
+        });
+
+        res.status(200).json({ 
+            success: true, 
+            tempBookingId: tempBookingId,
+            message: "Temporary booking created successfully" 
+        });
+        console.log("Temporary booking created:", tempBookingId);
+    } catch (error) {
+        console.error("Error creating temporary booking:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
+// Create checkout session with form data
+app.post('/api/create-checkout-session-with-form', async (req, res) => {
+    const { productName, userPrice, tempBookingId, productType } = req.body;
+    
+    try {
+        // Find the temporary booking
+        const tempBooking = await Booking.findOne({ bookingId: tempBookingId, status: 'temp' });
+        if (!tempBooking) {
+            return res.status(404).json({ error: "Temporary booking not found" });
+        }
+
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            mode: 'payment',
+            success_url: `${frontendapi}/book-success/${tempBookingId}`,
+            cancel_url: `${frontendapi}/cancelpayment`,
+            line_items: [
+                {
+                  price_data: {
+                    currency: 'usd',
+                    product_data: {
+                      name: productName,
+                    },
+                    unit_amount: userPrice*100, // Price in cents
+                  },
+                  quantity: 1,
+                },
+              ],
+              metadata: { 
+                  productName, 
+                  userPrice, 
+                  tempBookingId,
+                  productType: productType || 'premium'
+              },
+        });
+
+        // Update the temporary booking with session ID
+        tempBooking.sessionId = session.id;
+        tempBooking.status = 'pending';
+        await tempBooking.save();
+
+        res.status(200).json({ id: session.id });
+        console.log("Checkout session created with form data:", session.id);
+    } catch (error) {
+        console.error("Error creating checkout session:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 // Stripe Checkout Session Endpoint (tip payment)
 app.post('/api/create-checkout-session-tip', async (req, res) => {
   const { productName, userPrice, message } = req.body;
@@ -1550,26 +1641,87 @@ app.post("/sendemail", async (req, res) => {
 // 8. Update the webhook to use Resend for tip notifications
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     console.log("=== WEBHOOK RECEIVED ===");
+    console.log("Webhook headers:", req.headers);
+    console.log("Webhook body length:", req.body ? req.body.length : 'No body');
     const signature = req.headers['stripe-signature'];
   
     try {
       const event = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
   
       console.log('Webhook event type:', event.type);
+      console.log('Event data:', JSON.stringify(event.data.object, null, 2));
+      
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         console.log('Processing completed checkout session:', session.id);
+        console.log('Session metadata:', session.metadata);
   
         // Find and update the booking status
         const booking = await Booking.findOne({ sessionId: session.id });
+        console.log('Found booking:', booking ? 'Yes' : 'No');
+        
         if (booking) {
+          console.log('Booking details:', {
+            bookingId: booking.bookingId,
+            status: booking.status,
+            hasFormData: !!booking.formData,
+            productType: booking.productType
+          });
+          
           booking.status = 'completed';
           await booking.save();
           console.log(`Booking ${booking.bookingId} marked as completed`);
           
-          // Note: Emails are sent when customer fills out the booking form
-          // The webhook only updates the booking status to 'completed'
-          console.log('Booking status updated to completed. Customer will receive emails after filling out the form.');
+          // Check if this is a form-before-payment booking
+          if (booking.formData) {
+            console.log('Processing form-before-payment booking with form data');
+            console.log('Form data:', booking.formData);
+            
+            // Send emails using the form data
+            try {
+              const { name, email, phone, message, readingtype } = booking.formData;
+              
+              console.log('Sending emails to:', { name, email, readingtype });
+              
+              // Client confirmation email HTML
+              const clientEmailHtml = getClientEmailTemplate(name, email, phone, message, readingtype);
+              
+              // Marina notification email HTML
+              const marinaEmailHtml = getMarinaEmailTemplate(name, email, phone, message, readingtype);
+              
+              // Send emails using Resend with CC functionality
+              const emailPromises = [
+                  // Client confirmation email with CC to dawn@soulsticetarot.com
+                  sendEmailWithResend(
+                      email, 
+                      'Booking Confirmation with Marina',
+                      clientEmailHtml,
+                      process.env.EMAIL_USER,
+                      'dawn@soulsticetarot.com'
+                  ),
+                  // Marina notification email with CC to dawn@soulsticetarot.com
+                  sendEmailWithResend(
+                      'info@soulsticetarot.com', 
+                      `New ${booking.productType === 'premium' ? 'Premium' : 'Elite'} Booking with your client: ${name}`,
+                      marinaEmailHtml,
+                      process.env.EMAIL_USER,
+                      'dawn@soulsticetarot.com'
+                  )
+              ];
+              
+              const emailResults = await Promise.all(emailPromises);
+              console.log("Form-before-payment emails sent successfully!", emailResults);
+            } catch (emailError) {
+              console.error("Error sending form-before-payment emails:", emailError);
+              console.error("Email error details:", emailError.message);
+            }
+          } else {
+            // Note: Emails are sent when customer fills out the booking form
+            // The webhook only updates the booking status to 'completed'
+            console.log('Booking status updated to completed. Customer will receive emails after filling out the form.');
+          }
+        } else {
+          console.log('No booking found for session ID:', session.id);
         }
 
         // Find and update the tip status
@@ -1616,6 +1768,63 @@ app.post('/api/test-resend', async (req, res) => {
     console.error('Resend test error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+// Test endpoint for form-before-payment email
+app.post('/api/test-form-email', async (req, res) => {
+  try {
+    console.log('Testing form-before-payment email...');
+    
+    const { name, email, phone, message, readingtype } = req.body;
+    
+    // Client confirmation email HTML
+    const clientEmailHtml = getClientEmailTemplate(name, email, phone, message, readingtype);
+    
+    // Marina notification email HTML
+    const marinaEmailHtml = getMarinaEmailTemplate(name, email, phone, message, readingtype);
+    
+    // Send emails using Resend with CC functionality
+    const emailPromises = [
+        // Client confirmation email with CC to dawn@soulsticetarot.com
+        sendEmailWithResend(
+            email, 
+            'Booking Confirmation with Marina (TEST)',
+            clientEmailHtml,
+            process.env.EMAIL_USER,
+            'dawn@soulsticetarot.com'
+        ),
+        // Marina notification email with CC to dawn@soulsticetarot.com
+        sendEmailWithResend(
+            'info@soulsticetarot.com', 
+            `New Premium Booking with your client: ${name} (TEST)`,
+            marinaEmailHtml,
+            process.env.EMAIL_USER,
+            'dawn@soulsticetarot.com'
+        )
+    ];
+    
+    const emailResults = await Promise.all(emailPromises);
+    console.log("Test emails sent successfully!", emailResults);
+    
+    res.json({ success: true, results: emailResults });
+  } catch (error) {
+    console.error('Form email test error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Webhook status endpoint
+app.get('/api/webhook-status', (req, res) => {
+  res.json({
+    webhookEndpoint: '/webhook',
+    environment: {
+      RESEND_API_KEY: process.env.RESEND_API_KEY ? 'Set' : 'Not Set',
+      EMAIL_USER: process.env.EMAIL_USER ? 'Set' : 'Not Set',
+      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET ? 'Set' : 'Not Set',
+      NODE_ENV: process.env.NODE_ENV || 'development'
+    },
+    timestamp: new Date().toISOString()
+  });
 });
 
 // 10. Add a simple emergency booking test endpoint
