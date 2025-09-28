@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise, IS_TEST_MODE } from '../utils/stripeConfig';
 // import { motion } from "framer-motion";
 import { API_URL } from "../utils/apiConfig";
 import { 
@@ -13,8 +13,6 @@ import {
     Sparkles,
     AlertCircle
 } from "lucide-react";
-
-const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 function SameDayCards() {
     const [showModal, setShowModal] = useState(false);

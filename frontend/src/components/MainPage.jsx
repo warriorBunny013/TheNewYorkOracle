@@ -31,7 +31,7 @@ import PaymentSuccessModal from './PaymentSuccessModal';
 import BreakMessage from './BreakMessage';
 import { getAllReview } from '../Api/api';
 import { API_URL } from "../utils/apiConfig";
-import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise, IS_TEST_MODE } from '../utils/stripeConfig';
 
 // Constants
 const BREAK_MONTH = 7;
@@ -71,8 +71,7 @@ const throttle = (func, limit) => {
   }
 };
 
-// Stripe promise
-const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
+// Stripe promise is now imported from stripeConfig.js
 
 const MainPage = () => {
   // Refs for performance optimization

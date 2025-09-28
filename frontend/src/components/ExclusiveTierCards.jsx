@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 // import { motion } from "framer-motion";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise, IS_TEST_MODE } from '../utils/stripeConfig';
 import { API_URL } from "../utils/apiConfig";
 import { 
     Calendar, 
@@ -15,8 +15,6 @@ import {
     ArrowRight,
     AlertCircle
 } from "lucide-react";
-
-const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 // Move cards data outside component to prevent recreation
 const cards = [

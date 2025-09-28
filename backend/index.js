@@ -22,14 +22,23 @@ import { getClientEmailTemplate, getMarinaEmailTemplate } from './emailTemplates
 
 dotenv.config();
 
-// Debug environment variables
-console.log('Environment check:');
+// Environment detection for test vs production mode
+const isTestMode = process.env.NODE_ENV === 'development' || 
+                   process.env.RENDER_APP_NAME?.includes('test') ||
+                   process.env.STRIPE_SECRET_KEY?.startsWith('sk_test') ||
+                   process.env.NODE_ENV === 'test';
+
+console.log('=== ENVIRONMENT CONFIGURATION ===');
 console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'NOT SET');
-console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET');
-console.log('STRIPE_SECRET:', process.env.STRIPE_SECRET ? 'Set' : 'NOT SET');
+console.log('RENDER_APP_NAME:', process.env.RENDER_APP_NAME);
+console.log('Running in TEST MODE:', isTestMode);
+console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? 'Set' : 'NOT SET');
+console.log('STRIPE_PUBLIC_KEY:', process.env.STRIPE_PUBLIC_KEY ? 'Set' : 'NOT SET');
+console.log('STRIPE_WEBHOOK_SECRET:', process.env.STRIPE_WEBHOOK_SECRET ? 'Set' : 'NOT SET');
 console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET');
 console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET');
+console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET');
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'NOT SET');
 
 
 // Initialize Resend with error handling
@@ -51,7 +60,11 @@ if (!process.env.JWT_SECRET) {
   console.log('WARNING: Using fallback JWT_SECRET. Set JWT_SECRET in production!');
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET);
+// Initialize Stripe with environment-specific keys
+const stripeKey = isTestMode ? process.env.STRIPE_SECRET_KEY : process.env.STRIPE_SECRET;
+const stripe = new Stripe(stripeKey);
+
+console.log('Stripe initialized with key:', stripeKey?.substring(0, 12) + '...');
 const app = express();
 
 // Middleware setup
@@ -1596,7 +1609,22 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
     }
 });
 
-// 9. Add a test endpoint for Resend
+// 9. Add environment debug endpoint
+app.get('/api/debug-env', (req, res) => {
+  res.json({
+    environment: {
+      NODE_ENV: process.env.NODE_ENV,
+      RENDER_APP_NAME: process.env.RENDER_APP_NAME,
+      isTestMode: isTestMode,
+      stripeKey: stripeKey?.substring(0, 12) + '...',
+      resendConfigured: !!process.env.RESEND_API_KEY,
+      emailUser: process.env.EMAIL_USER,
+      mongoConfigured: !!process.env.MONGO_URL
+    }
+  });
+});
+
+// 10. Add a test endpoint for Resend
 app.post('/api/test-resend', async (req, res) => {
   try {
     console.log('Testing Resend email configuration...');

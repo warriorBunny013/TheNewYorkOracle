@@ -2,11 +2,8 @@ import SEO from "./SEO";
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { Coffee, Heart, X, Plus, Minus, DollarSign, CreditCard, AlertCircle } from 'lucide-react';
-import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise, IS_TEST_MODE } from '../utils/stripeConfig';
 import { API_URL } from "../utils/apiConfig";
-
-// Replace with your actual Stripe publishable key
-const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 const MarinaAbout = () => {
   const [showTipModal, setShowTipModal] = useState(false);
