@@ -83,7 +83,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
     origin: process.env.NODE_ENV === "production" 
-      ? ["https://www.soulsticetarot.com", "https://soulsticetarot.com","the-new-york-oracle-development-mod.vercel.app,https://the-new-york-oracle-develo-git-224dce-warriorbunny013s-projects.vercel.app"]
+      ? ["https://www.soulsticetarot.com", "https://soulsticetarot.com","the-new-york-oracle-development-mod.vercel.app","https://the-new-york-oracle-develo-git-224dce-warriorbunny013s-projects.vercel.app"]
       : ["http://localhost:3000", "http://localhost:8080","the-new-york-oracle-development-mod.vercel.app","https://the-new-york-oracle-develo-git-224dce-warriorbunny013s-projects.vercel.app"],
     methods: ["POST", "GET", "PATCH", "PUT", "DELETE"],
     credentials: true,
