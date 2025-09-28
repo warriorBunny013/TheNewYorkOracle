@@ -91,13 +91,18 @@ app.use(cors({
     exposedHeaders: ["Set-Cookie"]
   }));
 
-  const frontendapi = process.env.NODE_ENV === "production"
-  ? "https://www.soulsticetarot.com"
-  : "http://localhost:3000";
+  // Frontend URL configuration with environment variable support
+  const frontendapi = process.env.FRONTEND_URL || 
+    (process.env.NODE_ENV === "production" 
+      ? "https://www.soulsticetarot.com" 
+      : "http://localhost:3000");
 
   const backendapi = process.env.NODE_ENV === "production"
   ? "https://api.soulsticetarot.com"
   : "http://localhost:8080";
+
+  console.log('Frontend URL configured as:', frontendapi);
+  console.log('Backend URL configured as:', backendapi);
 
   const PAYPAL_API_BASE = process.env.PAYPAL_API_BASE || "https://api-m.sandbox.paypal.com";
 
