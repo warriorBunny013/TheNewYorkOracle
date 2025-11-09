@@ -492,7 +492,7 @@ const MainPage = () => {
         </div>
 
         <div style={{ containment: 'layout style' }}>
-          <FeedbackForm />
+          {/* <FeedbackForm /> */}
           <Footer />
         </div>
       </div>
