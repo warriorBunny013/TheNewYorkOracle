@@ -13,18 +13,21 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
           body { 
               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
               line-height: 1.6; 
-              color: #1a1a1a; 
-              background-color: #f8f9fa;
+              color: #e5e5e5; 
+              background: linear-gradient(135deg, #08070c 0%, #1a1a1a 50%, #08070c 100%);
+              background-attachment: fixed;
           }
           .email-container { 
-              max-width: 600px; 
+              max-width: 650px; 
               margin: 0 auto; 
-              background: #ffffff;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              background: rgba(8, 7, 12, 0.95);
+              border: 1px solid rgba(236, 72, 153, 0.2);
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 60px rgba(236, 72, 153, 0.1);
+              backdrop-filter: blur(10px);
           }
           .header { 
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-              padding: 40px 30px; 
+              background: linear-gradient(135deg, #ec4899 0%, #ef4444 50%, #be185d 100%); 
+              padding: 50px 30px; 
               text-align: center;
               position: relative;
               overflow: hidden;
@@ -32,80 +35,99 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
           .header::before {
               content: '';
               position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              opacity: 0.3;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+              animation: pulse 4s ease-in-out infinite;
+          }
+          @keyframes pulse {
+              0%, 100% { opacity: 0.3; transform: scale(1); }
+              50% { opacity: 0.5; transform: scale(1.1); }
           }
           .header-content { position: relative; z-index: 1; }
           .header h1 { 
               color: white; 
               margin: 0; 
-              font-size: 32px; 
-              font-weight: 300;
-              letter-spacing: 1px;
+              font-size: 36px; 
+              font-weight: 600;
+              letter-spacing: 2px;
+              text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
           }
           .content { 
               padding: 50px 40px; 
-              background: #ffffff;
+              background: transparent;
           }
           .success-section {
               text-align: center;
               margin-bottom: 40px;
           }
           .main-title {
-              color: #2c3e50;
-              font-size: 28px;
-              font-weight: 600;
-              margin-bottom: 10px;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 32px;
+              font-weight: 700;
+              margin-bottom: 15px;
               text-align: center;
           }
           .subtitle {
-              color: #6c757d;
-              font-size: 16px;
+              color: #b0b0b0;
+              font-size: 17px;
               text-align: center;
-              margin-bottom: 30px;
+              margin-bottom: 35px;
+              font-weight: 300;
           }
           .greeting {
-              color: #2c3e50;
+              color: #e5e5e5;
               font-size: 18px;
               margin-bottom: 25px;
-              line-height: 1.6;
+              line-height: 1.8;
+          }
+          .greeting strong {
+              color: #ec4899;
+              font-weight: 600;
           }
           .info-box { 
-              background: linear-gradient(135deg, #e3f2fd, #f3e5f5); 
-              border-left: 4px solid #667eea; 
-              padding: 20px; 
+              background: rgba(236, 72, 153, 0.1); 
+              border-left: 4px solid #ec4899; 
+              padding: 22px; 
               margin: 25px 0; 
-              border-radius: 8px;
-              box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+              border-radius: 12px;
+              box-shadow: 0 4px 20px rgba(236, 72, 153, 0.15);
+              backdrop-filter: blur(10px);
           }
           .info-box strong {
-              color: #495057;
+              color: #ec4899;
               font-weight: 600;
           }
           .booking-details { 
-              background: #f8f9fa; 
-              border-radius: 12px; 
-              padding: 30px; 
+              background: rgba(255, 255, 255, 0.05); 
+              border-radius: 16px; 
+              padding: 35px; 
               margin: 30px 0;
-              border: 1px solid #e9ecef;
+              border: 1px solid rgba(236, 72, 153, 0.2);
+              backdrop-filter: blur(10px);
           }
           .booking-details h3 { 
-              color: #2c3e50; 
-              margin-bottom: 20px; 
-              font-size: 20px;
-              font-weight: 600;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              margin-bottom: 25px; 
+              font-size: 22px;
+              font-weight: 700;
               display: flex;
               align-items: center;
               gap: 10px;
           }
           .detail-row { 
               display: flex; 
-              margin-bottom: 15px;
-              padding: 12px 0;
-              border-bottom: 1px solid #e9ecef;
+              margin-bottom: 18px;
+              padding: 15px 0;
+              border-bottom: 1px solid rgba(236, 72, 153, 0.15);
           }
           .detail-row:last-child {
               border-bottom: none;
@@ -113,91 +135,154 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
           }
           .detail-label { 
               font-weight: 600; 
-              color: #495057; 
-              min-width: 140px;
-              font-size: 14px;
+              color: #ec4899; 
+              min-width: 150px;
+              font-size: 15px;
           }
           .detail-value { 
-              color: #6c757d;
-              font-size: 14px;
+              color: #d0d0d0;
+              font-size: 15px;
               flex: 1;
           }
           .next-steps {
-              margin: 35px 0;
+              margin: 40px 0;
           }
           .next-steps h3 {
-              color: #2c3e50;
-              font-size: 20px;
-              font-weight: 600;
-              margin-bottom: 20px;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 22px;
+              font-weight: 700;
+              margin-bottom: 25px;
           }
           .steps-list {
               list-style: none;
               padding: 0;
           }
           .steps-list li {
-              color: #6c757d;
-              line-height: 1.8;
-              margin-bottom: 12px;
-              padding-left: 25px;
+              color: #d0d0d0;
+              line-height: 2;
+              margin-bottom: 15px;
+              padding-left: 30px;
               position: relative;
-              font-size: 15px;
+              font-size: 16px;
           }
           .steps-list li::before {
               content: '✓';
               position: absolute;
               left: 0;
-              color: #28a745;
+              color: #ec4899;
               font-weight: bold;
+              font-size: 18px;
+          }
+          .review-section {
+              margin: 45px 0;
+              padding: 35px;
+              background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(239, 68, 68, 0.15));
+              border-radius: 16px;
+              border: 1px solid rgba(236, 72, 153, 0.3);
+              text-align: center;
+              backdrop-filter: blur(10px);
+              box-shadow: 0 8px 32px rgba(236, 72, 153, 0.2);
+          }
+          .review-section h3 {
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 24px;
+              font-weight: 700;
+              margin-bottom: 15px;
+          }
+          .review-section h4 {
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 21px;
+              font-weight: 700;
+              margin-bottom: 15px;
+          }
+          .review-section p {
+              color: #d0d0d0;
               font-size: 16px;
+              margin-bottom: 25px;
+              line-height: 1.8;
+          }
+          .review-button { 
+              display: inline-block; 
+              background: linear-gradient(135deg, #ec4899, #ef4444); 
+              color: white; 
+              padding: 18px 40px; 
+              text-decoration: none; 
+              border-radius: 12px; 
+              margin: 10px 0;
+              font-weight: 600;
+              font-size: 17px;
+              box-shadow: 0 6px 25px rgba(236, 72, 153, 0.4);
+              transition: all 0.3s ease;
+              border: none;
+          }
+          .review-button:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 8px 35px rgba(236, 72, 153, 0.5);
           }
           .cta-section {
               text-align: center;
               margin: 40px 0;
               padding: 30px;
-              background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-              border-radius: 12px;
+              background: rgba(255, 255, 255, 0.03);
+              border-radius: 16px;
+              border: 1px solid rgba(236, 72, 153, 0.2);
           }
           .cta-button { 
               display: inline-block; 
-              background: linear-gradient(135deg, #667eea, #764ba2); 
+              background: linear-gradient(135deg, #ec4899, #ef4444); 
               color: white; 
-              padding: 15px 30px; 
+              padding: 16px 35px; 
               text-decoration: none; 
-              border-radius: 8px; 
+              border-radius: 12px; 
               margin: 20px 0;
               font-weight: 600;
               font-size: 16px;
-              transition: all 0.3s ease;
-              box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+              box-shadow: 0 6px 25px rgba(236, 72, 153, 0.4);
           }
           .footer { 
-              background: #2c3e50; 
-              padding: 30px; 
+              background: rgba(8, 7, 12, 0.9); 
+              padding: 35px; 
               text-align: center;
               color: #ffffff;
+              border-top: 1px solid rgba(236, 72, 153, 0.2);
           }
           .footer p { 
-              margin: 8px 0; 
-              color: #bdc3c7;
-              font-size: 14px;
+              margin: 10px 0; 
+              color: #b0b0b0;
+              font-size: 15px;
           }
           .footer a {
-              color: #667eea;
+              color: #ec4899;
               text-decoration: none;
+              transition: color 0.3s ease;
+          }
+          .footer a:hover {
+              color: #ef4444;
           }
           .copyright {
-              margin-top: 20px;
-              padding-top: 20px;
-              border-top: 1px solid #34495e;
-              font-size: 12px;
-              color: #95a5a6;
+              margin-top: 25px;
+              padding-top: 25px;
+              border-top: 1px solid rgba(236, 72, 153, 0.2);
+              font-size: 13px;
+              color: #808080;
           }
           @media (max-width: 600px) {
               .content { padding: 30px 20px; }
-              .header { padding: 30px 20px; }
-              .detail-row { flex-direction: column; gap: 5px; }
+              .header { padding: 35px 20px; }
+              .header h1 { font-size: 28px; }
+              .detail-row { flex-direction: column; gap: 8px; }
               .detail-label { min-width: auto; }
+              .review-section { padding: 25px 20px; }
+              .main-title { font-size: 26px; }
           }
       </style>
   </head>
@@ -256,8 +341,10 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
                   </ul>
               </div>
 
-              <div class="cta-section">
-                  <a href="https://www.soulsticetarot.com" class="cta-button">Visit Our Website</a>
+              <div class="review-section">
+                  <h4>⭐ Share Your Experience</h4>
+                  <p>Your feedback is incredibly valuable to us! After your reading, we'd love to hear about your experience. Your review helps us continue to provide magical and transformative guidance.</p>
+                  <a href="https://www.soulsticetarot.com/bookings/sendfeedbacks" class="review-button">Send Your Review</a>
               </div>
           </div>
           
@@ -289,18 +376,21 @@ export const getMarinaEmailTemplate = (name, email, phone, message, readingtype)
           body { 
               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
               line-height: 1.6; 
-              color: #1a1a1a; 
-              background-color: #f8f9fa;
+              color: #e5e5e5; 
+              background: linear-gradient(135deg, #08070c 0%, #1a1a1a 50%, #08070c 100%);
+              background-attachment: fixed;
           }
           .email-container { 
-              max-width: 600px; 
+              max-width: 650px; 
               margin: 0 auto; 
-              background: #ffffff;
-              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              background: rgba(8, 7, 12, 0.95);
+              border: 1px solid rgba(236, 72, 153, 0.2);
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 60px rgba(236, 72, 153, 0.1);
+              backdrop-filter: blur(10px);
           }
           .header { 
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-              padding: 40px 30px; 
+              background: linear-gradient(135deg, #ec4899 0%, #ef4444 50%, #be185d 100%); 
+              padding: 50px 30px; 
               text-align: center;
               position: relative;
               overflow: hidden;
@@ -308,91 +398,106 @@ export const getMarinaEmailTemplate = (name, email, phone, message, readingtype)
           .header::before {
               content: '';
               position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              opacity: 0.3;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+              animation: pulse 4s ease-in-out infinite;
+          }
+          @keyframes pulse {
+              0%, 100% { opacity: 0.3; transform: scale(1); }
+              50% { opacity: 0.5; transform: scale(1.1); }
           }
           .header-content { position: relative; z-index: 1; }
           .header h1 { 
               color: white; 
               margin: 0; 
-              font-size: 32px; 
-              font-weight: 300;
-              letter-spacing: 1px;
+              font-size: 36px; 
+              font-weight: 600;
+              letter-spacing: 2px;
+              text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
           }
           .content { 
               padding: 50px 40px; 
-              background: #ffffff;
+              background: transparent;
           }
           .notification-section {
               text-align: center;
               margin-bottom: 40px;
           }
           .notification-icon { 
-              width: 80px; 
-              height: 80px; 
-              background: linear-gradient(135deg, #ffc107, #ff9800); 
+              width: 90px; 
+              height: 90px; 
+              background: linear-gradient(135deg, #ec4899, #ef4444); 
               border-radius: 50%; 
               display: flex; 
               align-items: center; 
               justify-content: center; 
               margin: 0 auto 25px;
-              box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+              box-shadow: 0 6px 25px rgba(236, 72, 153, 0.4);
           }
           .notification-icon svg { 
-              width: 35px; 
-              height: 35px; 
+              width: 40px; 
+              height: 40px; 
               color: white;
-              filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+              filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
           }
           .main-title {
-              color: #2c3e50;
-              font-size: 28px;
-              font-weight: 600;
-              margin-bottom: 10px;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 32px;
+              font-weight: 700;
+              margin-bottom: 15px;
               text-align: center;
           }
           .subtitle {
-              color: #6c757d;
-              font-size: 16px;
+              color: #b0b0b0;
+              font-size: 17px;
               text-align: center;
-              margin-bottom: 30px;
+              margin-bottom: 35px;
+              font-weight: 300;
           }
           .priority-box { 
-              background: linear-gradient(135deg, #fff3cd, #ffeaa7); 
-              border-left: 4px solid #ffc107; 
-              padding: 20px; 
+              background: rgba(236, 72, 153, 0.15); 
+              border-left: 4px solid #ec4899; 
+              padding: 22px; 
               margin: 25px 0; 
-              border-radius: 8px;
-              box-shadow: 0 2px 8px rgba(255, 193, 7, 0.1);
+              border-radius: 12px;
+              box-shadow: 0 4px 20px rgba(236, 72, 153, 0.2);
+              backdrop-filter: blur(10px);
           }
           .priority-box strong {
-              color: #495057;
+              color: #ec4899;
               font-weight: 600;
           }
           .booking-details { 
-              background: #f8f9fa; 
-              border-radius: 12px; 
-              padding: 30px; 
+              background: rgba(255, 255, 255, 0.05); 
+              border-radius: 16px; 
+              padding: 35px; 
               margin: 30px 0;
-              border: 1px solid #e9ecef;
+              border: 1px solid rgba(236, 72, 153, 0.2);
+              backdrop-filter: blur(10px);
           }
           .booking-details h3 { 
-              color: #2c3e50; 
-              margin-bottom: 20px; 
-              font-size: 20px;
-              font-weight: 600;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              margin-bottom: 25px; 
+              font-size: 22px;
+              font-weight: 700;
               display: flex;
               align-items: center;
               gap: 10px;
           }
           .detail-row { 
               display: flex; 
-              margin-bottom: 15px;
-              padding: 12px 0;
-              border-bottom: 1px solid #e9ecef;
+              margin-bottom: 18px;
+              padding: 15px 0;
+              border-bottom: 1px solid rgba(236, 72, 153, 0.15);
           }
           .detail-row:last-child {
               border-bottom: none;
@@ -400,83 +505,94 @@ export const getMarinaEmailTemplate = (name, email, phone, message, readingtype)
           }
           .detail-label { 
               font-weight: 600; 
-              color: #495057; 
-              min-width: 140px;
-              font-size: 14px;
+              color: #ec4899; 
+              min-width: 150px;
+              font-size: 15px;
           }
           .detail-value { 
-              color: #6c757d;
-              font-size: 14px;
+              color: #d0d0d0;
+              font-size: 15px;
               flex: 1;
           }
           .next-steps {
-              margin: 35px 0;
+              margin: 40px 0;
           }
           .next-steps h3 {
-              color: #2c3e50;
-              font-size: 20px;
-              font-weight: 600;
-              margin-bottom: 20px;
+              background: linear-gradient(135deg, #ec4899, #ef4444);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              font-size: 22px;
+              font-weight: 700;
+              margin-bottom: 25px;
           }
           .steps-list {
               list-style: none;
               padding: 0;
           }
           .steps-list li {
-              color: #6c757d;
-              line-height: 1.8;
-              margin-bottom: 12px;
-              padding-left: 25px;
+              color: #d0d0d0;
+              line-height: 2;
+              margin-bottom: 15px;
+              padding-left: 30px;
               position: relative;
-              font-size: 15px;
+              font-size: 16px;
           }
           .steps-list li::before {
               content: '→';
               position: absolute;
               left: 0;
-              color: #667eea;
+              color: #ec4899;
               font-weight: bold;
-              font-size: 16px;
+              font-size: 18px;
           }
           .status-box {
-              background: linear-gradient(135deg, #d4edda, #c3e6cb);
-              border-left: 4px solid #28a745;
-              padding: 20px;
+              background: rgba(236, 72, 153, 0.1);
+              border-left: 4px solid #ec4899;
+              padding: 22px;
               margin: 25px 0;
-              border-radius: 8px;
-              box-shadow: 0 2px 8px rgba(40, 167, 69, 0.1);
+              border-radius: 12px;
+              box-shadow: 0 4px 20px rgba(236, 72, 153, 0.15);
+              backdrop-filter: blur(10px);
           }
           .status-box strong {
-              color: #155724;
+              color: #ec4899;
               font-weight: 600;
           }
           .footer { 
-              background: #2c3e50; 
-              padding: 30px; 
+              background: rgba(8, 7, 12, 0.9); 
+              padding: 35px; 
               text-align: center;
               color: #ffffff;
+              border-top: 1px solid rgba(236, 72, 153, 0.2);
           }
           .footer p { 
-              margin: 8px 0; 
-              color: #bdc3c7;
-              font-size: 14px;
+              margin: 10px 0; 
+              color: #b0b0b0;
+              font-size: 15px;
           }
           .footer a {
-              color: #667eea;
+              color: #ec4899;
               text-decoration: none;
+              transition: color 0.3s ease;
+          }
+          .footer a:hover {
+              color: #ef4444;
           }
           .copyright {
-              margin-top: 20px;
-              padding-top: 20px;
-              border-top: 1px solid #34495e;
-              font-size: 12px;
-              color: #95a5a6;
+              margin-top: 25px;
+              padding-top: 25px;
+              border-top: 1px solid rgba(236, 72, 153, 0.2);
+              font-size: 13px;
+              color: #808080;
           }
           @media (max-width: 600px) {
               .content { padding: 30px 20px; }
-              .header { padding: 30px 20px; }
-              .detail-row { flex-direction: column; gap: 5px; }
+              .header { padding: 35px 20px; }
+              .header h1 { font-size: 28px; }
+              .detail-row { flex-direction: column; gap: 8px; }
               .detail-label { min-width: auto; }
+              .main-title { font-size: 26px; }
           }
       </style>
   </head>

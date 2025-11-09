@@ -116,8 +116,8 @@ function FeedbackForm() {
                         <textarea
                           id="comments"
                           name="comments"
-                          rows="3"
-                          className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 resize-none text-sm sm:text-base"
+                          rows="8"
+                          className="w-full py-3 sm:py-4 px-4 sm:px-6 bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl focus:outline-none text-white placeholder-gray-400 transition-all duration-500 group-hover:border-purple-400/50 focus:border-purple-400 focus:bg-white/10 resize-none text-sm sm:text-base min-h-[200px]"
                           placeholder="Share your experience with us..."
                           value={comments}
                           onChange={(e) => setComments(e.target.value)}
