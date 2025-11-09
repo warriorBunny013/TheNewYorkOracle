@@ -28,9 +28,22 @@ console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'NOT SET');
 console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET');
 console.log('STRIPE_SECRET:', process.env.STRIPE_SECRET ? 'Set' : 'NOT SET');
+console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET');
+console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET');
 
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend with error handling
+let resend;
+try {
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY is not set! Email functionality will not work.');
+  } else {
+    resend = new Resend(process.env.RESEND_API_KEY);
+    console.log('Resend initialized successfully');
+  }
+} catch (error) {
+  console.error('Error initializing Resend:', error);
+}
 
 // Set fallback JWT_SECRET if not provided
 if (!process.env.JWT_SECRET) {
@@ -1304,6 +1317,14 @@ const sendTipNotificationEmail = async (tip) => {
 // 5. Create a helper function to send emails with Resend (supports CC)
 const sendEmailWithResend = async (to, subject, html, from = process.env.EMAIL_USER, cc = null) => {
   try {
+    if (!resend) {
+      throw new Error('Resend is not initialized. Check RESEND_API_KEY environment variable.');
+    }
+
+    if (!process.env.EMAIL_USER) {
+      throw new Error('EMAIL_USER environment variable is not set.');
+    }
+
     const emailData = {
       from: from,
       to: Array.isArray(to) ? to : [to],
@@ -1317,6 +1338,7 @@ const sendEmailWithResend = async (to, subject, html, from = process.env.EMAIL_U
       emailData.cc = Array.isArray(cc) ? cc : [cc];
     }
 
+    console.log('Sending email with Resend:', { to, subject, from, cc });
     const { data, error } = await resend.emails.send(emailData);
 
     if (error) {
@@ -1328,6 +1350,11 @@ const sendEmailWithResend = async (to, subject, html, from = process.env.EMAIL_U
     return data;
   } catch (error) {
     console.error('Error sending email with Resend:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      statusCode: error.statusCode
+    });
     throw error;
   }
 };
@@ -1475,9 +1502,13 @@ const sendTipNotificationEmailWithResend = async (tip) => {
 // 7. Update your existing sendemail route to use Resend with full HTML templates
 app.post("/sendemail", async (req, res) => {
     const { name, email, phone, message, readingtype } = req.body;
+    
+    console.log('=== BOOKING FORM SUBMISSION ===');
+    console.log('Form data received:', { name, email, phone, message, readingtype });
 
     // Input validation
     if (!name || !email || !message || !readingtype) {
+        console.log('Validation failed - missing required fields');
         return res.status(400).send({ success: false, message: "All fields are required." });
     }
 
@@ -1535,6 +1566,10 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
           booking.status = 'completed';
           await booking.save();
           console.log(`Booking ${booking.bookingId} marked as completed`);
+          
+          // Note: Emails are sent when customer fills out the booking form
+          // The webhook only updates the booking status to 'completed'
+          console.log('Booking status updated to completed. Customer will receive emails after filling out the form.');
         }
 
         // Find and update the tip status
@@ -1566,6 +1601,7 @@ app.post('/api/test-resend', async (req, res) => {
   try {
     console.log('Testing Resend email configuration...');
     console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET');
+    console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET');
     
     const result = await sendEmailWithResend(
       'test@soulsticetarot.com',
@@ -1578,6 +1614,60 @@ app.post('/api/test-resend', async (req, res) => {
     res.status(200).json({ success: true, message: 'Resend test email sent successfully!', data: result });
   } catch (error) {
     console.error('Resend test error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 10. Add a simple emergency booking test endpoint
+app.post('/api/test-emergency-booking', async (req, res) => {
+  try {
+    console.log('Testing Emergency Booking email...');
+    
+    const testBooking = {
+      name: 'Test User',
+      email: 'test@soulsticetarot.com',
+      phone: '555-1234',
+      message: 'This is a test emergency booking',
+      readingType: 'Emergency Reading'
+    };
+
+    const clientEmailHtml = getClientEmailTemplate(
+      testBooking.name, 
+      testBooking.email, 
+      testBooking.phone, 
+      testBooking.message, 
+      testBooking.readingType
+    );
+    
+    const marinaEmailHtml = getMarinaEmailTemplate(
+      testBooking.name, 
+      testBooking.email, 
+      testBooking.phone, 
+      testBooking.message, 
+      testBooking.readingType
+    );
+
+    // Send test emails
+    await Promise.all([
+      sendEmailWithResend(
+        testBooking.email, 
+        'Test Emergency Booking Confirmation',
+        clientEmailHtml,
+        process.env.EMAIL_USER,
+        'dawn@soulsticetarot.com'
+      ),
+      sendEmailWithResend(
+        'info@soulsticetarot.com', 
+        'Test Emergency Booking Notification',
+        marinaEmailHtml,
+        process.env.EMAIL_USER,
+        'dawn@soulsticetarot.com'
+      )
+    ]);
+
+    res.status(200).json({ success: true, message: 'Emergency booking test emails sent successfully!' });
+  } catch (error) {
+    console.error('Emergency booking test error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

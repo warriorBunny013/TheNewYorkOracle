@@ -56,15 +56,6 @@ function SameDayCards() {
         return "Your order will be delivered within 5-7 days of purchase";
     };
 
-    const getLiveDeliveryMessage = () => {
-        if (isOnBreak()) {
-            return "Delivery post Aug 1. Reading is a first come, first serve within the next few business days";
-        }
-        return "Delivery within 5-7 days. Reading is a first come, first serve within the next few business days";
-    };
-
-
-
     // Animation useEffect for Elite card
     useEffect(() => {
         // Start animation after component mounts
