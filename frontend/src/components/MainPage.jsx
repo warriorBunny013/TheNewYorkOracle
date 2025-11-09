@@ -1,17 +1,5 @@
 import SEO from "./SEO";
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import { 
-  Calendar, 
-  Clock, 
-  X, 
-  CreditCard,
-  Sparkles,
-  Crown,
-  Zap,
-  Star,
-  ArrowRight,
-  AlertCircle
-} from "lucide-react";
 import About from './About';
 import Testimonials from './Testimonials';
 import LoveBookingCards from './LoveBookingCards';
@@ -19,7 +7,6 @@ import CareerBookingCards from './CareerBookingCards';
 import GeneralBookingCards from './GeneralBookingCards';
 import ExclusiveTierCards from './ExclusiveTierCards';
 import SameDayCards from './SameDayCards';
-import FeedbackForm from './FeedbackForm';
 import Footer from './Footer';
 import Press from './Press';
 import HeroSection from './HeroSection';
@@ -76,7 +63,6 @@ const stripePromise = loadStripe(process.env.REACT_APP_API_PUBLIC_KEY);
 
 const MainPage = () => {
   // Refs for performance optimization
-  const scrollTimeoutRef = useRef(null);
   const activeSeactionRef = useRef('');
   const sectionsRef = useRef([]);
   const isScrollingRef = useRef(false);
@@ -432,7 +418,6 @@ const MainPage = () => {
       setTimeout(() => updateState({ showErrorMessage: false }), SUCCESS_MESSAGE_TIMEOUT);
     }
   }, [updateState]);
-  const [animationsTriggered, setAnimationsTriggered] = useState(false);
   return (
     <>
       <SEO 
