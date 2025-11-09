@@ -343,7 +343,7 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
 
               <div class="review-section">
                   <h4>⭐ Share Your Experience</h4>
-                  <p>Your feedback is incredibly valuable to us! After your reading, we'd love to hear about your experience. Your review helps us continue to provide magical and transformative guidance.</p>
+                  <p>Your feedback is incredibly valuable to us! After your reading, we'd love to hear about your experience. Your review helps us continue to provide clarity and transformative guidance.</p>
                   <a href="https://www.soulsticetarot.com/bookings/sendfeedbacks" class="review-button">Send Your Review</a>
               </div>
           </div>
