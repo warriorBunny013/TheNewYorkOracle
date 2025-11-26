@@ -16,6 +16,7 @@ import TipModal from './TipModal';
 import ContactPopup from './ContactPopup';
 import PaymentSuccessModal from './PaymentSuccessModal';
 import BreakMessage from './BreakMessage';
+import ThanksgivingNotice from './ThanksgivingNotice';
 import { getAllReview } from '../Api/api';
 import { API_URL } from "../utils/apiConfig";
 import { loadStripe } from '@stripe/stripe-js';
@@ -518,6 +519,8 @@ const MainPage = () => {
         setShowSuccessMessage={(show) => updateState({ showSuccessMessage: show })}
         setShowErrorMessage={(show) => updateState({ showErrorMessage: show })}
       />
+
+      <ThanksgivingNotice />
     </>
   );
 }
