@@ -195,7 +195,7 @@ function Footer() {
         <div className="border-t border-white/10 py-8">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 text-center sm:text-left">
             <p className="text-gray-400 text-sm">
-              © 2024, Marina Smargiannakis |{' '}
+              © 2026, Marina Smargiannakis |{' '}
               <motion.span
                 whileHover={{ color: '#fff' }}
                 className="hover:text-white transition-colors cursor-pointer"
