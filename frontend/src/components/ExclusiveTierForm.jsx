@@ -275,9 +275,9 @@ function ExclusiveTierForm() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
                                     { icon: Mail, text: "Confirmation email with booking details", delay: "100ms" },
-                                    { icon: Clock, text: "Marina reviews your info within 24-48 hours", delay: "200ms" },
-                                    { icon: Calendar, text: "Live readings: scheduling info via email", delay: "300ms" },
-                                    { icon: Star, text: "Pre-recorded: delivered to your email", delay: "400ms" }
+                                    { icon: Clock, text: "Marina reviews your info within 24-72 hours", delay: "200ms" },
+                                    { icon: Calendar, text: "Live readings: scheduling info via email (within 24-48 hours)", delay: "300ms" },
+                                    { icon: Star, text: "Pre-recorded: delivered to your email (within 48-72 hours)", delay: "400ms" }
                                 ].map((item, index) => (
                                     <div 
                                         key={index}
@@ -398,7 +398,7 @@ function ExclusiveTierForm() {
                             </h3>
                             <div className="space-y-4">
                                 {[
-                                    { icon: Zap, text: "Pre-recorded reading: Delivered within 24-48 hours", gradient: "from-red-500 to-red-700" },
+                                    { icon: Zap, text: "Pre-recorded reading: Delivered within 48-72 hours", gradient: "from-red-500 to-red-700" },
                                     { icon: Crown, text: "LIVE 1 hour one to one reading: Time slot shared via email", gradient: "from-purple-500 to-indigo-600" },
                                     { icon: Clock, text: "First come, first serve within business days", gradient: "from-blue-500 to-cyan-600" },
                                     { icon: Mail, text: "All communication through email", gradient: "from-green-500 to-emerald-600" },
@@ -679,7 +679,7 @@ function ExclusiveTierForm() {
                                 { 
                                     icon: Zap, 
                                     title: "Fast Response", 
-                                    description: "24-48 hour delivery", 
+                                    description: "48-72 hour delivery", 
                                     gradient: "from-red-500 to-red-700" 
                                 },
                                 { 

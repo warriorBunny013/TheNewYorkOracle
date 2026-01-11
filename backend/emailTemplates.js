@@ -354,7 +354,7 @@ export const getClientEmailTemplate = (name, email, phone, message, readingtype)
               <p>Email: info@soulsticetarot.com</p>
               <p>Website: <a href="https://www.soulsticetarot.com">www.soulsticetarot.com</a></p>
               <div class="copyright">
-                  © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
+                  © 2026, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
               </div>
           </div>
       </div>
@@ -666,7 +666,7 @@ export const getMarinaEmailTemplate = (name, email, phone, message, readingtype)
               <p>Email: info@soulsticetarot.com</p>
               <p>Website: <a href="https://www.soulsticetarot.com">www.soulsticetarot.com</a></p>
               <div class="copyright">
-                  © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
+                  © 2026, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
               </div>
           </div>
       </div>

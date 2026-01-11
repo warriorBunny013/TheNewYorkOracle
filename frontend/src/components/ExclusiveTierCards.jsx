@@ -24,9 +24,9 @@ const cards = [
         img: "luxereading1.webp",
         type: "exclusive",
         title: "Pre-recorded Emergency Reading",
-        description: "A premium pre-recorded reading with personalized attention, deep spiritual connection, and comprehensive guidance. Urgent reading delivered within 24-48 hours. Perfect for those who need immediate answers to pressing questions and can't wait for regular booking slots.",
+        description: "A premium pre-recorded reading with personalized attention, deep spiritual connection, and comprehensive guidance. Urgent reading delivered within 48-72 hours. Perfect for those who need immediate answers to pressing questions and can't wait for regular booking slots.",
         price: "395",
-        time: "24-48 hours",
+        time: "48-72 hours",
         cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final.",
         isLuxury: false,
         gradient: "from-red-500 to-red-800",
@@ -329,7 +329,7 @@ function ExclusiveTierCards() {
                                         className={`text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight animate-fade-up ${animationsTriggered ? 'show' : ''}`}
                                         style={{ transitionDelay: '200ms' }}
                                     >
-                                        24-48 Hours
+                                        Within Days
                                         <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-700">
                                             Instant Answers
                                         </span>
@@ -337,7 +337,7 @@ function ExclusiveTierCards() {
                                     
                                     <p className={`text-md md:text-lg text-gray-300 leading-relaxed animate-fade-up ${animationsTriggered ? 'show' : ''}`} style={{ transitionDelay: '300ms' }}>
                                         Instant questions need instant answers. Get your urgent guidance delivered within 
-                                        <span className="text-red-400 font-semibold"> 24-48 hours</span> instead of waiting a week.
+                                        <span className="text-red-400 font-semibold"> 24-72 hours</span> instead of waiting a week.
                                     </p>
                                     
                                     {/* Quick Stats */}
@@ -348,7 +348,7 @@ function ExclusiveTierCards() {
                                             </div>
                                             <div>
                                                 <div className="text-white font-semibold text-sm">Fast Response</div>
-                                                <div className="text-gray-400 text-xs">24-48 Hours</div>
+                                                <div className="text-gray-400 text-xs">24-72 Hours</div>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-xl border border-gray-600/30">
@@ -655,23 +655,43 @@ function ExclusiveTierCards() {
                             {/* Page 2: Important Notes & Payment */}
                             {modalState.currentPage === 2 && (
                                 <div className="space-y-6">
-                                    {/* Enhanced Important Notes */}
-                                    <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm">
+                                   {/* Enhanced Important Notes */}
+                                   <div className="bg-gradient-to-r from-gray-800/40 to-gray-700/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm">
                                         <h4 className="text-lg font-semibold text-white mb-4 flex items-center gap-3">
                                             <Star className="h-5 w-5 text-amber-400" />
                                             Important Notes
                                         </h4>
                                         <ul className="text-gray-300 text-sm space-y-3">
                                             <li className="flex items-start gap-3 group">
-                                                <span className="group-hover:text-amber-200 transition-colors duration-300">This is a premium service with guaranteed response time</span>
+                                                <div className="flex-shrink-0 mt-2.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors duration-300"></div>
+                                                </div>
+                                                <span className="group-hover:text-amber-200 transition-colors duration-300 leading-relaxed">This is a premium service with guaranteed response time</span>
                                             </li>
                                             <li className="flex items-start gap-3 group">
-                                                <span className="group-hover:text-amber-200 transition-colors duration-300">All readings are confidential and personalized</span>
+                                                <div className="flex-shrink-0 mt-2.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors duration-300"></div>
+                                                </div>
+                                                <span className="group-hover:text-amber-200 transition-colors duration-300 leading-relaxed">All readings are confidential and personalized</span>
                                             </li>
                                             <li className="flex items-start gap-3 group">
-                                                <span className="group-hover:text-amber-200 transition-colors duration-300">Please provide accurate information for best results</span>
+                                                <div className="flex-shrink-0 mt-2.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors duration-300"></div>
+                                                </div>
+                                                <span className="group-hover:text-amber-200 transition-colors duration-300 leading-relaxed">Please provide accurate information for best results</span>
                                             </li>
-                                           
+                                            <li className="flex items-start gap-3 group">
+                                                <div className="flex-shrink-0 mt-2.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors duration-300"></div>
+                                                </div>
+                                                <span className="group-hover:text-amber-200 transition-colors duration-300 leading-relaxed">Any emergency booking made at 9:00 PM EST or later will be considered received the next business day</span>
+                                            </li>
+                                            <li className="flex items-start gap-3 group">
+                                                <div className="flex-shrink-0 mt-2.5">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-amber-400 group-hover:bg-amber-300 transition-colors duration-300"></div>
+                                                </div>
+                                                <span className="group-hover:text-amber-200 transition-colors duration-300 leading-relaxed">Sundays are not business days. Bookings made on Saturday or Sunday will be processed starting the next business day. Turnaround times count as business days only.</span>
+                                            </li>
                                         </ul>
                                     </div>
 

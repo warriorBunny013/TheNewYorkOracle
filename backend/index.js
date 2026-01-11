@@ -74,8 +74,8 @@ app.use(cors({
       : ["http://localhost:3000", "http://localhost:8080"],
     methods: ["POST", "GET", "PATCH", "PUT", "DELETE"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-    exposedHeaders: ["Set-Cookie"]
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie","Access-Control-Allow-Origin"],
+    exposedHeaders: ["Set-Cookie","Access-Control-Allow-Origin"]
   }));
 
   const frontendapi = process.env.NODE_ENV === "production"
@@ -639,7 +639,7 @@ const sendTipNotificationEmail = async (tip) => {
                 
                 <div class="footer">
                     <div class="copyright">
-                        © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
+                        © 2026, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
                     </div>
                 </div>
             </div>
@@ -1475,7 +1475,7 @@ const sendTipNotificationEmailWithResend = async (tip) => {
               
               <div class="footer">
                   <div class="copyright">
-                      © 2024, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
+                      © 2026, Marina Smargiannakis | The New York Oracle™. All Rights Reserved.
                   </div>
               </div>
           </div>
