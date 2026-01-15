@@ -275,7 +275,7 @@ function ExclusiveTierForm() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
                                     { icon: Mail, text: "Confirmation email with booking details", delay: "100ms" },
-                                    { icon: Clock, text: "Marina reviews your info within 24-72 hours", delay: "200ms" },
+                                    { icon: Clock, text: "Marina reviews your info within 72 hours", delay: "200ms" },
                                     { icon: Calendar, text: "Live readings: scheduling info via email (within 24-48 hours)", delay: "300ms" },
                                     { icon: Star, text: "Pre-recorded: delivered to your email (within 48-72 hours)", delay: "400ms" }
                                 ].map((item, index) => (
