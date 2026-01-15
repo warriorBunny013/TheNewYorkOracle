@@ -517,7 +517,7 @@ This document contains the complete HTML email templates that can be used in the
             </div>
             
             <div class="priority-box">
-                <strong>⚡ Action Required:</strong> A new client has completed their booking and form submission. Please review the details below and process their reading request within 24-72 hours.
+                <strong>⚡ Action Required:</strong> A new client has completed their booking and form submission. Please review the details below and process their reading request within 72 hours.
             </div>
             
             <div class="booking-details">
@@ -548,7 +548,7 @@ This document contains the complete HTML email templates that can be used in the
                 <h3>🎯 Next Steps</h3>
                 <ul class="steps-list">
                     <li>Review the client's message and reading type carefully</li>
-                    <li>For pre-recorded readings: Prepare and deliver within 24-72 hours</li>
+                    <li>For pre-recorded readings: Prepare and deliver within 72 hours</li>
                     <li>For live readings: Contact client to schedule the session</li>
                     <li>Send confirmation email to client with specific instructions</li>
                     <li>Update booking status in your system</li>

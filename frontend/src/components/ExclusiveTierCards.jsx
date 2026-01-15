@@ -337,7 +337,7 @@ function ExclusiveTierCards() {
                                     
                                     <p className={`text-md md:text-lg text-gray-300 leading-relaxed animate-fade-up ${animationsTriggered ? 'show' : ''}`} style={{ transitionDelay: '300ms' }}>
                                         Instant questions need instant answers. Get your urgent guidance delivered within 
-                                        <span className="text-red-400 font-semibold"> 24-72 hours</span> instead of waiting a week.
+                                        <span className="text-red-400 font-semibold"> 72 hours</span> instead of waiting a week.
                                     </p>
                                     
                                     {/* Quick Stats */}
@@ -348,7 +348,7 @@ function ExclusiveTierCards() {
                                             </div>
                                             <div>
                                                 <div className="text-white font-semibold text-sm">Fast Response</div>
-                                                <div className="text-gray-400 text-xs">24-72 Hours</div>
+                                                <div className="text-gray-400 text-xs">72 Hours</div>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-xl border border-gray-600/30">

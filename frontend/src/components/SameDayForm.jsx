@@ -166,7 +166,7 @@ function SameDayForm() {
         <ul className="list mt-6 sm:mt-10 flex flex-col gap-2">
             <li>🌺 Pre-recorded reading: Your reading will be delivered within 5-7 days.</li>
             {/* <li>🌺 LIVE 45-minute reading: The time slot for your reading will be shared with you via email, based on Marina's best available time.</li> */}
-            {/* <li>🌺 LIVE 45-minute reading: Reading is a first come, first serve within the next few business days(Delivery within 24-72 hours) </li> */}
+            {/* <li>🌺 LIVE 45-minute reading: Reading is a first come, first serve within the next few business days(Delivery within 72 hours) </li> */}
             <li>🌺 Ensure that you enter your email address correctly, as all communication will happen through email.</li>
             {/* <li>🌺 Your reading will be provided as a pre-recorded digital file, which will be delivered to your email.</li> */}
             <li>🌺 Filling this form is essential; skipping it may delay your reading.</li>
