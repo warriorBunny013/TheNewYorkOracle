@@ -242,7 +242,7 @@ const Press = () => {
                       onMouseEnter={(e) => e.target.style.cursor = 'pointer'}
                       onMouseLeave={(e) => e.target.style.cursor = 'pointer'}
                     >
-                      <span className='text-nowrap'>Read Article</span>
+                      <span className='text-nowrap'>{article.id === 1 ? 'Watch Segment' : 'Read Article'}</span>
                       <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover/card:translate-x-1" />
                     </motion.button>
                   </div>
