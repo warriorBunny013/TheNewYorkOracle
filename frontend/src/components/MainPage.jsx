@@ -20,6 +20,7 @@ import ThanksgivingNotice from './ThanksgivingNotice';
 import { getAllReview } from '../Api/api';
 import { API_URL } from "../utils/apiConfig";
 import { loadStripe } from '@stripe/stripe-js';
+import SocialLinks from './SocialLinks';
 
 // Constants
 const BREAK_MONTH = 7;
@@ -456,10 +457,10 @@ const MainPage = () => {
         />
 
         <HeroSection navigateTo={navigateTo} />
-
         <div id="about" style={{ containment: 'layout style' }}>
           <About/>
         </div>
+        <SocialLinks />
         
         <div style={{ containment: 'layout style' }}>
           <Press />

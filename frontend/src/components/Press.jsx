@@ -6,6 +6,18 @@ const Press = () => {
   const articles = [
     {
       id: 1,
+      title: "Tarot Insights for the Year 2026",
+      publication: "Good Day DC - Fox 5",
+      author: "Fox 5 DC",
+      date: "January 2026",
+      url: "https://www.msn.com/en-us/entertainment/general/tarot-insights-for-the-year-ahead/vi-AA1Uwrwu?ocid=BingNewsVerp",
+      logo: "https://media.licdn.com/dms/image/v2/D4E0BAQHkqoFCsXvzPw/company-logo_200_200/B4EZqYaaPaHgAM-/0/1763493652292/fox5dc_logo?e=2147483647&v=beta&t=Mw9M8_h7_39khtzE68to_uCS19rhMpwQSYSkWXMVp1o",
+      thumbnail: "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1UwAo6.img?w=768&h=432&m=6",
+      category: "Television & Entertainment",
+      excerpt: "Featured on Good Day DC sharing tarot insights and predictions for the year ahead, bringing spiritual guidance to Fox 5's morning audience."
+    },
+    {
+      id: 2,
       title: "The Rise of the TikTok Psychic",
       publication: "Forbes",
       author: "Jessica Ourisman",
@@ -16,7 +28,7 @@ const Press = () => {
       excerpt: "Exploring the growing trend of social media psychics and the importance of authentic spiritual guidance in the digital age."
     },
     {
-      id: 2,
+      id: 3,
       title: "A Psychic Predicted My 'Calmcation'",
       publication: "PopSugar",
       author: "PopSugar Team",
