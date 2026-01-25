@@ -518,16 +518,16 @@ function ExclusiveTierForm() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div 
                                             className={`radio-card h-full p-6 border-2 border-gray-600 rounded-xl bg-gradient-to-br from-gray-700/30 to-gray-800/30 backdrop-blur-sm ${
-                                                formData.readingtype === "Pre-recorded session ($395)" ? 'selected' : ''
+                                                formData.readingtype === "Pre-recorded session ($425)" ? 'selected' : ''
                                             }`}
-                                            onClick={() => !isCompleted && handleRadioClick("Pre-recorded session ($395)")}
+                                            onClick={() => !isCompleted && handleRadioClick("Pre-recorded session ($425)")}
                                         >
                                             <input 
                                                 className="hidden" 
                                                 type="radio" 
                                                 name="readingtype"
-                                                value="Pre-recorded session ($395)"
-                                                checked={formData.readingtype === "Pre-recorded session ($395)"}
+                                                value="Pre-recorded session ($425)"
+                                                checked={formData.readingtype === "Pre-recorded session ($425)"}
                                                 onChange={handleChange}
                                                 disabled={isCompleted}
                                                 required 
@@ -538,16 +538,16 @@ function ExclusiveTierForm() {
                                                 </div>
                                                 <span className="text-white font-semibold">Pre-recorded Reading</span>
                                                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ml-auto ${
-                                                    formData.readingtype === "Pre-recorded session ($395)" 
+                                                    formData.readingtype === "Pre-recorded session ($425)" 
                                                         ? 'border-red-500 bg-red-500' 
                                                         : 'border-gray-400'
                                                 }`}>
-                                                    {formData.readingtype === "Pre-recorded session ($395)" && (
+                                                    {formData.readingtype === "Pre-recorded session ($425)" && (
                                                         <div className="w-2 h-2 bg-white rounded-full"></div>
                                                     )}
                                                 </div>
                                             </div>
-                                            <p className="text-gray-300 text-sm">Premium session ($395)</p>
+                                            <p className="text-gray-300 text-sm">Premium session ($425)</p>
                                         </div>
 
                                         <div 

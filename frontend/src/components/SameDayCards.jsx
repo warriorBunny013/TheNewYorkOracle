@@ -155,7 +155,7 @@ function SameDayCards() {
             type: "ELITE",
             title: "PRE-RECORDED Reading",
             description: "For those who are in need of immediate guidance and clarity. Allow me to provide you with insight on your next steps. " + getDeliveryMessage() + ". Please note this is a PRE-RECORDED DIGITAL FILE that will be emailed to you.",
-            price: "325",
+            price: "350",
             cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
             extrainfo: isOnBreak() ? "Delivery post Aug 1" : "Delivery within 5-7 days",
             paypalLink: "https://www.paypal.com/ncp/payment/5X34KQX2VWHRS"

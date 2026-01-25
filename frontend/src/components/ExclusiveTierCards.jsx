@@ -25,7 +25,7 @@ const cards = [
         type: "exclusive",
         title: "Pre-recorded Emergency Reading",
         description: "A premium pre-recorded reading with personalized attention, deep spiritual connection, and comprehensive guidance. Urgent reading delivered within 48-72 hours. Perfect for those who need immediate answers to pressing questions and can't wait for regular booking slots.",
-        price: "395",
+        price: "425",
         time: "48-72 hours",
         cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final.",
         isLuxury: false,
