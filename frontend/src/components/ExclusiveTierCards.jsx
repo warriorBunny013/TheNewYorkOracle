@@ -38,7 +38,7 @@ const cards = [
         type: "exclusive",
         title: "Live One-on-One 1 hour Reading",
         description: "A premium 1-hour live session with personalized attention, deep spiritual connection, and comprehensive guidance. Urgent reading scheduled within 24-48 hours. Perfect for those who need immediate answers to pressing questions and can't wait for regular booking slots.",
-        price: "650",
+        price: "750",
         time: "24-48 hours",
         cancellationPolicy: "Due to the expedited nature of this service, cancellations are not available. All sales are final",
         isLuxury: true,
