@@ -552,16 +552,16 @@ function ExclusiveTierForm() {
 
                                         <div 
                                             className={`radio-card h-full p-6 border-2 border-gray-600 rounded-xl bg-gradient-to-br from-gray-700/30 to-gray-800/30 backdrop-blur-sm ${
-                                                formData.readingtype === "Live 1-hour one-one-one reading ($650)" ? 'selected' : ''
+                                                formData.readingtype === "Live 1-hour one-one-one reading ($750)" ? 'selected' : ''
                                             }`}
-                                            onClick={() => !isCompleted && handleRadioClick("Live 1-hour one-one-one reading ($650)")}
+                                            onClick={() => !isCompleted && handleRadioClick("Live 1-hour one-one-one reading ($750)")}
                                         >
                                             <input 
                                                 className="hidden" 
                                                 type="radio" 
                                                 name="readingtype"
-                                                value="Live 1-hour one-one-one reading ($650)"
-                                                checked={formData.readingtype === "Live 1-hour one-one-one reading ($650)"}
+                                                value="Live 1-hour one-one-one reading ($750)"
+                                                checked={formData.readingtype === "Live 1-hour one-one-one reading ($750)"}
                                                 onChange={handleChange}
                                                 disabled={isCompleted}
                                                 required 
@@ -572,16 +572,16 @@ function ExclusiveTierForm() {
                                                 </div>
                                                 <span className="text-white font-semibold">Live Reading</span>
                                                 <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ml-auto ${
-                                                    formData.readingtype === "Live 1-hour one-one-one reading ($650)" 
+                                                    formData.readingtype === "Live 1-hour one-one-one reading ($750)" 
                                                         ? 'border-red-500 bg-red-500' 
                                                         : 'border-gray-400'
                                                 }`}>
-                                                    {formData.readingtype === "Live 1-hour one-one-one reading ($650)" && (
+                                                    {formData.readingtype === "Live 1-hour one-one-one reading ($750)" && (
                                                         <div className="w-2 h-2 bg-white rounded-full"></div>
                                                     )}
                                                 </div>
                                             </div>
-                                            <p className="text-gray-300 text-sm">1-hour one-one-one ($650)</p>
+                                            <p className="text-gray-300 text-sm">1-hour one-one-one ($750)</p>
                                         </div>
                                     </div>
                                 </div>
